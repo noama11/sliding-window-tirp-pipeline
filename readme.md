@@ -1,8 +1,43 @@
-# TIRP Pipeline for Stroke Prediction
+# TIRP Pipeline
 
 ## Overview
 
-This pipeline discovers **temporal patterns (TIRPs)** in patient medical records that may help predict stroke occurrence. It compares patterns found in patients who had a stroke versus patients who never had a stroke.
+This project automates the discovery of **temporal patterns (TIRPs)** from patient medical records using **sliding time windows**.
+
+It connects 3 systems into one workflow:
+
+- **SQL Server** – selects patient groups
+- **MEDIATOR** – creates temporal abstractions from patient history
+- **KarmaLego** – mines temporal patterns from those abstractions
+
+The pipeline is designed to compare:
+
+- patients who **had a target outcome**
+- patients who **did not have that outcome**
+
+Current project variants:
+
+- `tirp_pipeline.py` – stroke pipeline
+- `tirp_pipeline_mortality.py` – mortality pipeline
+
+---
+
+## What this pipeline gives you
+
+After each run, the pipeline creates **pattern output folders** for every time window.
+
+Example:
+
+```text
+C:\Users\noama1\Desktop\karma\
+├── 2000-2004_YES_patterns\
+├── 2000-2004_NO_patterns\
+├── 2002-2006_YES_patterns\
+├── 2002-2006_NO_patterns\
+├── 2004-2008_YES_patterns\
+├── 2004-2008_NO_patterns\
+└── ...
+```
 
 ## Goal
 

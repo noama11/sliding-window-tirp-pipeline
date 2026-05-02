@@ -17,8 +17,8 @@ The pipeline is designed to compare:
 
 Current project variants:
 
-- `tirp_pipeline.py` – stroke pipeline
-- `tirp_pipeline_mortality.py` – mortality pipeline
+- `pipeline_stroke.py` – stroke pipeline
+- `pipeline_mortality.py` – mortality pipeline
 
 ---
 
@@ -148,57 +148,83 @@ Each folder contains KarmaLego output files with the discovered TIRPs (temporal 
 
 ## Configuration
 
-**All configuration is at the top of `tirp_pipeline.py`. You MUST review and update these before running.**
+**All configuration is in JSON files beside each pipeline script. You MUST review and update these before running.**
 
-### 1. Window Parameters
-```python
-K = 4                   # Knowledge window size in years
-Y = 3                   # Prediction window size in years
-STEP = 2                # How many years to slide between windows
-START_YEAR = 2000       # First year of timeline
-END_DATE = "2024-10-08" # End of timeline
-MVS = 0.3               # Minimum Vertical Support (0.0-1.0) for KarmaLego
+| Pipeline | Config file |
+|---|---|
+| `pipeline_stroke.py` | `config_stroke.json` |
+| `pipeline_mortality.py` | `config_mortality.json` |
+
+The JSON is split into four sections:
+
+### 1. Window Parameters (`window`)
+```json
+{
+  "window": {
+    "K": 4,
+    "Y": 3,
+    "STEP": 2,
+    "START_YEAR": 2000,
+    "END_DATE": "2024-10-08"
+  }
+}
 ```
 
-### 2. Database Connection
-```python
-SERVER_NAME = r'MLS05-T\MEDLAB_DEV'    # Your SQL Server instance name
-DATABASE_NAME = 'AF_Simulation'         # Database containing output table
-INPUT_DATABASE = 'Af_Clalit_Community'  # Database containing patient data
-SQL_USERNAME = 'visitors'               # SQL Server login username
-SQL_PASSWORD = 'visitors'               # SQL Server login password
-PROJECT_ID = 40159                      # MEDIATOR project ID
+### 2. Database Connection (`database`)
+```json
+{
+  "database": {
+    "SERVER_NAME": "MLS05-T\\MEDLAB_DEV",
+    "OUTPUT_DATABASE": "AF_Simulation",
+    "INPUT_DATABASE": "Af_Clalit_Community",
+    "SQL_USERNAME": "visitors",
+    "SQL_PASSWORD": "visitors",
+    "PROJECT_ID": 40159
+  }
+}
 ```
 
-### 3. File Paths
-```python
-# Patient list - temporary file for passing patient IDs
-PATIENT_LIST_PATH = r"C:\Users\noama1\Desktop\karma\config files\patient_list.txt"
+`OUTPUT_DATABASE` is where MEDIATOR writes abstractions (`OutputPatientsData`).
+`INPUT_DATABASE` is where patient records are read from (`InputPatientsData`).
 
-# KarmaLego AppSettings - pipeline updates ResultsPath automatically
-APPSETTINGS_PATH = r"C:\Users\noama1\Desktop\karma\KarmaLego\KarmaLegoConsoleApp\AppSettings.json"
-
-# KarmaLego config - pipeline updates MVS and entities automatically
-KL_CONFIG_PATH = r"C:\Users\noama1\Desktop\karma\config files\AF_KL_generic_config.json"
-
-# KarmaLego executable directory
-KARMALEGO_DIR = r"C:\Users\noama1\Desktop\karma\KarmaLego\KarmaLegoConsoleApp\bin\Release\net8.0"
-
-# MEDIATOR executable
-MEDIATOR_EXE = r"C:\MediatorCore\Mediator\APICore\bin\Release\net8.0\API.exe"
-
-# Where to save pattern output folders
-RESULTS_BASE_PATH = r"C:\Users\noama1\Desktop\karma"
+### 3. File Paths (`paths`)
+```json
+{
+  "paths": {
+    "PATIENT_LIST_PATH": "C:\\Users\\noama1\\Desktop\\karma\\config files\\patient_list.txt",
+    "APPSETTINGS_PATH":  "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\...\\appsettings.json",
+    "KL_CONFIG_PATH":    "C:\\Users\\noama1\\Desktop\\karma\\config files\\AF_KL_generic_config.json",
+    "KARMALEGO_DIR":     "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\...\\net8.0",
+    "KARMALEGO_EXE":     "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\...\\KarmaLegoConsoleApp.exe",
+    "MEDIATOR_EXE":      "C:\\MediatorCore\\Mediator\\APICore\\bin\\Release\\net8.0\\API.exe",
+    "RESULTS_BASE_PATH": "C:\\Users\\noama1\\Desktop\\karma"
+  }
+}
 ```
 
-### 4. KarmaLego Fixed Settings
-```python
-KL_CONFIG = {
+Note: `patient_list.txt` is created automatically if it does not exist.
+
+### 4. KarmaLego Settings (`karmalego`)
+```json
+{
+  "karmalego": {
+    "MVS": 0.3,
     "domain_name": "AF_KL_Stroke",
-    "concepts": "2000,2001,2002,2003,...",  # Which concept IDs to include
-    "maxGap": 0,                             # Max gap between intervals
-    "timeUnit": "Days",                      # Time unit for patterns
+    "concepts": "2000,2001,2002,...",
+    "maxGap": 0,
+    "timeUnit": "Days",
     "statistics_type_name": "HorizontalSupport"
+  }
+}
+```
+
+### 5. Runtime Settings (`runtime`)
+```json
+{
+  "runtime": {
+    "SHOW_TOOL_OUTPUT": true,
+    "MEDIATOR_BATCH_SIZE": 200
+  }
 }
 ```
 
@@ -228,7 +254,10 @@ MEDIATOR writes abstraction results here. The pipeline clears this table before 
 
 | File | Description |
 |------|-------------|
-| `tirp_pipeline.py` | Main script - runs full pipeline |
+| `pipeline_stroke.py` | Stroke pipeline script |
+| `pipeline_mortality.py` | Mortality pipeline script |
+| `config_stroke.json` | All configuration for the stroke pipeline |
+| `config_mortality.json` | All configuration for the mortality pipeline |
 | `test_pipeline.py` | Test utilities - test parts before full run |
 | `README.md` | This documentation |
 
@@ -242,7 +271,7 @@ pip install pyodbc
 ```
 
 ### Step 2: Update Configuration
-Open `tirp_pipeline.py` and update all configuration values for your environment.
+Open `config_stroke.json` or `config_mortality.json` and update all values for your environment.
 
 ### Step 3: Test Before Running
 ```bash
@@ -264,7 +293,11 @@ python test_pipeline.py window 1
 
 ### Step 4: Run Full Pipeline
 ```bash
-python tirp_pipeline.py
+# Stroke pipeline
+python pipeline_stroke.py
+
+# Mortality pipeline
+python pipeline_mortality.py
 ```
 
 ---

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/noama1/Desktop/karma/config files/**)",
+      "Read(//c/Users/noama1/Desktop/karma/KarmaLego/KarmaLegoConsoleApp/bin/Release/net8.0/**)"
+    ]
+  }
+}

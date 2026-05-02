@@ -1,6 +1,7 @@
 """
-TIRP Pipeline - Main Orchestration Script
-Run: python tirp_pipeline.py
+TIRP Pipeline - Stroke
+Run: python pipeline_stroke.py
+Config: config_stroke.json
 """
 
 import subprocess
@@ -11,56 +12,51 @@ import time
 from datetime import datetime
 
 # =============================================================================
-# CONFIGURATION
+# LOAD CONFIGURATION
 # =============================================================================
 
-K = 4                       # Knowledge window (years)
-Y = 3                       # Prediction window (years)
-STEP = 2                    # Sliding step (years)
-START_YEAR = 2000
-END_DATE = "2024-10-08"
-MVS = 0.3                   # Minimum Vertical Support
+_CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config_stroke.json")
 
-# --- OUTPUT CONTROL ---
-SHOW_TOOL_OUTPUT = True     # True = show MEDIATOR/KarmaLego output, False = hide
-MEDIATOR_BATCH_SIZE = 200    # Patients per MEDIATOR batch (reduce if command too long error)
+with open(_CONFIG_FILE) as _f:
+    _cfg = json.load(_f)
 
-# --- PATHS ---
-PATIENT_LIST_PATH = "C:\\Users\\noama1\\Desktop\\karma\\config files\\patient_list.txt"
-APPSETTINGS_PATH = "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\KarmaLegoConsoleApp\\bin\\Release\\net8.0\\appsettings.json"
-KL_CONFIG_PATH = "C:\\Users\\noama1\\Desktop\\karma\\config files\\AF_KL_generic_config.json"
-KARMALEGO_DIR = "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\KarmaLegoConsoleApp\\bin\\Release\\net8.0"
-KARMALEGO_EXE = "C:\\Users\\noama1\\Desktop\\karma\\KarmaLego\\KarmaLegoConsoleApp\\bin\\Release\\net8.0\\KarmaLegoConsoleApp.exe"
-MEDIATOR_EXE = "C:\\MediatorCore\\Mediator\\APICore\\bin\\Release\\net8.0\\API.exe"
-RESULTS_BASE_PATH = "C:\\Users\\noama1\\Desktop\\karma"
+K                   = _cfg["window"]["K"]
+Y                   = _cfg["window"]["Y"]
+STEP                = _cfg["window"]["STEP"]
+START_YEAR          = _cfg["window"]["START_YEAR"]
+END_DATE            = _cfg["window"]["END_DATE"]
 
-# --- DATABASE ---
-SERVER_NAME = "MLS05-T\\MEDLAB_DEV"
-DATABASE_NAME = "AF_Simulation"
-INPUT_DATABASE = "Af_Clalit_Community"
-SQL_USERNAME = "visitors"
-SQL_PASSWORD = "visitors"
-PROJECT_ID = 40159
+MVS                 = _cfg["karmalego"]["MVS"]
+KL_CONFIG           = {k: v for k, v in _cfg["karmalego"].items() if k != "MVS"}
 
-# --- KARMALEGO FIXED CONFIG ---
-KL_CONFIG = {
-    "domain_name": "AF_KL_Stroke",
-    "concepts": "2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,1200,1201,1202,1100,1101,1102,1103,1104,1105,1106,1107,4000,4001,4002,4003,4004,4005,4006,4007,4008,4009,4010,4011,4012,4013,4014,4015,3000,3001,3002,3003",
-    "maxGap": 0,
-    "timeUnit": "Days",
-    "statistics_type_name": "HorizontalSupport"
-}
+SERVER_NAME         = _cfg["database"]["SERVER_NAME"]
+OUTPUT_DATABASE     = _cfg["database"]["OUTPUT_DATABASE"]
+INPUT_DATABASE      = _cfg["database"]["INPUT_DATABASE"]
+SQL_USERNAME        = _cfg["database"]["SQL_USERNAME"]
+SQL_PASSWORD        = _cfg["database"]["SQL_PASSWORD"]
+PROJECT_ID          = _cfg["database"]["PROJECT_ID"]
+
+PATIENT_LIST_PATH   = _cfg["paths"]["PATIENT_LIST_PATH"]
+APPSETTINGS_PATH    = _cfg["paths"]["APPSETTINGS_PATH"]
+KL_CONFIG_PATH      = _cfg["paths"]["KL_CONFIG_PATH"]
+KARMALEGO_DIR       = _cfg["paths"]["KARMALEGO_DIR"]
+KARMALEGO_EXE       = _cfg["paths"]["KARMALEGO_EXE"]
+MEDIATOR_EXE        = _cfg["paths"]["MEDIATOR_EXE"]
+RESULTS_BASE_PATH   = _cfg["paths"]["RESULTS_BASE_PATH"]
+
+SHOW_TOOL_OUTPUT    = _cfg["runtime"]["SHOW_TOOL_OUTPUT"]
+MEDIATOR_BATCH_SIZE = _cfg["runtime"]["MEDIATOR_BATCH_SIZE"]
 
 # =============================================================================
 # HELPERS
 # =============================================================================
 
-def log(msg): 
+def log(msg):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}")
 
 def get_db_connection():
     return pyodbc.connect(
-        f"DRIVER={{SQL Server}};SERVER={SERVER_NAME};DATABASE={DATABASE_NAME};"
+        f"DRIVER={{SQL Server}};SERVER={SERVER_NAME};DATABASE={OUTPUT_DATABASE};"
         f"UID={SQL_USERNAME};PWD={SQL_PASSWORD};"
     )
 
@@ -69,7 +65,7 @@ def generate_windows():
     end_year = datetime.strptime(END_DATE, "%Y-%m-%d").year
     windows = []
     k_start = START_YEAR
-    
+
     while True:
         k_end = k_start + K
         y_start = k_end
@@ -78,7 +74,7 @@ def generate_windows():
             break
         windows.append((k_start, k_end, y_start, y_end))
         k_start += STEP
-    
+
     return windows
 
 def clear_patient_list():
@@ -90,7 +86,7 @@ def clear_patient_list():
 def clear_output_table():
     log("Clearing output table...")
     conn = get_db_connection()
-    conn.cursor().execute("DELETE FROM [AF_Simulation].[dbo].[OutputPatientsData]")
+    conn.cursor().execute(f"DELETE FROM [{OUTPUT_DATABASE}].[dbo].[OutputPatientsData]")
     conn.commit()
     conn.close()
     log("Output table cleared.")
@@ -98,7 +94,7 @@ def clear_output_table():
 def get_stroke_patients(y_start, y_end):
     """Get patients with stroke IN Y_range."""
     query = f"""
-        SELECT DISTINCT PatientID 
+        SELECT DISTINCT PatientID
         FROM [{INPUT_DATABASE}].[dbo].[InputPatientsData]
         WHERE ConceptName LIKE 'Stroke_Ischemic'
           AND StartTime >= '{y_start}-01-01' AND StartTime < '{y_end}-01-01'
@@ -133,18 +129,18 @@ def save_patients(patients):
 def run_mediator(patients, k_start, k_end):
     if not patients:
         return
-    
+
     total_batches = (len(patients) + MEDIATOR_BATCH_SIZE - 1) // MEDIATOR_BATCH_SIZE
-    
+
     log(f"Starting MEDIATOR ({len(patients)} patients in {total_batches} batches)...")
-    
+
     time_window = f"{k_start}-01-01 00:00:00-{k_end}-01-01 00:00:00"
-    
+
     for i in range(0, len(patients), MEDIATOR_BATCH_SIZE):
         batch = patients[i:i + MEDIATOR_BATCH_SIZE]
         batch_num = (i // MEDIATOR_BATCH_SIZE) + 1
         log(f"  Batch {batch_num}/{total_batches} ({len(batch)} patients)...")
-        
+
         cmd = [
             MEDIATOR_EXE, "Query", "CalculateAbstractionsInBatchByTime",
             str(PROJECT_ID), ",".join(map(str, batch)), "*",
@@ -160,12 +156,12 @@ def run_mediator(patients, k_start, k_end):
                 log(f"  ERROR: Command too long! Reduce MEDIATOR_BATCH_SIZE (current: {MEDIATOR_BATCH_SIZE})")
                 raise
             raise
-    
+
     # Check how many abstractions were created
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM [AF_Simulation].[dbo].[OutputPatientsData]")
+        cursor.execute(f"SELECT COUNT(*) FROM [{OUTPUT_DATABASE}].[dbo].[OutputPatientsData]")
         count = cursor.fetchone()[0]
         conn.close()
         log(f"MEDIATOR finished. Abstractions in table: {count}")
@@ -181,9 +177,9 @@ def update_appsettings(results_path):
         json.dump(settings, f, indent=2)
         f.flush()
         os.fsync(f.fileno())  # Force write to disk
-    
+
     time.sleep(0.5)  # Wait for file system
-    
+
     # Verify it was saved correctly
     with open(APPSETTINGS_PATH, 'r') as f:
         verify = json.load(f)
@@ -197,7 +193,7 @@ def update_kl_config():
         json.dump(config, f, indent=2)
         f.flush()
         os.fsync(f.fileno())  # Force write to disk
-    
+
     time.sleep(0.5)  # Wait for file system
     log("KarmaLego config updated.")
 
@@ -209,28 +205,31 @@ def run_karmalego(results_path):
         log(f"Created folder: {results_path}")
     else:
         log(f"Folder already exists: {results_path}")
-    
+
     # Verify config BEFORE running
     with open(APPSETTINGS_PATH, 'r') as f:
         check = json.load(f)
     log(f"Config check before run: {check['AppSettings']['ResultsPath']}")
-    
+
     log("Starting KarmaLego...")
     if SHOW_TOOL_OUTPUT:
         result = subprocess.run([KARMALEGO_EXE], cwd=KARMALEGO_DIR, stdin=subprocess.DEVNULL)
     else:
         result = subprocess.run([KARMALEGO_EXE], cwd=KARMALEGO_DIR, stdin=subprocess.DEVNULL, capture_output=True)
     log(f"KarmaLego exit code: {result.returncode}")
-    
-    # Check what files exist after run
+
+    # Check what files exist after run (recursive)
     if os.path.exists(results_path):
-        files = os.listdir(results_path)
-        log(f"Files in folder: {len(files)} files")
-        if files:
-            log(f"  {files[:5]}")  # Show first 5 files
+        for root, dirs, files in os.walk(results_path):
+            rel = os.path.relpath(root, results_path)
+            prefix = "" if rel == "." else f"{rel}\\"
+            for fname in files:
+                log(f"  {prefix}{fname}")
+        total = sum(len(fs) for _, _, fs in os.walk(results_path))
+        log(f"Total files in output: {total}")
     else:
         log(f"WARNING: Folder does not exist after KarmaLego!")
-    
+
     log("KarmaLego finished.")
 
 # =============================================================================
@@ -241,63 +240,63 @@ def process_window(k_start, k_end, y_start, y_end, window_num, total):
     """Process a single window."""
     log(f"")
     log(f"========== WINDOW {window_num}/{total}: K=[{k_start}-{k_end}] Y=[{y_start}-{y_end}] ==========")
-    
+
     # Cleanup
     log("--- STEP 0: CLEANUP ---")
     clear_output_table()
     clear_patient_list()
-    
+
     # YES-stroke patients
     log("--- STEP 1: FIND YES-STROKE PATIENTS ---")
     yes_patients = get_stroke_patients(y_start, y_end)
     log(f"Found {len(yes_patients)} stroke patients")
-    
+
     if not yes_patients:
         log("No patients found. Skipping window.")
         return
-    
+
     save_patients(yes_patients)
-    
+
     # MEDIATOR for YES
     log("--- STEP 2.1: MEDIATOR (YES) ---")
     run_mediator(yes_patients, k_start, k_end)
-    
+
     # KarmaLego for YES
     log("--- STEP 2.2: KARMALEGO (YES) ---")
     results_path_yes = f"{RESULTS_BASE_PATH}\\{k_start}-{k_end}_YES_patterns"
     update_appsettings(results_path_yes)
     update_kl_config()
     run_karmalego(results_path_yes)
-    
+
     # Cleanup
     log("--- STEP 3: CLEANUP ---")
     clear_output_table()
     clear_patient_list()
-    
+
     # NO-stroke patients (3x)
     log("--- STEP 4: FIND NO-STROKE PATIENTS ---")
     no_count = len(yes_patients) * 3
     log(f"Looking for {no_count} patients (3x stroke count)...")
     no_patients = get_no_stroke_patients(no_count)
     log(f"Found {len(no_patients)} no-stroke patients")
-    
+
     if not no_patients:
         log("No patients found. Skipping NO-patterns.")
         return
-    
+
     save_patients(no_patients)
-    
+
     # MEDIATOR for NO
     log("--- STEP 4.1: MEDIATOR (NO) ---")
     run_mediator(no_patients, k_start, k_end)
-    
+
     # KarmaLego for NO
     log("--- STEP 4.2: KARMALEGO (NO) ---")
     results_path_no = f"{RESULTS_BASE_PATH}\\{k_start}-{k_end}_NO_patterns"
     update_appsettings(results_path_no)
     update_kl_config()
     run_karmalego(results_path_no)
-    
+
     log(f"========== WINDOW {window_num} COMPLETE ==========")
 
 
@@ -306,15 +305,16 @@ def run_pipeline():
     windows = generate_windows()
     log(f"")
     log(f"============================================")
-    log(f"TIRP PIPELINE STARTING")
+    log(f"TIRP PIPELINE STARTING - STROKE")
     log(f"Config: K={K}, Y={Y}, STEP={STEP}, MVS={MVS}")
+    log(f"Output DB: {OUTPUT_DATABASE} | Input DB: {INPUT_DATABASE}")
     log(f"Total windows: {len(windows)}")
     log(f"Show tool output: {SHOW_TOOL_OUTPUT}")
     log(f"============================================")
-    
+
     for i, (k_start, k_end, y_start, y_end) in enumerate(windows, 1):
         process_window(k_start, k_end, y_start, y_end, i, len(windows))
-    
+
     log(f"")
     log(f"============================================")
     log(f"PIPELINE COMPLETE")

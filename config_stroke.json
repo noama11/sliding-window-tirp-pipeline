@@ -2,10 +2,10 @@
   "_comment": "Configuration for the Stroke TIRP pipeline. Edit this file to change settings.",
 
   "window": {
-    "K": 4,
-    "Y": 3,
-    "STEP": 2,
-    "START_YEAR": 2000,
+    "K": 2,
+    "Y": 1,
+    "STEP": 1,
+    "START_YEAR": 2010,
     "END_DATE": "2024-10-08"
   },
 

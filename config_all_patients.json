@@ -2,8 +2,8 @@
   "_comment": "Sliding window pipeline - all patients, no YES/NO split.",
 
   "window": {
-    "K": 4,
-    "STEP": 2,
+    "K": 2,
+    "STEP": 1,
     "START_YEAR": 2000,
     "END_DATE": "2024-10-08"
   },

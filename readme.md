@@ -17,8 +17,10 @@ The pipeline is designed to compare:
 
 Current project variants:
 
-- `pipeline_stroke.py` – stroke pipeline
-- `pipeline_mortality.py` – mortality pipeline
+- `pipeline_stroke.py` – stroke YES/NO pipeline
+- `pipeline_mortality.py` – mortality YES/NO pipeline
+- `pipeline_all_patients.py` – all patients, no YES/NO split
+- `pipeline_from_patient_list.py` – all patients from a pre-defined ID file
 
 ---
 
@@ -254,12 +256,19 @@ MEDIATOR writes abstraction results here. The pipeline clears this table before 
 
 | File | Description |
 |------|-------------|
-| `pipeline_stroke.py` | Stroke pipeline script |
-| `pipeline_mortality.py` | Mortality pipeline script |
-| `config_stroke.json` | All configuration for the stroke pipeline |
-| `config_mortality.json` | All configuration for the mortality pipeline |
-| `test_pipeline.py` | Test utilities - test parts before full run |
+| `pipeline_stroke.py` | Stroke YES/NO pipeline (queries DB for patients) |
+| `pipeline_mortality.py` | Mortality YES/NO pipeline (queries DB for patients) |
+| `pipeline_all_patients.py` | All-patients pipeline, no YES/NO split |
+| `pipeline_from_patient_list.py` | All-patients pipeline from a pre-defined patient ID file |
+| `run_specific_windows_stroke.py` | One-off script: runs stroke pipeline for specific windows only |
+| `config_stroke.json` | Configuration for the stroke pipeline |
+| `config_mortality.json` | Configuration for the mortality pipeline |
+| `config_all_patients.json` | Configuration for the all-patients and patient-list pipelines |
+| `patients/train_ids.txt` | Pre-defined patient ID list – training set |
+| `patients/test_ids.txt` | Pre-defined patient ID list – test set |
+| `test_pipeline.py` | Test utilities – test parts before full run |
 | `README.md` | This documentation |
+| `COMMANDS.md` | Quick reference for all run commands |
 
 ---
 
@@ -292,12 +301,60 @@ python test_pipeline.py window 1
 ```
 
 ### Step 4: Run Full Pipeline
-```bash
-# Stroke pipeline
-python pipeline_stroke.py
 
-# Mortality pipeline
+**YES/NO pipelines (DB-based patient selection):**
+```bash
+python pipeline_stroke.py
 python pipeline_mortality.py
+```
+
+**All-patients pipeline (no YES/NO split):**
+```bash
+python pipeline_all_patients.py
+```
+
+---
+
+## pipeline_from_patient_list.py
+
+Runs the all-patients pattern extraction on a **fixed patient ID list** instead of querying the database.
+Patient files live in the `patients/` subfolder, one ID per line.
+All other settings (DB, paths, MVS, concepts) are loaded from `config_all_patients.json`.
+
+### Single window
+```bash
+python pipeline_from_patient_list.py --patients train_ids.txt --k-start 2010 --k-end 2012
+python pipeline_from_patient_list.py --patients test_ids.txt  --k-start 2015 --k-end 2017
+```
+
+### All windows (generated from config)
+```bash
+python pipeline_from_patient_list.py --patients train_ids.txt --all-windows
+```
+Uses `K`, `STEP`, `START_YEAR`, and `END_DATE` from `config_all_patients.json` to generate all windows automatically.
+
+### All windows with a custom start year
+```bash
+python pipeline_from_patient_list.py --patients train_ids.txt --all-windows --start-year 2015
+```
+Overrides `START_YEAR` from the config without editing any file. The first window will be `[2015 → 2015+K]` and it slides forward by `STEP` until `END_DATE`.
+
+### Output folder naming
+Results are saved under `RESULTS_BASE_PATH` (from config) with this pattern:
+```
+{k_start}-{k_end}_{filename}_patterns
+```
+Example: `2010-2012_train_ids_patterns`, `2010-2012_test_ids_patterns`
+
+---
+
+## run_specific_windows_stroke.py
+
+One-off script that runs the **stroke pipeline** for a hardcoded list of specific windows, without touching any config file.
+Edit the `WINDOWS` list inside the file to change which windows to run.
+
+```bash
+python run_specific_windows_stroke.py
 ```
 
 ---

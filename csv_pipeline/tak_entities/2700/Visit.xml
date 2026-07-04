@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<nominal-raw-concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="61" name="Visit" concept-type="raw-nominal">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+  <clippers/>
+  <nominal-allowed-values output-type="nominal">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="day"/>
+        <good-after value="0" granularity="day"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <nominal-allowed-value value="1"/>
+      <nominal-allowed-value value="10"/>
+      <nominal-allowed-value value="107"/>
+      <nominal-allowed-value value="11"/>
+      <nominal-allowed-value value="12"/>
+      <nominal-allowed-value value="125"/>
+      <nominal-allowed-value value="13"/>
+      <nominal-allowed-value value="14"/>
+      <nominal-allowed-value value="15"/>
+      <nominal-allowed-value value="21"/>
+      <nominal-allowed-value value="22"/>
+      <nominal-allowed-value value="23"/>
+      <nominal-allowed-value value="26"/>
+      <nominal-allowed-value value="27"/>
+      <nominal-allowed-value value="28"/>
+      <nominal-allowed-value value="29"/>
+      <nominal-allowed-value value="3"/>
+      <nominal-allowed-value value="31"/>
+      <nominal-allowed-value value="32"/>
+      <nominal-allowed-value value="33"/>
+      <nominal-allowed-value value="35"/>
+      <nominal-allowed-value value="41"/>
+      <nominal-allowed-value value="50"/>
+      <nominal-allowed-value value="51"/>
+      <nominal-allowed-value value="52"/>
+      <nominal-allowed-value value="53"/>
+      <nominal-allowed-value value="54"/>
+      <nominal-allowed-value value="55"/>
+      <nominal-allowed-value value="56"/>
+      <nominal-allowed-value value="57"/>
+      <nominal-allowed-value value="58"/>
+      <nominal-allowed-value value="61"/>
+      <nominal-allowed-value value="62"/>
+      <nominal-allowed-value value="63"/>
+      <nominal-allowed-value value="65"/>
+      <nominal-allowed-value value="70"/>
+      <nominal-allowed-value value="83"/>
+    </values>
+  </nominal-allowed-values>
+</nominal-raw-concept>

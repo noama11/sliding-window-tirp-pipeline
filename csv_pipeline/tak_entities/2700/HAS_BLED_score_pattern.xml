@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="830" name="HAS_BLED_score_pattern" concept-type="pattern">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>405</derived-from-id>
+		<derived-from-id>406</derived-from-id>
+		<derived-from-id>407</derived-from-id>
+		<derived-from-id>408</derived-from-id>
+		<derived-from-id>409</derived-from-id>
+		<derived-from-id>410</derived-from-id>
+		<derived-from-id>411</derived-from-id>
+		<derived-from-id>412</derived-from-id>
+		<derived-from-id>413</derived-from-id>
+		<derived-from-id>414</derived-from-id>
+		<derived-from-id>415</derived-from-id>
+		<derived-from-id>860</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="100" units="" scale="ratio">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows/>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second"/>
+				<good-after value="0" granularity="second"/>
+			</local-persistence>
+		</persistence>
+	</numeric-allowed-values>
+	<pattern-definition relation="any">
+		<components>
+			<component id="405" alias="lastSerumCreatinine_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="406" alias="lastSysbp_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="407" alias="lastBilirublin_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="408" alias="last_AST_or_ALT_or_ALP_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="409" alias="Stroke_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="410" alias="Hospitalization_Bleeding_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="411" alias="last_PLT_less_100_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="412" alias="last_HGB_less_11_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="413" alias="Age_Big65_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="414" alias="Alcohol_etilism_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="415" alias="NSAIDs _or_antiPLT_1p_BLED_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		<component id="860" alias="Visit_ct_0_p_CHASD_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		</components>
+		<pairwise-constraints>
+			<pairwise-constraints-list/>
+		</pairwise-constraints>
+		<periodic-constraints cardinality-min="1">
+			<calendar-frequency frequency-granularity="minute" frequency-value="3" relative-component-id="860"/>
+		</periodic-constraints>
+	</pattern-definition>
+	<pattern-output>
+		<value-group-blobs>
+			<statistical-function statistical-operator="sum"/>
+		</value-group-blobs>
+	</pattern-output>
+</pattern>

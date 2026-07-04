@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trend id="4019" name="Edoxaban_TREND" concept-type="trend" significant-variation="10">
+  <categories></categories>
+  <standard-terms></standard-terms>
+  <synonyms></synonyms>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+  <clippers></clippers>
+  <derived-from>
+    <derived-from-id>630</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts></abstraction-at-contexts>
+  <gradient-trend-allowed-values output-type="ordinal">
+    <persistence>
+      <global-persistence granularity="day">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="second"/>
+        <good-after value="0" granularity="second"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <ordinal-allowed-value order="0" value="Decreasing"/>
+      <ordinal-allowed-value order="1" value="Stable"/>
+      <ordinal-allowed-value order="2" value="Increasing"/>
+    </values>
+  </gradient-trend-allowed-values>
+  <time-steady value="60" granularity="day"/>
+</trend>

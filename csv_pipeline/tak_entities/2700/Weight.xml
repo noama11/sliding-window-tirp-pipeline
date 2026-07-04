@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<numeric-raw-concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-1.xsd" id="27" name="Weight" concept-type="raw-numeric">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+  <clippers/>
+  <numeric-allowed-values output-type="numeric" min-value="0" max-value="1000" units="" scale="ratio">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="month"/>
+        <good-after value="6" granularity="month"/>
+      </local-persistence>
+    </persistence>
+  </numeric-allowed-values>
+</numeric-raw-concept>

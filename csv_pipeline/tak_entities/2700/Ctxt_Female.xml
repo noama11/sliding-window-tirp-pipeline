@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="50211" name="Ctxt_Female" concept-type="context">
+  <categories />
+  <standard-terms />
+  <synonyms />
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+  <inducer-entities>
+    <inducer-entity id="50011">
+      <value-constraints>
+        <value-constraint value="True" operator="equal" />
+      </value-constraints>
+      <until boundary-point="end">
+        <time-gap value="120" granularity="year" />
+      </until>
+    </inducer-entity>
+  </inducer-entities>
+  <clippers />
+</context>

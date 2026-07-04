@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="1399" name="CCI_score_pattern" concept-type="pattern">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>1300</derived-from-id>
+		<derived-from-id>1301</derived-from-id>
+		<derived-from-id>1302</derived-from-id>
+		<derived-from-id>1303</derived-from-id>
+		<derived-from-id>1304</derived-from-id>
+		<derived-from-id>1305</derived-from-id>
+		<derived-from-id>1307</derived-from-id>
+		<derived-from-id>1308</derived-from-id>
+		<derived-from-id>1309</derived-from-id>
+		<derived-from-id>1310</derived-from-id>
+		<derived-from-id>1311</derived-from-id>
+		<derived-from-id>1312</derived-from-id>
+		<derived-from-id>1313</derived-from-id>
+		<derived-from-id>1314</derived-from-id>
+		<derived-from-id>1315</derived-from-id>
+		<derived-from-id>1317</derived-from-id>
+		<derived-from-id>860</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="100" units="" scale="ratio">
+		<persistence><global-persistence granularity="second"><interpolation-table><rows/></interpolation-table></global-persistence><local-persistence><good-before value="0" granularity="second"/><good-after value="0" granularity="second"/></local-persistence></persistence>
+	</numeric-allowed-values>
+	<pattern-definition relation="any">
+		<components>
+			<component id="1300" alias="Age50_59_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1301" alias="Age60_69_2p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1302" alias="Age70_79_3p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1303" alias="Age80plus_4p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1304" alias="Dementia_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1305" alias="Stroke_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1307" alias="Cancer_2p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1308" alias="Renal_2p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1309" alias="Liver_3p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1310" alias="PepticUlcer_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1311" alias="CHF_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1312" alias="Diabetes_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1313" alias="TIA_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1314" alias="Vascular_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1315" alias="MI_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="1317" alias="IHD_1p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="bigger-equal"/></value-constraints></local-constraints></component>
+			<component id="860" alias="Visit_ct_0_p_CCI"><local-constraints><value-constraints><value-constraint value="0" operator="equal"/></value-constraints></local-constraints></component>
+		</components>
+		<pairwise-constraints><pairwise-constraints-list/></pairwise-constraints>
+		<periodic-constraints cardinality-min="1"><calendar-frequency frequency-granularity="minute" frequency-value="3" relative-component-id="860"/></periodic-constraints>
+	</pattern-definition>
+	<pattern-output><value-group-blobs><statistical-function statistical-operator="sum"/></value-group-blobs></pattern-output>
+</pattern>

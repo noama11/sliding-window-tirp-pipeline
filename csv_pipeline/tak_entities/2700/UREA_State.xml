@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='utf-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="4030114" name="UREA_State" concept-type="state">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+	<clippers />
+	<derived-from>
+		<derived-from-id>11</derived-from-id>
+		<derived-from-id>50130</derived-from-id>
+		<derived-from-id>50131</derived-from-id>
+		<derived-from-id>50132</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50130</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="4030114" name="UREA_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50130</derived-from-id>
+					<derived-from-id>11</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>15</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>15</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>40.01</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>40.01</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50131</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="4030114" name="UREA_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50131</derived-from-id>
+					<derived-from-id>11</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>15</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>15</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>45.01</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>45.01</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50132</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="4030114" name="UREA_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50132</derived-from-id>
+					<derived-from-id>11</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>15</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>15</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="11" />
+												</left>
+												<right data-type="double">
+													<double>50.01</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="11" />
+									</left>
+									<right data-type="double">
+										<double>50.01</double>
+									</right>
+								</comparison-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+	</abstraction-at-contexts>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values />
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows />
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="hour" />
+				<good-after value="0" granularity="hour" />
+			</local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Placeholder" />
+		</values>
+	</ordinal-allowed-values>
+</state>

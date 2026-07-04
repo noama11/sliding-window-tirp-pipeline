@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<nominal-raw-concept xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="41" name="Congestive_Heart_Failure" concept-type="raw-nominal">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+  <clippers/>
+  <nominal-allowed-values output-type="nominal">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="day"/>
+        <good-after value="120" granularity="year"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <nominal-allowed-value value="True"/>
+      <nominal-allowed-value value="False"/>
+    </values>
+  </nominal-allowed-values>
+</nominal-raw-concept>

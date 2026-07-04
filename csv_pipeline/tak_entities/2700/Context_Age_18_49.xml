@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="50130" name="Context_Age_18_49" concept-type="context">
+<categories />
+<standard-terms />
+<synonyms />
+<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+<inducer-entities>
+<inducer-entity id="50129">
+<value-constraints>
+<value-constraint value="True" operator="equal" />
+</value-constraints>
+<time-constraints>
+<time-constraint time-window="start" granularity="second" time-operator="minus" value="0" ref-point="start" />
+<time-constraint time-window="end" granularity="second" time-operator="plus" value="0" ref-point="end" />
+</time-constraints>
+</inducer-entity>
+</inducer-entities>
+</context>

@@ -1,0 +1,10 @@
+# Runtime-generated (recreated by run.py on every run) — not part of the bundle source
+workspace/
+results/
+logs/
+cache/
+external_functions/
+kl_config/*.json
+data/abstractions.csv
+__pycache__/
+*.pyc

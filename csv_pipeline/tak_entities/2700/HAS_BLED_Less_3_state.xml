@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="447" name="HAS_BLED_Less_3_state" concept-type="state" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic forward="true" backward="true" solid="true" concatenable="false" gestalt="true" downward-hereditary="true"/>
+  <clippers/>
+  <derived-from>
+    <derived-from-id>830</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts/>
+  <mapping-function rank-selection-criteria="min">
+    <mapping-functions-to-values>
+      <mapping-function-2-value order="0" value="True">
+        <evaluation-tree data-type="comparison-function">
+          <comparison-function comparison-operator="smaller">
+            <left data-type="concept-id-allowed-values">
+              <concept-id-allowed-values id="830"/>
+            </left>
+            <right data-type="double"><double>3</double></right>
+          </comparison-function>
+        </evaluation-tree>
+      </mapping-function-2-value>
+    </mapping-functions-to-values>
+  </mapping-function>
+  <ordinal-allowed-values output-type="ordinal">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows>
+            <row>
+              <columns>
+                <column>1</column>
+              </columns>
+            </row>
+            <row>
+              <columns>
+                <column>1</column>
+              </columns>
+            </row>
+          </rows>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="second"/>
+        <good-after value="0" granularity="second"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <ordinal-allowed-value order="0" value="True"/>
+    </values>
+  </ordinal-allowed-values>
+</state>

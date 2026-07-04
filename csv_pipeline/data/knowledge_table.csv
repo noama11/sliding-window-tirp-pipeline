@@ -1,0 +1,324 @@
+ConceptName,ConceptID,AllowedValues
+AbsCI_or_RelCI_state,465,True
+Absolute_Contra_Indication_count_pattern,440,NumericAllowedValues
+Absolute_Contra_Indication_state,175,True
+Active_Bleeding_pattern,118,"True, False"
+Active_cancer_1p_CI_state,425,NumericAllowedValues
+Active_cancer_Before_visit_pattern,138,"True, False"
+Age_between_65_75_1p_CHASD_state,114,NumericAllowedValues
+Age_Big65_1p_BLED_state,413,NumericAllowedValues
+Age_Big65_state,190,True
+Age_Big75_2_points_CHASD_state,115,NumericAllowedValues
+Age_in_Visit_pattern,116,NumericAllowedValues
+Alcohol_etilism_1p_BLED_state,414,NumericAllowedValues
+Alcohol_etilism_Before_visit_pattern,148,"True, False"
+Alcohol_Use,47,"True, False"
+ALP,23,NumericAllowedValues
+ALP_Level_State,2011,"Normal, High, Low"
+ALP_TREND,4011,"Decreasing, Stable, Increasing"
+ALT,15,NumericAllowedValues
+ALT_Level_State,2003,"Normal, High, Low"
+ALT_TREND,4003,"Decreasing, Stable, Increasing"
+Anti_Phospholipid_Syndrome,54,"True, False"
+Anti_Platelets_Drugs,641,"True, False"
+Anti_Platelets_Drugs_chozek_hachomer,644,"325mg, 100mg, 75mg"
+Anti_Platelets_Drugs_daily_dos,646,NumericAllowedValues
+Anti_Platelets_Drugs_factor_daily_dos,645,NumericAllowedValues
+Anti_Platelets_Drugs_kamot,647,NumericAllowedValues
+Anti_Platelets_Drugs_makat_parit,642,NumericAllowedValues
+Anti_Platelets_Drugs_pattern,871,"True, False"
+Anti_Platelets_Drugs_teur_atc5,643,"Clopidogrel, Aspirin"
+Apixaban,617,"True, False"
+Apixaban_chozek_hachomer,620,"5mg, 2.500mg"
+Apixaban_daily_dos,622,NumericAllowedValues
+Apixaban_factor_daily_dos,621,NumericAllowedValues
+Apixaban_High_Dosage_state,1000,True
+Apixaban_HighDose_ctxt,1100,"True, False"
+Apixaban_kamot,623,NumericAllowedValues
+Apixaban_Low_Dosage_state,1001,True
+Apixaban_LowDose_ctxt,1101,"True, False"
+Apixaban_makat_parit,618,NumericAllowedValues
+Apixaban_pattern,875,"True, False"
+Apixaban_teur_atc5,619,Apixaban
+aPTT,18,NumericAllowedValues
+aPTT_Level_State,2006,"Normal, High, Low"
+aPTT_TREND,4006,"Decreasing, Stable, Increasing"
+AST,14,NumericAllowedValues
+AST_Level_State,2002,"Normal, High, Low"
+AST_TREND,4002,"Decreasing, Stable, Increasing"
+Atenolol,9000,"True, False"
+Atenolol_chozek_hachomer,9200,"100mg, 50mg, 25mg"
+Bedbound,34,"True, False"
+Bedridden_1p_CI_state,430,NumericAllowedValues
+Bedridden_Before_visit_pattern,142,"True, False"
+Beta_Blocker_High_Dosage_state,9100,True
+Beta_Blocker_HighDose_ctxt,1200,"True, False"
+Beta_Blocker_Low_Dosage_state,9102,True
+Beta_Blocker_LowDose_ctxt,1202,"True, False"
+Beta_Blocker_Usual_Dosage_state,9101,True
+Beta_Blocker_UsualDose_ctxt,1201,"True, False"
+Bilirubin_High_state,110,True
+Bilirubin_Total,62,NumericAllowedValues
+Birth_Year,29,NumericAllowedValues
+Bisoprolol,9001,"True, False"
+Bisoprolol_chozek_hachomer,9201,"10mg, 5mg, 2.500mg, 1.250mg"
+Bleeding,59,"True, False"
+Blood_Glucose,22,NumericAllowedValues
+Blood_Glucose_Level_State,2010,"Normal, High, Low"
+Blood_Glucose_TREND,4010,"Decreasing, Stable, Increasing"
+Blood_Pressure_Diastole,60,NumericAllowedValues
+Blood_Pressure_Diastole_Level_State,3001,"Normal, High, Low"
+Blood_Pressure_Diastole_TREND,4013,"Decreasing, Stable, Increasing"
+Blood_Pressure_Systole,24,NumericAllowedValues
+Blood_Pressure_Systole_Level_State,3000,"Normal, High, Low"
+Blood_Pressure_Systole_TREND,4012,"Decreasing, Stable, Increasing"
+Cancer_diagnosis_not_close,36,"True, False"
+Carvedilol,9002,"True, False"
+Carvedilol_chozek_hachomer,9202,"12.500mg, 6.250mg"
+CHADS_VASC_Eq_0_state,466,True
+CHADS_Vasc_score_pattern,179,NumericAllowedValues
+CHASD_VASC_BigEq_2_state,445,True
+CHASD_VASC_Eq_1_state,446,True
+CHF_or_LVD_Before_visit_pattern,145,"True, False"
+CHF_or_LVD_state,128,True
+CHForLVD_1_p_CHASD_state,400,NumericAllowedValues
+Cirrhosis,38,"True, False"
+Cirrhosis_1p_CI_state,428,NumericAllowedValues
+Cirrhosis_Before_visit_pattern,140,"True, False"
+Condition_NotNoac_state,470,True
+Condition_StartNoac_state,456,True
+Congestive_Heart_Failure,41,"True, False"
+Creatinine,10,NumericAllowedValues
+Creatinine_Clearence_1p_CI_state,427,NumericAllowedValues
+Creatinine_Clearence_Low_pattern,124,"True, False"
+Dabigatran_Etexilate,600,"True, False"
+Dabigatran_Etexilate_chozek_hachomer,603,"110mg, 75mg, 150mg"
+Dabigatran_Etexilate_daily_dos,605,NumericAllowedValues
+Dabigatran_Etexilate_factor_daily_dos,604,NumericAllowedValues
+Dabigatran_Etexilate_kamot,606,NumericAllowedValues
+Dabigatran_Etexilate_makat_parit,601,NumericAllowedValues
+Dabigatran_Etexilate_pattern,873,"True, False"
+Dabigatran_Etexilate_teur_atc5,602,Dabigatran Etexilate
+Dabigatran_High_Dosage_state,1006,True
+Dabigatran_HighDose_ctxt,1106,"True, False"
+Dabigatran_Low_Dosage_state,1007,True
+Dabigatran_LowDose_ctxt,1107,"True, False"
+Date_Ptira,31,"True, False"
+Decrease_HGB_pattern,117,"True, False"
+Demented_Patient,33,"True, False"
+Diabetes_Hyper_HbA1C_1_p_CHASD_state,402,NumericAllowedValues
+Diabetes_Hyper_HbA1C_before_visit_pattern,126,"True, False"
+Diabetes_Mellitus,43,"True, False"
+Diabetes_or_BG_or_HbA1C_state,125,True
+Edoxaban,625,"True, False"
+Edoxaban_chozek_hachomer,628,"30mg, 60mg"
+Edoxaban_daily_dos,630,NumericAllowedValues
+Edoxaban_factor_daily_dos,629,NumericAllowedValues
+Edoxaban_High_Dosage_state,1002,True
+Edoxaban_HighDose_ctxt,1102,"True, False"
+Edoxaban_kamot,631,NumericAllowedValues
+Edoxaban_Low_Dosage_state,1003,True
+Edoxaban_LowDose_ctxt,1103,"True, False"
+Edoxaban_makat_parit,626,NumericAllowedValues
+Edoxaban_pattern,876,"True, False"
+Edoxaban_teur_atc5,627,Edoxaban
+eGFR,26,NumericAllowedValues
+eGFR_Level_State,3003,"Normal, Low"
+eGFR_TREND,4015,"Decreasing, Stable, Increasing"
+Falls,49,"True, False"
+Gamma_GT,16,NumericAllowedValues
+Gamma_GT_Level_State,2004,"Normal, High, Low"
+Gamma_GT_TREND,4004,"Decreasing, Stable, Increasing"
+HAS_BLED_BigEq_3_state,467,True
+HAS_BLED_Less_3_state,447,True
+HAS_BLED_score_pattern,830,NumericAllowedValues
+HbA1C,21,NumericAllowedValues
+HBA1C_High_prev_6_m_pattern,188,"True, False"
+HbA1C_Level_State,2009,"Normal, High, Low"
+HbA1C_TREND,4009,"Decreasing, Stable, Increasing"
+HCT,4,NumericAllowedValues
+Heart_Rate,25,NumericAllowedValues
+Heart_Rate_Level_State,3002,"Normal, High, Low"
+Heart_Rate_TREND,4014,"Decreasing, Stable, Increasing"
+Height,32,NumericAllowedValues
+Hemodialysis_1p_CI_state,426,NumericAllowedValues
+Hemodialysis_Before_visit_pattern,139,"True, False"
+Hemodyalisis,37,"True, False"
+Hemophilia,48,"True, False"
+Hemophilia_1p_CI_state,421,NumericAllowedValues
+Hemophilia_Before_visit_pattern,137,"True, False"
+HGB,3,NumericAllowedValues
+HGB_Level_State,2000,"Normal, High, Low"
+HGB_Low_state,101,True
+HGB_Normal_state,102,True
+HGB_TREND,4000,"Decreasing, Stable, Increasing"
+HGB_Very_Low_state,100,True
+Hospitalization_Bleeding_1p_BLED_state,410,NumericAllowedValues
+Hospitalization_Bleeding_1p_CI_state,423,NumericAllowedValues
+Hospitalization_Bleeding_Before_visit_pattern,147,"True, False"
+Hyper_pattern,505,"True, False"
+Hyper_prev_6_m_pattern,187,"True, False"
+Hypertension,42,"True, False"
+Hypertension_1_p_CHASD_state,401,NumericAllowedValues
+Hypertension_Before_visit_pattern,144,"True, False"
+Hypertrophic_Cardiomyopathy,40,"True, False"
+Hypertrophic_Cardiomyopathy_1p_state,444,NumericAllowedValues
+Hypertrophic_Cardiomyopathy_Before_visit_pattern,460,"True, False"
+Hypertrophic_Cardiomyopathy_count_pattern,451,NumericAllowedValues
+INR,19,NumericAllowedValues
+INR_Level_State,2007,"Normal, High, Low"
+INR_TREND,4007,"Decreasing, Stable, Increasing"
+Intracranial_bleeding_diagnosis_state,180,True
+Intracranial_Bleeding_Last_1p_CI_state,418,NumericAllowedValues
+Intracranial_Bleeding_Last_pattern,150,"True, False"
+Ischemic_Heart_Disease,46,"True, False"
+Ischemic_Stroke,35,"True, False"
+Ischemic_stroke_Last_1p_CI_state,424,NumericAllowedValues
+Ischemic_stroke_Last_pattern,123,"True, False"
+Ischemic_Stroke_or_TIA_pattern,550,"True, False"
+Ischemic_Stroke_or_TIA_state,127,True
+IStroke_or_TIA_2p_CHASD_state,403,NumericAllowedValues
+last_ALP_prev_1_y_bigEq_348_state,502,True
+last_ALP_prev_1_y_pattern,516,NumericAllowedValues
+last_ALT_prev_1_y_bigEq_117_state,501,True
+last_ALT_prev_1_y_pattern,515,NumericAllowedValues
+last_AST_or_ALT_or_ALP_1p_BLED_state,408,NumericAllowedValues
+last_AST_or_ALT_or_ALP_ranges_state,503,True
+last_AST_prev_1_y_bigEq_120_state,500,True
+last_AST_prev_1_y_pattern,514,NumericAllowedValues
+last_bilirublin_prev_6_m_big_2.4_state,132,True
+last_bilirublin_prev_6_m_pattern,513,NumericAllowedValues
+last_Birth_Year_Before_Visit_pattern,590,NumericAllowedValues
+last_Creatinine_bigEq_1.5_state,158,True
+last_HGB_less_11_1p_BLED_state,412,NumericAllowedValues
+last_HGB_less_7_1p_CI_state,416,NumericAllowedValues
+last_HGB_less10_1p_CI_state,422,NumericAllowedValues
+last_HGB_prev_3_m_less_10_state,122,True
+last_HGB_prev_3_m_pattern,507,NumericAllowedValues
+last_HGB_prev_6_m_less_11_state,135,True
+last_HGB_prev_6_m_less_7_state,105,True
+last_HGB_prev_6_m_less_9_state,181,True
+last_HGB_prev_6_m_pattern,506,NumericAllowedValues
+last_PLT_3m_less50_1p_CI_state,419,NumericAllowedValues
+last_PLT_less_100_1p_BLED_state,411,NumericAllowedValues
+last_PLT_prev_3_m_less_50_state,120,True
+last_PLT_prev_3_m_pattern,509,NumericAllowedValues
+last_PLT_prev_6_m_less_100_state,134,True
+last_PLT_prev_6_m_pattern,508,NumericAllowedValues
+last_serum_Creatinine_prev_6_m_big_2_state,130,True
+last_serum_creatinine_prev_6_m_pattern,511,NumericAllowedValues
+last_Sys_bp_prev_6_m_big_160_state,131,True
+last_sys_bp_prev_6_m_pattern,512,NumericAllowedValues
+last_weight_before_visit_pattern,517,NumericAllowedValues
+last_weight_lessEq_60_state,157,True
+lastBilirublin_1p_BLED_state,407,NumericAllowedValues
+lastSerumCreatinine_1p_BLED_state,405,NumericAllowedValues
+lastSysbp_1p_BLED_state,406,NumericAllowedValues
+Left_Ventricular_Dysfunction,55,"True, False"
+Live_ctxt,700,"True, False"
+Liver_Enzyme_Elevation_pattern,133,"True, False"
+MCH_MCHC,6,NumericAllowedValues
+MCV,5,NumericAllowedValues
+Mechanical_Heart_Valve,52,"True, False"
+MechHV_MitSten_AntiPhos_count_pattern,449,NumericAllowedValues
+MechHV_or_MitSten_or_AntiPhos_1p_state,443,NumericAllowedValues
+MechHV_or_MitSten_or_AntiPhos_Before_visit_pattern,459,"True, False"
+MechHV_or_MitSten_or_AntiPhos_state,442,True
+Metoprolol,9003,"True, False"
+Metoprolol_chozek_hachomer,9203,"200mg, 190mg, 100mg, 10mg/1mL"
+MI,56,"True, False"
+MPV,9,NumericAllowedValues
+No_Absolute_Contra_Indication_state,176,True
+No_Hypertrophic_Cardiomyopathy_state,452,True
+No_MechHV_MitSten_AntiPhos_state,450,True
+No_Relative_Contra_Indication_state,178,True
+NOAC_state,504,True
+NoCI_And_NoRel_And_NoMech_And_HyperCard_state,453,True
+NoCI_And_NoRel_And_NoMech_And_NoHyperCard_And_ChasdBigEq2_state,454,True
+NoCI_And_NoRel_And_NoMech_AND_NoHyperCard_And_ChasdEq0_state,468,True
+NoCI_And_NoRel_And_NoMech_And_NoHyperCard_And_ChasdEq1_And_HasBigEq3_state,469,True
+NoCI_And_NoRel_And_NoMech_And_NoHyperCard_And_ChasdEq1_And_HasLess3_state,455,True
+NoCI_And_NoRel_And_NoMech_state,448,True
+Nontraumatic_Intracerebral_Hemorrhage,63,"True, False"
+Nontraumatic_Subarachnoid_Hemorrhage,64,"True, False"
+Not_Using_Noac_QA_pattern,458,NumericAllowedValues
+NotNoac_ctxt,852,"True, False"
+Nsaid,633,"True, False"
+Nsaid_chozek_hachomer,636,"600mg, 120mg, 100mg/5mL, 275mg, 30mg, 90mg, 500mg, 300mg, CF, 512mg, 256mg, 125mg, 25mg, 400mg, 100mg, 10.000%, 250mg, 8.750mg, 200mg, 20mg, 60mg, 200mg/5mL, 4.000%"
+Nsaid_daily_dos,638,NumericAllowedValues
+Nsaid_factor_daily_dos,637,NumericAllowedValues
+Nsaid_kamot,639,NumericAllowedValues
+Nsaid_makat_parit,634,NumericAllowedValues
+Nsaid_pattern,872,"True, False"
+Nsaid_teur_atc5,635,"Naproxen, Ketoprofen, Celecoxib, Ibuprofen, Piroxicam, Indometacin, Etoricoxib, Etodolac, Nabumetone, Flurbiprofen"
+NSAIDs _or_antiPLT_1p_BLED_state,415,NumericAllowedValues
+NSAIDs _or_antiPLT_Before_visit_pattern,149,"True, False"
+NSAIDs _or_antiPLT_state,129,True
+Other_Nontraumatic_Hemorrhage,65,"True, False"
+Peptic_Ulcer,39,"True, False"
+PLT,8,NumericAllowedValues
+PLT_Level_State,2001,"Normal, High, Low"
+PLT_Low_state,104,True
+PLT_TREND,4001,"DEC, SAME, INC"
+Potassium,13,NumericAllowedValues
+prev_last_less_9_bigEq_11_state,183,True
+prev_last_less_9_pattern,182,NumericAllowedValues
+prev_last_less9_bigEq11_1p_CI_state,417,NumericAllowedValues
+Propranolol,9004,"True, False"
+Propranolol_chozek_hachomer,9204,"160mg, 80mg, 40mg, 10mg"
+Prothrombin_Time_pattern,119,"True, False"
+PT,17,NumericAllowedValues
+PT_aPTT_1p_CI_state,471,NumericAllowedValues
+PT_Level_State,2005,"Normal, High, Low"
+PT_or_aPTT_NotNormal_state,103,True
+PT_TREND,4005,"Decreasing, Stable, Increasing"
+PVD,57,"True, False"
+RBC,2,NumericAllowedValues
+RDW,7,NumericAllowedValues
+Relative_Contra_Indication_count_pattern,441,NumericAllowedValues
+Relative_Contra_Indication_state,177,True
+Rivaroxaban,609,"True, False"
+Rivaroxaban_chozek_hachomer,612,"15mg, 20mg, 2.500mg, 10mg"
+Rivaroxaban_daily_dos,614,NumericAllowedValues
+Rivaroxaban_factor_daily_dos,613,NumericAllowedValues
+Rivaroxaban_High_Dosage_state,1004,True
+Rivaroxaban_HighDose_ctxt,1104,"True, False"
+Rivaroxaban_kamot,615,NumericAllowedValues
+Rivaroxaban_Low_Dosage_state,1005,True
+Rivaroxaban_LowDose_ctxt,1105,"True, False"
+Rivaroxaban_makat_parit,610,NumericAllowedValues
+Rivaroxaban_pattern,874,"True, False"
+Rivaroxaban_teur_atc5,611,Rivaroxaban
+Severe_Dementia_1p_CI_state,429,NumericAllowedValues
+Severe_Dementia_Before_visit_pattern,141,"True, False"
+Severe_Mitral_Stenosis,53,"True, False"
+Sex,28,"1, 2"
+Smoking,50,"True, False"
+Sodium,12,NumericAllowedValues
+Start_AF_Diagnosis,30,"True, False"
+StartNoac_ctxt,851,"True, False"
+Stroke,58,"True, False"
+Stroke_1p_BLED_state,409,NumericAllowedValues
+Stroke_Before_visit_pattern,146,"True, False"
+TIA,44,"True, False"
+TSH,20,NumericAllowedValues
+TSH_Level_State,2008,"Normal, High, Low"
+TSH_TREND,4008,"Decreasing, Stable, Increasing"
+Urea,11,NumericAllowedValues
+Using_Noac_QA_pattern,457,NumericAllowedValues
+Vascular_1_p_CHASD_state,404,NumericAllowedValues
+Vascular_Before_visit_pattern,143,"True, False"
+Vascular_Disease,45,"True, False"
+Visit,61,"1, 10, 107, 11, 12, 125, 13, 14, 15, 21, 22, 23, 26, 27, 28, 29, 3, 31, 32, 33, 35, 41, 50, 51, 52, 53, 54, 55, 56, 57, 58, 61, 62, 63, 65, 70, 83"
+Visit_ct_0_p_CHASD_state,860,NumericAllowedValues
+Visit_ctxt,850,"True, False"
+Visit_pattern,870,"True, False"
+Visit_Pre_6_m_ctxt,800,"True, False"
+Visit_Year_After_BirthYear_pattern,595,NumericAllowedValues
+Von_Willebrand_1p_CI_state,420,NumericAllowedValues
+Von_Willebrand_Before_visit_pattern,136,"True, False"
+Von_Willebrand_Counter_pattern,164,NumericAllowedValues
+Von_Willebrand's_Disease,51,"True, False"
+WBC,1,NumericAllowedValues
+Weight,27,NumericAllowedValues
+Year_of_Family_DR_Visit,66,NumericAllowedValues

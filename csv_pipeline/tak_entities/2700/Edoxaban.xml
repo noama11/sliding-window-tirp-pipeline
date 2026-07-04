@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Kfir Sofer (Ben-Gurion University) -->
+<event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\MedLab\TakEntities\1600\16.10.xsd" id="625" name="Edoxaban" concept-type="event">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="false" forward="false" backward="false" solid="true" concatenable="false" gestalt="true" />
+	<clippers />
+	<Attributes>
+		<Attribute-id>626</Attribute-id>
+		<Attribute-id>627</Attribute-id>
+		<Attribute-id>628</Attribute-id>
+		<Attribute-id>629</Attribute-id>
+		<Attribute-id>630</Attribute-id>
+		<Attribute-id>631</Attribute-id>
+	</Attributes>
+	<Event-Extend-Id />
+	<Event-Types> medication, Edoxaban</Event-Types>
+</event>

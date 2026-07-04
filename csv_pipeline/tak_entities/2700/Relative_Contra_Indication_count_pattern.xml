@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="441" name="Relative_Contra_Indication_count_pattern" concept-type="pattern">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>422</derived-from-id>
+		<derived-from-id>423</derived-from-id>
+		<derived-from-id>424</derived-from-id>
+		<derived-from-id>425</derived-from-id>
+		<derived-from-id>426</derived-from-id>
+		<derived-from-id>427</derived-from-id>
+		<derived-from-id>428</derived-from-id>
+		<derived-from-id>429</derived-from-id>
+		<derived-from-id>430</derived-from-id>
+		<derived-from-id>860</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="100" units="" scale="ratio">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows/>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second"/>
+				<good-after value="0" granularity="second"/>
+			</local-persistence>
+		</persistence>
+	</numeric-allowed-values>
+	<pattern-definition relation="any">
+		<components>
+			<component id="422" alias="last_HGB_less10_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="423" alias="Hospitalization_Bleeding_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="424" alias="Ischemic_stroke_Last_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="425" alias="Active_cancer_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="426" alias="Hemodialysis_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="427" alias="Creatinine_Clearence_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="428" alias="Cirrhosis_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="429" alias="Severe_Dementia_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="430" alias="Bedridden_1p_CI_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		<component id="860" alias="Visit_ct_0_p_CHASD_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		</components>
+		<pairwise-constraints>
+			<pairwise-constraints-list/>
+		</pairwise-constraints>
+		<periodic-constraints cardinality-min="1">
+			<calendar-frequency frequency-granularity="minute" frequency-value="3" relative-component-id="860"/>
+		</periodic-constraints>
+	</pattern-definition>
+	<pattern-output>
+		<value-group-blobs>
+			<statistical-function statistical-operator="sum"/>
+		</value-group-blobs>
+	</pattern-output>
+</pattern>

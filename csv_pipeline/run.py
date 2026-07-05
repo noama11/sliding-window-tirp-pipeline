@@ -204,6 +204,12 @@ def configure_engines():
     med["cacheDirectory"] = CACHE_DIR
     med["ExternalFunctionPath"] = EXTFUNC_DIR
     med["PeriodicFunctionFilePath"] = ""
+    # Use most of the machine's cores for the abstraction step (Mediator parallelizes
+    # patients across ThreadsInBatch). Auto-scaled so the bundle adapts to whatever
+    # machine it lands on; leave 2 cores for the OS + this orchestrator.
+    threads = max(2, (os.cpu_count() or 8) - 2)
+    med["ThreadsInBatch"] = threads
+    log(f"  Mediator ThreadsInBatch = {threads} (of {os.cpu_count()} cores)")
     med.setdefault("ConnectionStrings", {})["CSV"] = {
         "DataPath": RUN_DATA_DIR, "OutputFile": ABSTRACTIONS_FILE,
     }

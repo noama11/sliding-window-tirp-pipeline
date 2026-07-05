@@ -6,5 +6,9 @@ cache/
 external_functions/
 kl_config/*.json
 data/abstractions.csv
+
+# Full-data export (~1.7GB InputPatientsData) — too big for git; transferred separately
+data_full/
+
 __pycache__/
 *.pyc

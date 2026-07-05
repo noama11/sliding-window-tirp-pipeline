@@ -81,22 +81,34 @@ Output goes to `results/<k_start>-<k_end>_{YES,NO}_patterns/AF_KL_Stroke/genreic
 `appsettings.json` files to point inside this bundle on each run — so wherever you
 unzip it, it just works.
 
-## Using your own data
+## Data: sample vs. full
 
-The `data/` folder ships with a **20-patient sample** (8 stroke, 12 non-stroke) —
-enough to see YES/NO windows work, but **not a real cohort**. To run real research,
-replace these files with your own exports (same filenames, same columns):
+The bundle uses whichever folder `config.json → data.data_dir` points at, and
+**falls back to the committed sample** if that folder is missing:
 
-- **`raw_events.csv`** — full `InputPatientsData` export; used both for cohort
-  selection (YES/NO) and as KarmaLego's raw input.
-  `PatientID,ConceptName,StartTime,EndTime,Value`.
-- **`mediator_raw_events.csv`** — the raw events Mediator abstracts (deduplicated
-  `InputPatientsData`; same columns).
-- **`knowledge_table.csv`** — `ConceptName,ConceptID,AllowedValues`.
+- **`data/`** — a **20-patient sample** (8 stroke, 12 non-stroke), committed to git.
+  Enough to see YES/NO windows work; not a real cohort.
+- **`data_full/`** — the **full `InputPatientsData` export** (~22.8 M rows / 4,590
+  patients / ~1.7 GB). `config.json` ships pointing here (`"data_dir": "data_full"`).
+  It is **NOT in git** (too big for GitHub), so it must be copied to the machine
+  separately (USB / network share). On a fresh `git clone` it's absent, so the
+  runner automatically uses the sample and says so.
+
+So: **clone from GitHub → runs the sample demo. Copy the full folder (incl.
+`data_full/`) → runs the real pipeline.** Nothing to edit either way.
+
+### The four data files (same filenames/columns in either folder)
+
+- **`raw_events.csv`** — full `InputPatientsData`; used for cohort selection (YES/NO)
+  and as KarmaLego's raw input. `PatientID,ConceptName,StartTime,EndTime,Value`.
+- **`mediator_raw_events.csv`** — events Mediator abstracts (deduplicated
+  `InputPatientsData`, i.e. `SELECT DISTINCT`; same columns).
+- **`knowledge_table.csv`** — `ConceptName,ConceptID,AllowedValues` (concept dictionary).
 - **`projects.csv`** — `ProjectID,ProjectName,Kb_ID` (row for your project).
 
-Timestamps: `yyyy-MM-dd HH:mm:ss`. If your project id / knowledge base differ,
-update `config.json` (`project.PROJECT_ID`) and drop the matching
+Timestamps: `yyyy-MM-dd HH:mm:ss`. To point at data somewhere else entirely, set
+`config.json → data.data_dir` to an absolute path. If your project id / knowledge
+base differ, update `config.json` (`project.PROJECT_ID`) and drop the matching
 `tak_entities/<Kb_ID>/` folder in.
 
 ## Configuration (`config.json`)

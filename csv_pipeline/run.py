@@ -60,9 +60,22 @@ KARMALEGO_DIR         = P("engines", "karmalego")
 KARMALEGO_EXE         = P("engines", "karmalego", "KarmaLegoConsoleApp.exe")
 KARMALEGO_APPSETTINGS = P("engines", "karmalego", "appsettings.json")
 
-DATA_DIR              = P("data")                       # DB-table stand-ins (shared by both engines)
-RAW_EVENTS_FILE       = P("data", "raw_events.csv")     # InputPatientsData stand-in (cohort selection)
-ABSTRACTIONS_FILE     = P("data", "abstractions.csv")   # rendezvous: Mediator writes, KarmaLego reads
+def _resolve_data_dir():
+    """Data folder holding the 4 CSV table stand-ins. Configurable via config.json
+    ("data": {"data_dir": ...}); defaults to the bundled sample. If the configured
+    folder has no raw_events.csv (e.g. a fresh git clone without the big full-data
+    folder), fall back to the sample so the pipeline still runs."""
+    with open(CONFIG_FILE, encoding="utf-8-sig") as f:
+        cfg = json.load(f)
+    want = cfg.get("data", {}).get("data_dir", "data")
+    cand = want if os.path.isabs(want) else os.path.join(BUNDLE, want)
+    if os.path.exists(os.path.join(cand, "raw_events.csv")):
+        return cand, None
+    return os.path.join(BUNDLE, "data"), cand   # (used_dir, missing_configured_dir)
+
+DATA_DIR, _DATA_FALLBACK_FROM = _resolve_data_dir()     # DB-table stand-ins (shared by both engines)
+RAW_EVENTS_FILE       = os.path.join(DATA_DIR, "raw_events.csv")   # InputPatientsData stand-in (cohort select)
+ABSTRACTIONS_FILE     = os.path.join(DATA_DIR, "abstractions.csv") # rendezvous: Mediator writes, KarmaLego reads
 TAK_DIR               = P("tak_entities")               # parent of the KB folder (e.g. 2700/)
 KL_CONFIG_FILE        = P("kl_config", "AF_KL_generic_config.json")
 PATIENT_LIST_FILE     = P("workspace", "patient_list.txt")
@@ -205,10 +218,10 @@ def configure_engines():
 
 def sanity_check_data():
     required = ["mediator_raw_events.csv", "raw_events.csv", "knowledge_table.csv", "projects.csv"]
-    missing = [f for f in required if not os.path.exists(P("data", f))]
+    missing = [f for f in required if not os.path.exists(os.path.join(DATA_DIR, f))]
     if missing:
-        log("ERROR: missing required data files in data/: " + ", ".join(missing))
-        log("Replace the sample data with your own exports using these exact filenames/columns.")
+        log(f"ERROR: missing required data files in {DATA_DIR}: " + ", ".join(missing))
+        log("Provide these exports (same filenames/columns) or point config.json data.data_dir at a folder that has them.")
         sys.exit(2)
 
 # -----------------------------------------------------------------------------
@@ -412,6 +425,9 @@ def main():
     log("=" * 60)
     log("SELF-CONTAINED CSV STROKE TIRP PIPELINE")
     log(f"bundle: {BUNDLE}")
+    log(f"data  : {DATA_DIR}")
+    if _DATA_FALLBACK_FROM:
+        log(f"NOTE: configured data folder '{_DATA_FALLBACK_FROM}' has no raw_events.csv — using the bundled sample instead.")
     log(f"K={K} Y={Y} STEP={STEP} START={START_YEAR} END={END_DATE} | MVS={MVS} | NO={NO_RATIO}x seed={SEED}")
     log("=" * 60)
 

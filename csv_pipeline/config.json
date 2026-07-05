@@ -32,6 +32,11 @@
     "_note": "projects.csv maps 40144 -> Kb_ID 2700; concept definitions load from tak_entities/2700 (no DB)."
   },
 
+  "data": {
+    "data_dir": "data_full",
+    "_note": "Folder (relative to the bundle, or absolute) with the 4 CSV tables. Ships pointing at data_full/ (the full ~1.7GB InputPatientsData export, NOT in git). On a fresh git clone that folder is absent, so run.py automatically falls back to the committed 20-patient sample in data/."
+  },
+
   "runtime": {
     "SHOW_TOOL_OUTPUT": true,
     "MEDIATOR_BATCH_SIZE": 200

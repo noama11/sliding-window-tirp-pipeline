@@ -36,6 +36,7 @@ import csv
 import json
 import os
 import random
+import shutil
 import subprocess
 import sys
 import time
@@ -73,9 +74,10 @@ def _resolve_data_dir():
         return cand, None
     return os.path.join(BUNDLE, "data"), cand   # (used_dir, missing_configured_dir)
 
-DATA_DIR, _DATA_FALLBACK_FROM = _resolve_data_dir()     # DB-table stand-ins (shared by both engines)
+DATA_DIR, _DATA_FALLBACK_FROM = _resolve_data_dir()     # SOURCE tables (cohort SELECTION reads these)
 RAW_EVENTS_FILE       = os.path.join(DATA_DIR, "raw_events.csv")   # InputPatientsData stand-in (cohort select)
-ABSTRACTIONS_FILE     = os.path.join(DATA_DIR, "abstractions.csv") # rendezvous: Mediator writes, KarmaLego reads
+RUN_DATA_DIR          = P("workspace", "run_data")      # per-cohort FILTERED tables the engines actually read
+ABSTRACTIONS_FILE     = os.path.join(RUN_DATA_DIR, "abstractions.csv")  # rendezvous: Mediator writes, KarmaLego reads
 TAK_DIR               = P("tak_entities")               # parent of the KB folder (e.g. 2700/)
 KL_CONFIG_FILE        = P("kl_config", "AF_KL_generic_config.json")
 PATIENT_LIST_FILE     = P("workspace", "patient_list.txt")
@@ -187,13 +189,14 @@ def check_dotnet():
 
 
 def ensure_dirs():
-    for d in (DATA_DIR, os.path.dirname(KL_CONFIG_FILE), os.path.dirname(PATIENT_LIST_FILE),
+    for d in (DATA_DIR, RUN_DATA_DIR, os.path.dirname(KL_CONFIG_FILE), os.path.dirname(PATIENT_LIST_FILE),
               RESULTS_DIR, LOGS_DIR, CACHE_DIR, EXTFUNC_DIR):
         os.makedirs(d, exist_ok=True)
 
 
 def configure_engines():
-    """Rewrite both engine appsettings to point inside THIS bundle (portable)."""
+    """Rewrite both engine appsettings to point inside THIS bundle (portable). The
+    engines read RUN_DATA_DIR — the per-cohort filtered tables — not the full source."""
     log("Wiring engines to this bundle (DBType=CSV)...")
     med = _read_jsonc(MEDIATOR_APPSETTINGS)
     med["DBType"] = "CSV"
@@ -202,14 +205,14 @@ def configure_engines():
     med["ExternalFunctionPath"] = EXTFUNC_DIR
     med["PeriodicFunctionFilePath"] = ""
     med.setdefault("ConnectionStrings", {})["CSV"] = {
-        "DataPath": DATA_DIR, "OutputFile": ABSTRACTIONS_FILE,
+        "DataPath": RUN_DATA_DIR, "OutputFile": ABSTRACTIONS_FILE,
     }
     _write_json(MEDIATOR_APPSETTINGS, med)
 
     kl = _read_jsonc(KARMALEGO_APPSETTINGS)
     cs = kl.setdefault("connectionStrings", {})
     cs["DBType"] = "CSV"
-    cs["CSV"] = {"DataPath": DATA_DIR}
+    cs["CSV"] = {"DataPath": RUN_DATA_DIR}
     kl["AppSettings"]["KarmalegoConfigPath"] = KL_CONFIG_FILE
     kl["AppSettings"]["LogsPath"] = LOGS_DIR
     kl["AppSettings"]["DomainNames"] = KL_CONFIG.get("domain_name", "AF_KL_Stroke")
@@ -287,6 +290,43 @@ def get_no_stroke_patients(count):
 # ENGINE STEPS
 # -----------------------------------------------------------------------------
 
+def prepare_cohort_data(patients):
+    """Filter the (large) source tables down to just this cohort's patients into
+    RUN_DATA_DIR, so each engine loads a few MB instead of the full ~1GB+ file.
+
+    Results are identical either way — the engines already filter by patient in
+    memory (SQL mode only ever queries the cohort too); this is purely speed/RAM.
+    One streaming pass over raw_events.csv produces both the cohort's raw file
+    (with duplicates, for KarmaLego) and its deduplicated Mediator input."""
+    os.makedirs(RUN_DATA_DIR, exist_ok=True)
+    pset = set(map(str, patients))
+    raw_out = os.path.join(RUN_DATA_DIR, "raw_events.csv")
+    med_out = os.path.join(RUN_DATA_DIR, "mediator_raw_events.csv")
+    seen = set()
+    n_raw = 0
+    with open(RAW_EVENTS_FILE, encoding="utf-8-sig", newline="") as fi, \
+         open(raw_out, "w", encoding="utf-8", newline="") as fraw, \
+         open(med_out, "w", encoding="utf-8", newline="") as fmed:
+        r = csv.reader(fi)
+        header = next(r, None) or ["PatientID", "ConceptName", "StartTime", "EndTime", "Value"]
+        wraw = csv.writer(fraw, lineterminator="\n")
+        wmed = csv.writer(fmed, lineterminator="\n")
+        wraw.writerow(header)
+        wmed.writerow(header)
+        for row in r:
+            if not row or row[0].strip() not in pset:
+                continue
+            wraw.writerow(row)
+            n_raw += 1
+            key = tuple(row)
+            if key not in seen:
+                seen.add(key)
+                wmed.writerow(row)
+    for f in ("knowledge_table.csv", "projects.csv"):
+        shutil.copyfile(os.path.join(DATA_DIR, f), os.path.join(RUN_DATA_DIR, f))
+    log(f"  cohort data: {n_raw} raw rows ({len(seen)} distinct) for {len(pset)} patients")
+
+
 def clear_abstractions():
     if os.path.exists(ABSTRACTIONS_FILE):
         os.remove(ABSTRACTIONS_FILE)
@@ -357,7 +397,8 @@ def run_karmalego(results_path):
 
 
 def run_cohort(label, patients, k_start, k_end):
-    """One YES or NO leg: fresh abstractions -> Mediator -> KarmaLego -> _<label>_patterns."""
+    """One YES or NO leg: filter data -> fresh abstractions -> Mediator -> KarmaLego -> _<label>_patterns."""
+    prepare_cohort_data(patients)
     clear_abstractions()
     save_patient_list(patients)
     run_mediator(patients, k_start, k_end)

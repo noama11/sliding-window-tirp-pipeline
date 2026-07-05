@@ -1,30 +1,41 @@
 """
-Self-contained CSV-only TIRP pipeline  (Mediator + KarmaLego, no database).
+Self-contained CSV-only STROKE TIRP pipeline  (Mediator + KarmaLego, no database).
 
-One folder, one command. Everything the pipeline needs is inside this bundle:
-the compiled Mediator + KarmaLego engines, their TAK knowledge base, the CSV
-data, and this runner. No SQL Server, no pyodbc, no build step.
+Reproduces pipeline_stroke.py's rhythm exactly, but with zero database:
 
-All paths are derived at runtime from THIS file's location, so the bundle can be
-copied/unzipped anywhere and still run. run.py rewrites the two engine
-appsettings.json files to point inside the bundle before launching them.
+  For each sliding window:
+    K-window [k_start, k_end]  -> observation period (Mediator abstracts here)
+    Y-window [y_start, y_end]  -> outcome period right after K (y_start=k_end, y_end=y_start+Y)
+
+    YES cohort = patients whose Stroke_Ischemic event falls in the Y-window
+        -> Mediator(K-window) -> KarmaLego -> results/<k_start>-<k_end>_YES_patterns
+    NO  cohort = 3 x |YES| patients who never had Stroke_Ischemic (seeded random sample)
+        -> Mediator(K-window) -> KarmaLego -> results/<k_start>-<k_end>_NO_patterns
+
+  Windows slide by STEP until y_end passes END_DATE.
+
+Cohorts are selected from data/raw_events.csv (the CSV stand-in for InputPatientsData)
+instead of SQL. YES is deterministic; NO is a seeded random control sample (the original
+SQL pipeline samples NO with ORDER BY NEWID(), which is non-reproducible run-to-run).
+
+Everything the pipeline needs is inside this bundle (engines, TAK KB, data). No SQL
+Server, no pyodbc, no build step. All paths are derived at runtime from THIS file's
+location, so the bundle can be copied/unzipped anywhere.
 
 Requires: Python 3.8+ (standard library only) and the .NET 8 runtime
 (ASP.NET Core Runtime 8.0). See README.md.
 
 Usage (from inside this folder):
-    python run.py                                  # default: cohort20.txt, all windows
-    python run.py --patients cohort20.txt --all-windows
-    python run.py --patients cohort20.txt --k-start 2022 --k-end 2024
-    python run.py --patients myids.txt   --all-windows --start-year 2018
-
-Patient files live in patients/ (one ID per line). Data (the CSV stand-ins for
-the DB tables) lives in data/. Results are written to results/.
+    python run.py                 # all windows from config.json (YES + NO each)
+    python run.py --window 2015   # just the window whose k_start = 2015
+    python run.py --list-windows  # print the window plan and exit
 """
 
 import argparse
+import csv
 import json
 import os
+import random
 import subprocess
 import sys
 import time
@@ -50,11 +61,11 @@ KARMALEGO_EXE         = P("engines", "karmalego", "KarmaLegoConsoleApp.exe")
 KARMALEGO_APPSETTINGS = P("engines", "karmalego", "appsettings.json")
 
 DATA_DIR              = P("data")                       # DB-table stand-ins (shared by both engines)
+RAW_EVENTS_FILE       = P("data", "raw_events.csv")     # InputPatientsData stand-in (cohort selection)
 ABSTRACTIONS_FILE     = P("data", "abstractions.csv")   # rendezvous: Mediator writes, KarmaLego reads
 TAK_DIR               = P("tak_entities")               # parent of the KB folder (e.g. 2700/)
 KL_CONFIG_FILE        = P("kl_config", "AF_KL_generic_config.json")
 PATIENT_LIST_FILE     = P("workspace", "patient_list.txt")
-PATIENTS_DIR          = P("patients")
 RESULTS_DIR           = P("results")
 LOGS_DIR              = P("logs")
 CACHE_DIR             = P("cache")
@@ -70,9 +81,14 @@ with open(CONFIG_FILE, encoding="utf-8-sig") as _f:
     _cfg = json.load(_f)
 
 K                   = _cfg["window"]["K"]
+Y                   = _cfg["window"]["Y"]
 STEP                = _cfg["window"]["STEP"]
 START_YEAR          = _cfg["window"]["START_YEAR"]
 END_DATE            = _cfg["window"]["END_DATE"]
+
+STROKE_CONCEPT      = _cfg["cohort"]["STROKE_CONCEPT"]
+NO_RATIO            = _cfg["cohort"]["NO_RATIO"]
+SEED                = _cfg["cohort"]["SEED"]
 
 MVS                 = _cfg["karmalego"]["MVS"]
 KL_CONFIG           = {k: v for k, v in _cfg["karmalego"].items()
@@ -140,8 +156,9 @@ def check_dotnet():
         print("  (If .NET 8 is already installed, you can ignore this and continue.)")
         print("!" * 70 + "\n")
         return
-    need_core = any(l.startswith("Microsoft.NETCore.App 8.") for l in runtimes.splitlines())
-    need_asp  = any(l.startswith("Microsoft.AspNetCore.App 8.") for l in runtimes.splitlines())
+    lines = runtimes.splitlines()
+    need_core = any(l.startswith("Microsoft.NETCore.App 8.") for l in lines)
+    need_asp  = any(l.startswith("Microsoft.AspNetCore.App 8.") for l in lines)
     missing = []
     if not need_core:
         missing.append("Microsoft.NETCore.App 8.x")
@@ -163,10 +180,8 @@ def ensure_dirs():
 
 
 def configure_engines():
-    """Rewrite both engine appsettings to point inside THIS bundle. Called once at
-    startup so the pipeline is portable to any machine/folder."""
+    """Rewrite both engine appsettings to point inside THIS bundle (portable)."""
     log("Wiring engines to this bundle (DBType=CSV)...")
-
     med = _read_jsonc(MEDIATOR_APPSETTINGS)
     med["DBType"] = "CSV"
     med["TAKEntitiesPath"] = TAK_DIR
@@ -174,8 +189,7 @@ def configure_engines():
     med["ExternalFunctionPath"] = EXTFUNC_DIR
     med["PeriodicFunctionFilePath"] = ""
     med.setdefault("ConnectionStrings", {})["CSV"] = {
-        "DataPath": DATA_DIR,
-        "OutputFile": ABSTRACTIONS_FILE,
+        "DataPath": DATA_DIR, "OutputFile": ABSTRACTIONS_FILE,
     }
     _write_json(MEDIATOR_APPSETTINGS, med)
 
@@ -188,10 +202,6 @@ def configure_engines():
     kl["AppSettings"]["DomainNames"] = KL_CONFIG.get("domain_name", "AF_KL_Stroke")
     _write_json(KARMALEGO_APPSETTINGS, kl)
 
-    log(f"  data      : {DATA_DIR}")
-    log(f"  TAK KB    : {TAK_DIR}")
-    log(f"  results   : {RESULTS_DIR}")
-
 
 def sanity_check_data():
     required = ["mediator_raw_events.csv", "raw_events.csv", "knowledge_table.csv", "projects.csv"]
@@ -201,17 +211,70 @@ def sanity_check_data():
         log("Replace the sample data with your own exports using these exact filenames/columns.")
         sys.exit(2)
 
+# -----------------------------------------------------------------------------
+# COHORT SELECTION over data/raw_events.csv (CSV stand-in for InputPatientsData)
+# -----------------------------------------------------------------------------
 
-def load_patients_from_file(filename):
-    path = os.path.join(PATIENTS_DIR, filename)
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"Patient file not found: {path}")
-    with open(path, "r", encoding="utf-8-sig") as f:
-        return [line.strip() for line in f if line.strip()]
+_RAW_CACHE = None
 
+def _parse_dt(s):
+    s = (s or "").strip()
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s, fmt)
+        except ValueError:
+            continue
+    return None
+
+def _load_raw():
+    """Read raw_events.csv once: returns (all_patients:set, stroke_events:list[(pid, dt)])."""
+    global _RAW_CACHE
+    if _RAW_CACHE is None:
+        all_p, stroke = set(), []
+        target = STROKE_CONCEPT.strip().lower()
+        with open(RAW_EVENTS_FILE, encoding="utf-8-sig", newline="") as f:
+            r = csv.reader(f)
+            next(r, None)  # header
+            for row in r:
+                if len(row) < 3:
+                    continue
+                pid = row[0].strip()
+                if not pid:
+                    continue
+                all_p.add(pid)
+                if row[1].strip().lower() == target:   # SQL LIKE 'Stroke_Ischemic' == exact, collation-insensitive
+                    dt = _parse_dt(row[2])
+                    if dt is not None:
+                        stroke.append((pid, dt))
+        _RAW_CACHE = (all_p, stroke)
+    return _RAW_CACHE
+
+
+def get_stroke_patients(y_start, y_end):
+    """YES cohort: distinct patients with a Stroke_Ischemic event in [y_start, y_end).
+    Deterministic (mirrors get_stroke_patients in pipeline_stroke.py)."""
+    lo, hi = datetime(y_start, 1, 1), datetime(y_end, 1, 1)
+    _all, stroke = _load_raw()
+    pats = {pid for pid, dt in stroke if lo <= dt < hi}
+    return sorted(pats, key=lambda x: (len(x), x))
+
+
+def get_no_stroke_patients(count):
+    """NO cohort: `count` patients who NEVER had Stroke_Ischemic, seeded random sample
+    (mirrors get_no_stroke_patients, replacing SQL's ORDER BY NEWID() with SEED)."""
+    all_p, stroke = _load_raw()
+    stroke_ids = {pid for pid, _dt in stroke}
+    pool = sorted(all_p - stroke_ids, key=lambda x: (len(x), x))
+    k = min(count, len(pool))
+    if k < count:
+        log(f"  NOTE: only {len(pool)} non-stroke patients available; sampling {k} (< requested {count}).")
+    return random.Random(SEED).sample(pool, k)
+
+# -----------------------------------------------------------------------------
+# ENGINE STEPS
+# -----------------------------------------------------------------------------
 
 def clear_abstractions():
-    log("Clearing abstractions (data/abstractions.csv)...")
     if os.path.exists(ABSTRACTIONS_FILE):
         os.remove(ABSTRACTIONS_FILE)
 
@@ -232,12 +295,10 @@ def run_mediator(patients, k_start, k_end):
     if not patients:
         return
     total_batches = (len(patients) + MEDIATOR_BATCH_SIZE - 1) // MEDIATOR_BATCH_SIZE
-    log(f"MEDIATOR (CSV): {len(patients)} patients in {total_batches} batch(es)...")
+    log(f"  MEDIATOR (CSV): {len(patients)} patients in {total_batches} batch(es)...")
     time_window = f"{k_start}-01-01 00:00:00-{k_end}-01-01 00:00:00"
-
     for i in range(0, len(patients), MEDIATOR_BATCH_SIZE):
         batch = patients[i:i + MEDIATOR_BATCH_SIZE]
-        log(f"  batch {(i // MEDIATOR_BATCH_SIZE) + 1}/{total_batches} ({len(batch)} patients)...")
         cmd = [
             MEDIATOR_EXE, "Query", "CalculateAbstractionsInBatchByTime",
             str(PROJECT_ID), ",".join(map(str, batch)), "*",
@@ -252,7 +313,7 @@ def run_mediator(patients, k_start, k_end):
             if "too long" in str(e).lower() or getattr(e, "errno", None) == 206:
                 log(f"  ERROR: command line too long — reduce MEDIATOR_BATCH_SIZE (now {MEDIATOR_BATCH_SIZE}).")
             raise
-    log(f"MEDIATOR done. Abstractions written: {count_abstractions()}")
+    log(f"  MEDIATOR done. Abstractions written: {count_abstractions()}")
 
 
 def write_kl_config():
@@ -269,78 +330,89 @@ def set_results_path(results_path):
 
 def run_karmalego(results_path):
     os.makedirs(results_path, exist_ok=True)
-    log("KARMALEGO (CSV): mining patterns...")
+    log("  KARMALEGO (CSV): mining patterns...")
     kwargs = {"cwd": KARMALEGO_DIR, "stdin": subprocess.DEVNULL}
     if not SHOW_TOOL_OUTPUT:
         kwargs["capture_output"] = True
     result = subprocess.run([KARMALEGO_EXE], **kwargs)
-    # KarmaLego ends with Console.ReadKey(); under redirected stdin it throws and
-    # exits non-zero AFTER results.csv is fully written — the exit code is cosmetic.
-    log(f"KARMALEGO exit code: {result.returncode} (non-zero is expected/cosmetic).")
-
-    files = []
-    for root, _dirs, fs in os.walk(results_path):
-        for fn in fs:
-            files.append(os.path.relpath(os.path.join(root, fn), results_path))
-    for f in files:
-        log(f"  {f}")
-    if not any(f.endswith("results.csv") for f in files):
-        log("WARNING: no results.csv produced — check the engine output above.")
+    # KarmaLego ends with Console.ReadKey(); under redirected stdin it throws and exits
+    # non-zero AFTER results.csv is fully written — the exit code is cosmetic.
+    produced = any(f == "results.csv" for _r, _d, fs in os.walk(results_path) for f in fs)
+    log(f"  KARMALEGO exit {result.returncode} (non-zero expected). results.csv: {'yes' if produced else 'NO'}")
+    if not produced:
+        log("  WARNING: no results.csv produced — check the engine output above.")
 
 
-# =============================================================================
-# MAIN
-# =============================================================================
-
-def generate_windows(start_year=None):
-    end_year = datetime.strptime(END_DATE, "%Y-%m-%d").year
-    windows = []
-    k_start = start_year if start_year is not None else START_YEAR
-    while True:
-        k_end = k_start + K
-        if k_end > end_year:
-            break
-        windows.append((k_start, k_end))
-        k_start += STEP
-    return windows
-
-
-def run_window(patients_file, k_start, k_end):
-    label = os.path.splitext(patients_file)[0]
-    log(f"--- WINDOW {k_start}-{k_end}  ({label}) ---")
-
+def run_cohort(label, patients, k_start, k_end):
+    """One YES or NO leg: fresh abstractions -> Mediator -> KarmaLego -> _<label>_patterns."""
     clear_abstractions()
-    patients = load_patients_from_file(patients_file)
-    log(f"Loaded {len(patients)} patients from {patients_file}.")
-    if not patients:
-        log("No patients — skipping window.")
-        return
     save_patient_list(patients)
-
     run_mediator(patients, k_start, k_end)
-
     results_path = os.path.join(RESULTS_DIR, f"{k_start}-{k_end}_{label}_patterns")
     write_kl_config()
     set_results_path(results_path)
     run_karmalego(results_path)
-    log(f"Window done -> {results_path}")
+    return results_path
+
+# =============================================================================
+# WINDOWS
+# =============================================================================
+
+def generate_windows():
+    """(k_start, k_end, y_start, y_end) tuples — identical logic to pipeline_stroke.py."""
+    end_year = datetime.strptime(END_DATE, "%Y-%m-%d").year
+    windows = []
+    k_start = START_YEAR
+    while True:
+        k_end = k_start + K
+        y_start = k_end
+        y_end = y_start + Y
+        if y_end > end_year:
+            break
+        windows.append((k_start, k_end, y_start, y_end))
+        k_start += STEP
+    return windows
+
+
+def process_window(k_start, k_end, y_start, y_end, idx, total):
+    log("")
+    log(f"########## WINDOW {idx}/{total}: K=[{k_start}-{k_end}]  Y=[{y_start}-{y_end}] ##########")
+
+    yes = get_stroke_patients(y_start, y_end)
+    log(f"YES (stroke in Y): {len(yes)} patients")
+    if not yes:
+        log("No YES patients — skipping window.")
+        return
+    run_cohort("YES", yes, k_start, k_end)
+
+    no_count = len(yes) * NO_RATIO
+    no = get_no_stroke_patients(no_count)
+    log(f"NO (never stroke): {len(no)} patients (target {no_count} = {NO_RATIO}x YES)")
+    if not no:
+        log("No NO patients — skipping NO leg.")
+        return
+    run_cohort("NO", no, k_start, k_end)
+    log(f"Window {k_start}-{k_end} complete: _YES_patterns + _NO_patterns")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Self-contained CSV-only TIRP pipeline (no DB).")
-    parser.add_argument("--patients", default="cohort20.txt",
-                        help="Patient ID file in patients/ (default: cohort20.txt)")
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("--all-windows", action="store_true",
-                       help="Run every window from config.json (default when no window given)")
-    group.add_argument("--k-start", type=int, help="Single-window start year")
-    parser.add_argument("--k-end", type=int, help="Single-window end year (with --k-start)")
-    parser.add_argument("--start-year", type=int, help="Override START_YEAR for --all-windows")
+    parser = argparse.ArgumentParser(description="Self-contained CSV-only STROKE TIRP pipeline (no DB).")
+    parser.add_argument("--window", type=int, help="Run only the window whose k_start = this year.")
+    parser.add_argument("--list-windows", action="store_true", help="Print the window plan and exit.")
     args = parser.parse_args()
 
+    windows = generate_windows()
+
+    if args.list_windows:
+        print(f"{len(windows)} window(s)  (K={K}, Y={Y}, STEP={STEP}, START={START_YEAR}, END={END_DATE}):")
+        for ks, ke, ys, ye in windows:
+            print(f"  K=[{ks}-{ke}]  Y=[{ys}-{ye}]")
+        return
+
     log("=" * 60)
-    log("SELF-CONTAINED CSV TIRP PIPELINE")
+    log("SELF-CONTAINED CSV STROKE TIRP PIPELINE")
     log(f"bundle: {BUNDLE}")
+    log(f"K={K} Y={Y} STEP={STEP} START={START_YEAR} END={END_DATE} | MVS={MVS} | NO={NO_RATIO}x seed={SEED}")
     log("=" * 60)
 
     check_dotnet()
@@ -348,22 +420,16 @@ def main():
     sanity_check_data()
     configure_engines()
 
-    single = args.k_start is not None
-    if single and args.k_end is None:
-        parser.error("--k-end is required with --k-start")
-
-    if single:
-        log(f"Patients: {args.patients} | window {args.k_start}-{args.k_end} | MVS={MVS}")
-        run_window(args.patients, args.k_start, args.k_end)
+    if args.window is not None:
+        sel = [w for w in windows if w[0] == args.window]
+        if not sel:
+            log(f"No window with k_start={args.window}. Use --list-windows to see options.")
+            sys.exit(2)
+        process_window(*sel[0], 1, 1)
     else:
-        effective_start = args.start_year if args.start_year is not None else START_YEAR
-        windows = generate_windows(effective_start)
-        log(f"Patients: {args.patients} | {len(windows)} window(s) from {effective_start} "
-            f"(K={K}, STEP={STEP}) | MVS={MVS}")
-        for idx, (ks, ke) in enumerate(windows, 1):
-            log("")
-            log(f"########## WINDOW {idx}/{len(windows)} ##########")
-            run_window(args.patients, ks, ke)
+        log(f"Running {len(windows)} window(s), YES + NO each.")
+        for idx, (ks, ke, ys, ye) in enumerate(windows, 1):
+            process_window(ks, ke, ys, ye, idx, len(windows))
 
     log("")
     log("=" * 60)

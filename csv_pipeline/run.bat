@@ -1,11 +1,11 @@
 @echo off
-REM One-click launcher for the self-contained CSV TIRP pipeline.
-REM Double-click this file, or run it from a terminal. It runs the default
-REM cohort (patients\cohort20.txt) over all windows in config.json.
+REM One-click launcher for the self-contained CSV STROKE TIRP pipeline.
+REM Double-click this file, or run it from a terminal. It runs every K/Y window
+REM in config.json, producing _YES_patterns and _NO_patterns per window.
 REM
-REM To use your own patient file / window, run run.py directly, e.g.:
-REM     python run.py --patients myids.txt --all-windows
-REM     python run.py --patients myids.txt --k-start 2022 --k-end 2024
+REM Other uses:
+REM     python run.py --list-windows     show the window plan
+REM     python run.py --window 2015      run just the window with k_start=2015
 
 cd /d "%~dp0"
 
@@ -19,6 +19,6 @@ if errorlevel 1 (
     exit /b 1
 )
 
-python run.py --patients cohort20.txt --all-windows
+python run.py
 echo.
 pause

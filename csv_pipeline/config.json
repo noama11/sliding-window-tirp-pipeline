@@ -1,11 +1,20 @@
 {
-  "_comment": "Self-contained CSV-only TIRP pipeline config. Mirrors config_stroke.json (the SQL pipeline) but runs entirely off CSV with no database. Edit window/karmalego/project here; run.py wires all file paths automatically from the bundle location.",
+  "_comment": "Self-contained CSV-only STROKE TIRP pipeline. Reproduces pipeline_stroke.py exactly (K/Y sliding windows, YES/NO cohorts, 3x controls, _YES_patterns/_NO_patterns output) but selects cohorts from data/raw_events.csv and runs the engines off CSV with no database.",
 
   "window": {
     "K": 2,
+    "Y": 1,
     "STEP": 1,
-    "START_YEAR": 2022,
-    "END_DATE": "2024-10-08"
+    "START_YEAR": 2010,
+    "END_DATE": "2024-10-08",
+    "_note": "K = observation window (Mediator abstracts here). Y = outcome window right after K (y_start=k_end, y_end=y_start+Y) used to label YES/NO. Slides by STEP until y_end passes END_DATE."
+  },
+
+  "cohort": {
+    "STROKE_CONCEPT": "Stroke_Ischemic",
+    "NO_RATIO": 3,
+    "SEED": 42,
+    "_note": "YES = patients whose STROKE_CONCEPT event falls in the Y-window. NO = NO_RATIO x |YES| patients who never had STROKE_CONCEPT, sampled with SEED. The original SQL pipeline samples NO randomly (ORDER BY NEWID()) so NO is non-reproducible there; SEED makes CSV mode reproducible. YES is deterministic in both."
   },
 
   "karmalego": {
@@ -15,7 +24,7 @@
     "maxGap": 0,
     "timeUnit": "Days",
     "statistics_type_name": "HorizontalSupport",
-    "_concepts_note": "Restricted 68-concept list = the stroke pipeline scope (config_stroke.json). Set to \"*\" to mine ALL concepts (reproduces the 30,722-pattern reference)."
+    "_concepts_note": "Restricted 68-concept stroke list (matches config_stroke.json). Set to \"*\" to mine ALL concepts."
   },
 
   "project": {

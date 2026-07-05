@@ -76,7 +76,8 @@ def _resolve_data_dir():
 
 DATA_DIR, _DATA_FALLBACK_FROM = _resolve_data_dir()     # SOURCE tables (cohort SELECTION reads these)
 RAW_EVENTS_FILE       = os.path.join(DATA_DIR, "raw_events.csv")   # InputPatientsData stand-in (cohort select)
-RUN_DATA_DIR          = P("workspace", "run_data")      # per-cohort FILTERED tables the engines actually read
+RUN_DATA_DIR          = P("workspace", "run_data")      # per-cohort FILTERED tables (KarmaLego reads these)
+MED_BATCH_DIR         = os.path.join(RUN_DATA_DIR, "_batch")  # per-BATCH Mediator input (kept tiny for speed)
 ABSTRACTIONS_FILE     = os.path.join(RUN_DATA_DIR, "abstractions.csv")  # rendezvous: Mediator writes, KarmaLego reads
 TAK_DIR               = P("tak_entities")               # parent of the KB folder (e.g. 2700/)
 KL_CONFIG_FILE        = P("kl_config", "AF_KL_generic_config.json")
@@ -113,6 +114,11 @@ PROJECT_ID          = _cfg["project"]["PROJECT_ID"]
 
 SHOW_TOOL_OUTPUT    = _cfg["runtime"]["SHOW_TOOL_OUTPUT"]
 MEDIATOR_BATCH_SIZE = _cfg["runtime"]["MEDIATOR_BATCH_SIZE"]
+
+# Use most cores for the abstraction step, and keep each Mediator batch small so its
+# CSV reader (which linear-scans the loaded rows) stays fast. Auto-scaled to the machine.
+CPU_THREADS         = max(2, (os.cpu_count() or 8) - 2)
+MED_BATCH           = max(1, min(MEDIATOR_BATCH_SIZE, 2 * CPU_THREADS))
 
 # =============================================================================
 # HELPERS
@@ -205,11 +211,9 @@ def configure_engines():
     med["ExternalFunctionPath"] = EXTFUNC_DIR
     med["PeriodicFunctionFilePath"] = ""
     # Use most of the machine's cores for the abstraction step (Mediator parallelizes
-    # patients across ThreadsInBatch). Auto-scaled so the bundle adapts to whatever
-    # machine it lands on; leave 2 cores for the OS + this orchestrator.
-    threads = max(2, (os.cpu_count() or 8) - 2)
-    med["ThreadsInBatch"] = threads
-    log(f"  Mediator ThreadsInBatch = {threads} (of {os.cpu_count()} cores)")
+    # patients across ThreadsInBatch). Auto-scaled so the bundle adapts to the machine.
+    med["ThreadsInBatch"] = CPU_THREADS
+    log(f"  Mediator ThreadsInBatch = {CPU_THREADS} (of {os.cpu_count()} cores); batch <= {MED_BATCH}")
     med.setdefault("ConnectionStrings", {})["CSV"] = {
         "DataPath": RUN_DATA_DIR, "OutputFile": ABSTRACTIONS_FILE,
     }
@@ -350,14 +354,54 @@ def count_abstractions():
         return max(0, sum(1 for _ in f) - 1)
 
 
+def _index_cohort_mediator_rows():
+    """Load the cohort's Mediator rows grouped by patient, once, so each batch's small
+    input file can be written without re-reading the big cohort file."""
+    src = os.path.join(RUN_DATA_DIR, "mediator_raw_events.csv")
+    header = ["PatientID", "ConceptName", "StartTime", "EndTime", "Value"]
+    by_pat = {}
+    with open(src, encoding="utf-8-sig", newline="") as f:
+        r = csv.reader(f)
+        header = next(r, None) or header
+        for row in r:
+            if row:
+                by_pat.setdefault(row[0].strip(), []).append(row)
+    return header, by_pat
+
+
+def _write_batch_input(batch, header, by_pat):
+    """Write ONLY this batch's patients into MED_BATCH_DIR. Mediator's CSV reader
+    linear-scans whatever it loads, so per-patient cost tracks the file size; keeping
+    each batch's file tiny turns a per-cohort quadratic into per-batch linear. Mediator
+    still appends to the shared cohort abstractions file, so results are identical."""
+    if os.path.exists(MED_BATCH_DIR):
+        shutil.rmtree(MED_BATCH_DIR)
+    os.makedirs(MED_BATCH_DIR, exist_ok=True)
+    with open(os.path.join(MED_BATCH_DIR, "mediator_raw_events.csv"), "w",
+              encoding="utf-8", newline="") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(header)
+        for pid in batch:
+            for row in by_pat.get(str(pid), ()):
+                w.writerow(row)
+    shutil.copyfile(os.path.join(RUN_DATA_DIR, "projects.csv"),
+                    os.path.join(MED_BATCH_DIR, "projects.csv"))
+
+
 def run_mediator(patients, k_start, k_end):
     if not patients:
         return
-    total_batches = (len(patients) + MEDIATOR_BATCH_SIZE - 1) // MEDIATOR_BATCH_SIZE
-    log(f"  MEDIATOR (CSV): {len(patients)} patients in {total_batches} batch(es)...")
+    total_batches = (len(patients) + MED_BATCH - 1) // MED_BATCH
+    log(f"  MEDIATOR (CSV): {len(patients)} patients in {total_batches} batch(es) of <= {MED_BATCH}...")
     time_window = f"{k_start}-01-01 00:00:00-{k_end}-01-01 00:00:00"
-    for i in range(0, len(patients), MEDIATOR_BATCH_SIZE):
-        batch = patients[i:i + MEDIATOR_BATCH_SIZE]
+    header, by_pat = _index_cohort_mediator_rows()
+    med = _read_jsonc(MEDIATOR_APPSETTINGS)
+    for i in range(0, len(patients), MED_BATCH):
+        batch = patients[i:i + MED_BATCH]
+        _write_batch_input(batch, header, by_pat)
+        # point Mediator at this batch's tiny input; keep the shared cohort output file
+        med.setdefault("ConnectionStrings", {})["CSV"] = {"DataPath": MED_BATCH_DIR, "OutputFile": ABSTRACTIONS_FILE}
+        _write_json(MEDIATOR_APPSETTINGS, med)
         cmd = [
             MEDIATOR_EXE, "Query", "CalculateAbstractionsInBatchByTime",
             str(PROJECT_ID), ",".join(map(str, batch)), "*",
@@ -366,12 +410,10 @@ def run_mediator(patients, k_start, k_end):
         kwargs = {"cwd": ENGINES_MEDIATOR, "check": True}
         if not SHOW_TOOL_OUTPUT:
             kwargs["capture_output"] = True
-        try:
-            subprocess.run(cmd, **kwargs)
-        except OSError as e:
-            if "too long" in str(e).lower() or getattr(e, "errno", None) == 206:
-                log(f"  ERROR: command line too long — reduce MEDIATOR_BATCH_SIZE (now {MEDIATOR_BATCH_SIZE}).")
-            raise
+        subprocess.run(cmd, **kwargs)
+    # restore DataPath to the cohort dir (next cohort re-points per batch anyway)
+    med["ConnectionStrings"]["CSV"] = {"DataPath": RUN_DATA_DIR, "OutputFile": ABSTRACTIONS_FILE}
+    _write_json(MEDIATOR_APPSETTINGS, med)
     log(f"  MEDIATOR done. Abstractions written: {count_abstractions()}")
 
 

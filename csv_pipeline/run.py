@@ -230,12 +230,18 @@ def configure_engines():
 
 
 def sanity_check_data():
-    required = ["mediator_raw_events.csv", "raw_events.csv", "knowledge_table.csv", "projects.csv"]
-    missing = [f for f in required if not os.path.exists(os.path.join(DATA_DIR, f))]
-    if missing:
-        log(f"ERROR: missing required data files in {DATA_DIR}: " + ", ".join(missing))
-        log("Provide these exports (same filenames/columns) or point config.json data.data_dir at a folder that has them.")
+    # The ONLY file you must supply is raw_events.csv (your InputPatientsData export).
+    # The deduplicated Mediator input is derived from it per cohort; the concept
+    # dictionary (knowledge_table.csv + projects.csv) falls back to the bundled copy.
+    if not os.path.exists(RAW_EVENTS_FILE):
+        log(f"ERROR: raw_events.csv not found in {DATA_DIR}.")
+        log("Put your InputPatientsData export there as raw_events.csv")
+        log("(columns: PatientID,ConceptName,StartTime,EndTime,Value), or set config.json data.data_dir.")
         sys.exit(2)
+    for f in ("knowledge_table.csv", "projects.csv"):
+        if not (os.path.exists(os.path.join(DATA_DIR, f)) or os.path.exists(P("data", f))):
+            log(f"ERROR: {f} not found in {DATA_DIR} or in the bundled data/ dictionary.")
+            sys.exit(2)
 
 # -----------------------------------------------------------------------------
 # COHORT SELECTION over data/raw_events.csv (CSV stand-in for InputPatientsData)
@@ -332,8 +338,13 @@ def prepare_cohort_data(patients):
             if key not in seen:
                 seen.add(key)
                 wmed.writerow(row)
+    # knowledge_table.csv + projects.csv are the project DICTIONARY (patient-independent):
+    # use the data folder's copy if provided, else the one bundled with the pipeline.
     for f in ("knowledge_table.csv", "projects.csv"):
-        shutil.copyfile(os.path.join(DATA_DIR, f), os.path.join(RUN_DATA_DIR, f))
+        src = os.path.join(DATA_DIR, f)
+        if not os.path.exists(src):
+            src = P("data", f)
+        shutil.copyfile(src, os.path.join(RUN_DATA_DIR, f))
     log(f"  cohort data: {n_raw} raw rows ({len(seen)} distinct) for {len(pset)} patients")
 
 

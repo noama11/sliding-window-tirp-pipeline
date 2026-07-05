@@ -81,35 +81,33 @@ Output goes to `results/<k_start>-<k_end>_{YES,NO}_patterns/AF_KL_Stroke/genreic
 `appsettings.json` files to point inside this bundle on each run — so wherever you
 unzip it, it just works.
 
-## Data: sample vs. full
+## Running on your own (full) data
 
-The bundle uses whichever folder `config.json → data.data_dir` points at, and
-**falls back to the committed sample** if that folder is missing:
+**You only need to supply ONE file: `raw_events.csv`** — your full
+`InputPatientsData` export (`PatientID,ConceptName,StartTime,EndTime,Value`,
+timestamps `yyyy-MM-dd HH:mm:ss`). Everything else is derived or bundled:
 
-- **`data/`** — a **20-patient sample** (8 stroke, 12 non-stroke), committed to git.
-  Enough to see YES/NO windows work; not a real cohort.
-- **`data_full/`** — the **full `InputPatientsData` export** (~22.8 M rows / 4,590
-  patients / ~1.7 GB). `config.json` ships pointing here (`"data_dir": "data_full"`).
-  It is **NOT in git** (too big for GitHub), so it must be copied to the machine
-  separately (USB / network share). On a fresh `git clone` it's absent, so the
-  runner automatically uses the sample and says so.
+- the deduplicated Mediator input is computed from `raw_events.csv` automatically
+  (per cohort — no separate file needed);
+- `knowledge_table.csv` + `projects.csv` (the concept **dictionary**, which does
+  not change with patient count) fall back to the copies bundled in `data/`;
+- the knowledge base `tak_entities/2700/` is bundled.
 
-So: **clone from GitHub → runs the sample demo. Copy the full folder (incl.
-`data_full/`) → runs the real pipeline.** Nothing to edit either way.
+So on a bigger machine/dataset you do **not** carry any data from elsewhere — you
+just drop **your** `raw_events.csv` into a folder and point the pipeline at it.
 
-### The four data files (same filenames/columns in either folder)
+**How the pipeline picks the data folder:** `config.json → data.data_dir`. It ships
+set to `data_full`. Put your `raw_events.csv` in a `data_full/` folder next to
+`run.py` (or set `data_dir` to any absolute path). If that folder is missing (e.g.
+a fresh `git clone`), the runner automatically falls back to the bundled 20-patient
+sample in `data/` and says so — so the repo always runs out-of-the-box for a demo.
 
-- **`raw_events.csv`** — full `InputPatientsData`; used for cohort selection (YES/NO)
-  and as KarmaLego's raw input. `PatientID,ConceptName,StartTime,EndTime,Value`.
-- **`mediator_raw_events.csv`** — events Mediator abstracts (deduplicated
-  `InputPatientsData`, i.e. `SELECT DISTINCT`; same columns).
-- **`knowledge_table.csv`** — `ConceptName,ConceptID,AllowedValues` (concept dictionary).
-- **`projects.csv`** — `ProjectID,ProjectName,Kb_ID` (row for your project).
+> The `data/` folder holds a committed 20-patient **sample** (8 stroke, 12
+> non-stroke) — enough to see YES/NO windows work, not a real cohort.
 
-Timestamps: `yyyy-MM-dd HH:mm:ss`. To point at data somewhere else entirely, set
-`config.json → data.data_dir` to an absolute path. If your project id / knowledge
-base differ, update `config.json` (`project.PROJECT_ID`) and drop the matching
-`tak_entities/<Kb_ID>/` folder in.
+If your study uses a different project / knowledge base, update
+`config.json → project.PROJECT_ID`, drop in the matching `tak_entities/<Kb_ID>/`,
+and place that project's `knowledge_table.csv` + `projects.csv` in your data folder.
 
 ## Configuration (`config.json`)
 

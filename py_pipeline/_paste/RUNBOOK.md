@@ -1,0 +1,253 @@
+# Research-Room Runbook
+
+Everything to do inside the room, in order, with the numbers this machine
+produced so you can tell "it worked" from "it ran".
+
+The room takes **text only**. Python **3.10+** is present. The room already
+holds its own `raw_events.csv`.
+
+Rehearsed end to end on 2026-08-01 against a simulated room folder: paste,
+verify, `check_bundle`, `one_patient`, and a full window all pass, and the
+abstractions produced from the pasted bundle are **byte-identical** to the
+development tree's.
+
+---
+
+## What you are carrying
+
+`C:\Users\noama1\Desktop\karma\_shipping\paste_set\`
+
+| | |
+|---|---|
+| 23 code / config / dictionary / doc files | 312 KB |
+| 9 chunks of `tak_2700.json` | 947 KB |
+| **32 paste operations** | **1.26 MB** |
+
+Plus `PASTE_ORDER.txt` (the checklist) and `MANIFEST.txt` (integrity hashes).
+`verify.py`, `measure_run.ps1` and this runbook are themselves in the paste set.
+
+The knowledge base ships as the pre-parsed `tak_2700.json`, **not** the 376
+`tak_entities/2700/*.xml` files: one file instead of 376, for 69 KB more text.
+`run_pipeline.py` falls back to it automatically. Verified equivalent — patient
+111 abstracted from the JSON gives a byte-identical `abstractions.csv` to the
+same patient abstracted from the XMLs.
+
+---
+
+## Step 1 — Environment (5 min)
+
+```powershell
+python --version              # need >= 3.10
+[TimeZoneInfo]::Local.Id      # see below -- this changes your results
+Get-PSDrive C                 # need ~4 GB free
+```
+
+**The timezone is not a formality.** The K-window is converted local→UTC to
+reproduce the .NET engine (`run_pipeline.py:447`), so a window ending
+`2024-01-01` really ends `2023-12-31 22:00` on an Israel-time box. A machine on
+a different timezone silently shifts every window and every result. If the room
+box is not on Israel time, stop and decide deliberately before running anything.
+
+Then confirm the export:
+
+```powershell
+$csv = "<path>\raw_events.csv"
+(Get-Item $csv).Length / 1GB
+Get-Content $csv -TotalCount 3    # PatientID,ConceptName,StartTime,EndTime,Value
+```
+
+---
+
+## Step 2 — Paste and prove it landed (1–3 h)
+
+Work through `PASTE_ORDER.txt`. It lists every file with its destination path,
+line count and size, in an order chosen so `python verify.py` doubles as a
+progress report.
+
+- Notepad → Save As → Encoding **UTF-8** (not "UTF-8 with BOM"), filename in
+  `"quotes"` so Notepad does not append `.txt`.
+- `MANIFEST.txt` and `verify.py` go first; run `python verify.py` whenever you
+  want to see what is still outstanding.
+- The knowledge-base chunks go into `tak_parts/`.
+
+Then:
+
+```powershell
+python verify.py --assemble    # rebuilds tak_2700.json, then checks everything
+```
+
+Must report **0 missing, 0 CORRUPT**. It classifies failures for you — tested
+against all four modes:
+
+| What it says | What happened |
+|---|---|
+| `not pasted yet` | file absent |
+| `TRUNCATED — 900 lines, expected 1246` | clipboard cut the paste short |
+| `same length, so content was altered` | a character changed |
+| `final newline only — harmless` | editor added/dropped a trailing newline; ignore |
+
+Hashes are taken over content with CRLF normalised to LF, so Notepad's line
+endings do not cause false alarms.
+
+Finally:
+
+```powershell
+Remove-Item tak_parts -Recurse -Force
+python check_bundle.py
+```
+
+Expect `OK: stdlib-only, text-only, offline, self-contained.` It will note
+`no data/raw_events.csv` — correct, you point at the room's export instead.
+(`check_bundle.py --run` needs a CSV in `data/`; the static check is the one
+that matters here.)
+
+---
+
+## Step 3 — One patient (15 min)
+
+Isolates the one thing most likely to be wrong with a new export — whether its
+`ConceptName` vocabulary matches KB 2700 — with no cohort logic, no KarmaLego,
+and none of the memory hazard in Step 4.
+
+```powershell
+python one_patient.py --list --data-dir <export-dir>
+python one_patient.py <some-id> --data-dir <export-dir>
+```
+
+**Baseline here** (patient 111, 9,929 raw rows, K=[2010,2012]):
+
+```
+MEDIATOR: 273 computable concepts -> 1724 abstraction rows in 0.7s
+top concepts produced (89 distinct)
+```
+2.9 s wall clock, 38 MB peak.
+
+**Pass:** non-zero abstraction rows across dozens of distinct concepts. Run it
+twice — the port is deterministic, so the row count must be identical.
+
+**If it prints `NO ABSTRACTION ROWS`** it lists the concepts the patient
+actually had; compare those against `data/knowledge_table.csv`. That is a
+vocabulary mismatch, and nothing downstream will work until it is resolved.
+
+---
+
+## Step 4 — Smallest full pipeline (30 min)
+
+A single patient cannot exercise this: the NO cohort is drawn from patients who
+*never* had the event (`run_pipeline.py:360`), so one patient gives an empty
+control leg. Use ~2 YES + 6 NO.
+
+```powershell
+mkdir data_mini
+$ids = Get-Content ids.txt
+Get-Content <export>\raw_events.csv -TotalCount 1 | Set-Content data_mini\raw_events.csv -Encoding utf8
+Get-Content <export>\raw_events.csv | Select-Object -Skip 1 |
+  Where-Object { $ids -contains ($_ -split ',')[0] } |
+  Add-Content data_mini\raw_events.csv -Encoding utf8
+Copy-Item data\knowledge_table.csv, data\projects.csv data_mini\
+```
+
+```powershell
+python run_pipeline.py --list-windows
+.\measure_run.ps1 -Args 'run_pipeline.py','--data-dir','data_mini','--window','2015','--max-level','2','--keep-abstractions'
+```
+
+**Baseline here** (2 YES + 6 NO, `--max-level 2`): 6.6 s, 48 MB peak,
+`YES 2 rows x 3,039 cols`, `NO 6 rows x 1,561 cols`.
+
+### `--max-level 2` is mandatory here, and here is why
+
+`MVS` is a *fraction* of the cohort, so at 2 patients the support threshold is
+0.4 and nearly every symbol counts as frequent. Measured on exactly this cohort:
+
+| `--max-level` | wall clock | peak RAM | patterns (YES) |
+|---|---|---|---|
+| 2 | 6.6 s | **48 MB** | 3,038 |
+| 3 | 14.0 s | **223 MB** | 43,078 |
+| 4 | 90.8 s | **2,557 MB** | 347,548 |
+
+Roughly ×10 memory per level. Extrapolated, the default level 7 is the 18 GB
+the handbook warns about. Real cohorts (hundreds of patients) are unaffected —
+this is a small-cohort artifact only.
+
+---
+
+## Step 5 — One real window (the actual measurement)
+
+```powershell
+python run_pipeline.py --list-windows
+.\measure_run.ps1 -Args 'run_pipeline.py','--data-dir','<export-dir>','--window','2015','--keep-abstractions' -Log 'win2015.log'
+```
+
+Note: `measure_run.ps1` walks the **process tree**. A venv `python.exe` is a
+stub that spawns the real interpreter as a child, and measuring the stub reports
+~16 MB regardless of what the run does. Do not replace it with
+`$p.PeakWorkingSet64` — that reads 0 after the process exits.
+
+**Reference numbers** (this machine, 4,590 patients, 1.6 GB CSV, full concept set):
+
+| | |
+|---|---|
+| One window (132 YES + 396 NO) | **7 min 36 s** |
+| Peak RAM | **~350 MB** |
+| `workspace/` disk | ~2 GB |
+| `--keep-abstractions` | +45 MB per cohort |
+
+**How it scales:**
+
+| Cost | Scales with | Rate here |
+|---|---|---|
+| One-time index pass | CSV size | ~40 s/GB, once per run |
+| Per-window data prep | CSV size | ~40 s/GB, once per window |
+| Mediator | cohort size | **0.25 s/patient**, flat |
+| KarmaLego | frequent-pattern count | ~4 min at 528 patients |
+
+Mediator and the streaming passes are linear and predictable. **KarmaLego is the
+term to watch** — its cost tracks the discovered pattern count, which is
+data-dependent, not linear in patients. That is the whole reason this step
+exists before committing to twelve of them.
+
+---
+
+## Step 6 — Full run
+
+Project `12 × (Step 5 time)` minus the one-time index pass — 1.5–2 h on this
+machine's data. Then:
+
+```powershell
+.\measure_run.ps1 -Args 'run_pipeline.py','--data-dir','<export-dir>','--keep-abstractions' -Log 'full_run.log'
+```
+
+Up to 24 outputs at
+`results\<k_start>-<k_end>_{YES,NO}_patterns\AF_KL_Stroke\genreic\results.csv`
+(the `genreic` misspelling is the original .NET engine's and is deliberate).
+Each is a patients × patterns matrix; the YES/NO folders give the labels.
+
+Windows with an empty YES cohort are skipped and produce nothing — expected, not
+a failure.
+
+If Step 5 says a full run is too slow, run windows individually across sessions
+with `--window`. **Do not quietly lower `--max-level`** — level 5 results are
+not comparable with level 7 results.
+
+`--label mortality` switches outcome; only 27 of its 43 concepts exist in KB
+2700.
+
+---
+
+## Things that will bite
+
+1. **Timezone changes results.** Step 1. Not cosmetic.
+2. **Small cohorts explode.** `--max-level 2` for anything under ~25 patients.
+3. **Concept dictionary must match the KB.** Run
+   `python build_knowledge_table.py --dry-run` against the room's data folder
+   and expect no differences. A run reads the `knowledge_table.csv` sitting next
+   to its own `raw_events.csv`, not the bundled one. This bug has already cost
+   one full re-run.
+4. **`workspace/run_data/` is scratch**, overwritten every window. Without
+   `--keep-abstractions` a 12-window run leaves only the last window's
+   intermediates.
+5. **Do not concatenate `results.csv` across windows** — each cohort discovers
+   its own pattern set, so the columns differ. Align on pattern name.
+6. **Results are not comparable with anything produced before commit
+   `d4b8357`**, when the knowledge table was fixed.

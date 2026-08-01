@@ -1,0 +1,665 @@
+<?xml version='1.0' encoding='utf-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="2007" name="GammaGT_Level_State" concept-type="state">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+	<clippers />
+	<derived-from>
+		<derived-from-id>16</derived-from-id>
+		<derived-from-id>50201</derived-from-id>
+		<derived-from-id>50203</derived-from-id>
+		<derived-from-id>50202</derived-from-id>
+		<derived-from-id>50204</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50201</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="2007" name="GammaGT_Level_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50201</derived-from-id>
+					<derived-from-id>16</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>0</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>40</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>40</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="3" value="Very_High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>5000</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence behavior="pos-pos" granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+						<ordinal-allowed-value order="3" value="Very_High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50203</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="2007" name="GammaGT_Level_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50203</derived-from-id>
+					<derived-from-id>16</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>0</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>45</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>45</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="3" value="Very_High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>5000</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence behavior="pos-pos" granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+						<ordinal-allowed-value order="3" value="Very_High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50202</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="2007" name="GammaGT_Level_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50202</derived-from-id>
+					<derived-from-id>16</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>0</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>60</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>60</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="3" value="Very_High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>5000</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence behavior="pos-pos" granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+						<ordinal-allowed-value order="3" value="Very_High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+		<abstraction-at-context>
+			<at-context>
+				<necessary-contexts>
+					<necessary-context-id>50204</necessary-context-id>
+				</necessary-contexts>
+				<exclusion-contexts />
+			</at-context>
+			<state-at-context id="2007" name="GammaGT_Level_State" concept-type="state">
+				<categories />
+				<standard-terms />
+				<synonyms />
+				<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+				<clippers />
+				<derived-from>
+					<derived-from-id>50204</derived-from-id>
+					<derived-from-id>16</derived-from-id>
+				</derived-from>
+				<abstraction-at-contexts />
+				<mapping-function rank-selection-criteria="min">
+					<mapping-functions-to-values>
+						<mapping-function-2-value order="0" value="Low">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>0</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="1" value="Normal">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>9</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>65</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="2" value="High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>65</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+						<mapping-function-2-value order="3" value="Very_High">
+							<evaluation-tree data-type="logical-function">
+								<logical-function logical-operator="and">
+									<operands>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="bigger-equal">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>100</double>
+												</right>
+											</comparison-function>
+										</operand>
+										<operand data-type="comparison-function">
+											<comparison-function comparison-operator="smaller">
+												<left data-type="concept-id-allowed-values">
+													<concept-id-allowed-values id="16" />
+												</left>
+												<right data-type="double">
+													<double>5000</double>
+												</right>
+											</comparison-function>
+										</operand>
+									</operands>
+								</logical-function>
+							</evaluation-tree>
+						</mapping-function-2-value>
+					</mapping-functions-to-values>
+				</mapping-function>
+				<ordinal-allowed-values output-type="ordinal">
+					<persistence>
+						<global-persistence behavior="pos-pos" granularity="second">
+							<interpolation-table>
+								<rows />
+							</interpolation-table>
+						</global-persistence>
+						<local-persistence>
+							<good-before value="0" granularity="hour" />
+							<good-after value="0" granularity="hour" />
+						</local-persistence>
+					</persistence>
+					<values>
+						<ordinal-allowed-value order="0" value="Low" />
+						<ordinal-allowed-value order="1" value="Normal" />
+						<ordinal-allowed-value order="2" value="High" />
+						<ordinal-allowed-value order="3" value="Very_High" />
+					</values>
+				</ordinal-allowed-values>
+			</state-at-context>
+		</abstraction-at-context>
+	</abstraction-at-contexts>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values />
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence behavior="pos-pos" granularity="minute">
+				<interpolation-table>
+					<rows>
+						<row>
+							<columns>
+								<column>1</column>
+							</columns>
+						</row>
+					</rows>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second" />
+				<good-after value="0" granularity="second" />
+			</local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Low" />
+			<ordinal-allowed-value order="1" value="Normal" />
+			<ordinal-allowed-value order="2" value="High" />
+			<ordinal-allowed-value order="3" value="Very_High" />
+		</values>
+	</ordinal-allowed-values>
+</state>

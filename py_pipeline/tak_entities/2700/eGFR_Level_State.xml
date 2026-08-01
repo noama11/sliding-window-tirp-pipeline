@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='utf-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="2019" name="eGFR_State" concept-type="state" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+	<clippers />
+	<derived-from>
+		<derived-from-id>26</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts>
+		</abstraction-at-contexts>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="Normal">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>90</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>500</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="1" value="Stage_2">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>60</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>90</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="2" value="Stage_3">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>30</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>60</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="3" value="Stage_4">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>15</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>30</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="4" value="Stage_5">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>0</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="26" />
+									</left>
+									<right data-type="double">
+										<double>15</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence behavior="pos-pos" granularity="second">
+				<interpolation-table>
+					<rows />
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second" />
+				<good-after value="0" granularity="second" />
+			</local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Normal" />
+			<ordinal-allowed-value order="1" value="Stage_2" />
+			<ordinal-allowed-value order="2" value="Stage_3" />
+			<ordinal-allowed-value order="3" value="Stage_4" />
+			<ordinal-allowed-value order="4" value="Stage_5" />
+		</values>
+	</ordinal-allowed-values>
+</state>

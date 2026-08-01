@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Kfir Sofer (Ben-Gurion University) -->
+<event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\MedLab\TakEntities\1600\16.10.xsd" id="609" name="Rivaroxaban" concept-type="event">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="false" forward="false" backward="false" solid="true" concatenable="false" gestalt="true" />
+	<clippers />
+	<Attributes>
+		<Attribute-id>610</Attribute-id>
+		<Attribute-id>611</Attribute-id>
+		<Attribute-id>612</Attribute-id>
+		<Attribute-id>613</Attribute-id>
+		<Attribute-id>614</Attribute-id>
+		<Attribute-id>615</Attribute-id>
+	</Attributes>
+	<Event-Extend-Id />
+	<Event-Types> medication, Rivaroxaban </Event-Types>
+</event>

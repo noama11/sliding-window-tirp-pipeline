@@ -1,0 +1,7 @@
+# Created at run time by run_pipeline.py
+workspace/
+results/
+results_*/
+
+__pycache__/
+*.pyc

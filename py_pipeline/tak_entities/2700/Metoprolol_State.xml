@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state id="11007" name="Metoprolol_State" concept-type="state">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+	<clippers/>
+	<derived-from><derived-from-id>9203</derived-from-id></derived-from>
+	<abstraction-at-contexts/>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="High">
+				<evaluation-tree data-type="comparison-function">
+					<comparison-function comparison-operator="equal"><left data-type="concept-id-allowed-values"><concept-id-allowed-values id="9203"/></left><right data-type="string"><string>200mg</string></right></comparison-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="1" value="Normal">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="or">
+						<operands>
+							<operand data-type="comparison-function"><comparison-function comparison-operator="equal"><left data-type="concept-id-allowed-values"><concept-id-allowed-values id="9203"/></left><right data-type="string"><string>100mg</string></right></comparison-function></operand>
+							<operand data-type="comparison-function"><comparison-function comparison-operator="equal"><left data-type="concept-id-allowed-values"><concept-id-allowed-values id="9203"/></left><right data-type="string"><string>190mg</string></right></comparison-function></operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="2" value="Low">
+				<evaluation-tree data-type="comparison-function">
+					<comparison-function comparison-operator="equal"><left data-type="concept-id-allowed-values"><concept-id-allowed-values id="9203"/></left><right data-type="string"><string>10mg/1mL</string></right></comparison-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence granularity="second"><interpolation-table><rows/></interpolation-table></global-persistence>
+			<local-persistence><good-before value="0" granularity="hour"/><good-after value="0" granularity="hour"/></local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="High"/>
+			<ordinal-allowed-value order="1" value="Normal"/>
+			<ordinal-allowed-value order="2" value="Low"/>
+		</values>
+	</ordinal-allowed-values>
+</state>

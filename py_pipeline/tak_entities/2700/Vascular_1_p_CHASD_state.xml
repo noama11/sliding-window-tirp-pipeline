@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="404" name="Vascular_1_p_CHASD_state" concept-type="state">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>143</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="1">
+				<evaluation-tree data-type="comparison-function">
+					<comparison-function comparison-operator="equal">
+						<left data-type="concept-id-allowed-values">
+							<concept-id-allowed-values id="143"/>
+						</left>
+						<right data-type="string">
+							<string>True</string>
+						</right>
+					</comparison-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="10" units="" scale="ratio">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows/>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second"/>
+				<good-after value="0" granularity="second"/>
+			</local-persistence>
+		</persistence>
+	</numeric-allowed-values>
+</state>

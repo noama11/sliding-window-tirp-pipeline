@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Users\nogahm\Desktop\STAFF\TAK XML Schema\16.5.xsd" id="700" name="Live_ctxt" concept-type="context">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+	<inducer-entities>
+		<inducer-entity id="29">
+			<value-constraints>
+				<value-constraint value="0" operator="bigger"/>
+			</value-constraints>
+			<until boundary-point="end">
+				<time-gap value="120" granularity="year"/>
+			</until>
+		</inducer-entity>
+	</inducer-entities>
+	<clippers>
+		<clipper-entity id="31">
+			<clipper-value-constraints>
+				<clipper-value-constraint value="True" operator="equal"/>
+			</clipper-value-constraints>
+			<entity-value-constraints/>
+			<from boundary-point="start">
+				<time-gap value="0" granularity="second"/>
+			</from>
+		</clipper-entity>
+	</clippers>
+
+</context>

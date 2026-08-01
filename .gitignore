@@ -1,2 +1,7 @@
 __pycache__/
-*.pyc
+*.pyc# Patient data and derived references stay local -- this branch is published.
+py_pipeline/data/raw_events.csv
+py_pipeline/reference_*.csv
+py_pipeline/candidate_*.csv
+py_pipeline/workspace/
+py_pipeline/results/

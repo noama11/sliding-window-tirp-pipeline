@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="11021" name="Before_Visit_Dabigatran_pattern" concept-type="pattern">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic forward="true" backward="true" solid="true" concatenable="false" gestalt="true" downward-hereditary="true"/>
+  <clippers/>
+  <derived-from>
+    <derived-from-id>600</derived-from-id>
+    <derived-from-id>61</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts/>
+  <boolean-allowed-values output-type="boolean">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows>
+            <row>
+              <columns>
+                <column>0</column>
+              </columns>
+            </row>
+          </rows>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="second"/>
+        <good-after value="0" granularity="second"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <boolean-allowed-value value="true">
+        <persistence>
+          <global-persistence granularity="second">
+            <interpolation-table>
+              <rows/>
+            </interpolation-table>
+          </global-persistence>
+          <local-persistence>
+            <good-before value="0" granularity="second"/>
+            <good-after value="0" granularity="second"/>
+          </local-persistence>
+        </persistence>
+      </boolean-allowed-value>
+      <boolean-allowed-value value="false">
+        <persistence>
+          <global-persistence granularity="second">
+            <interpolation-table>
+              <rows/>
+            </interpolation-table>
+          </global-persistence>
+          <local-persistence>
+            <good-before value="0" granularity="second"/>
+            <good-after value="0" granularity="second"/>
+          </local-persistence>
+        </persistence>
+      </boolean-allowed-value>
+    </values>
+  </boolean-allowed-values>
+  <pattern-definition relation="all">
+    <components>
+      <component id="61" alias="Visit">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="1" operator="equal"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+      <component id="600" alias="Dabigatran_Etexilate">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="True" operator="equal"/>
+          </value-constraints>
+        </local-constraints>
+      </component>
+    </components>
+    <pairwise-constraints>
+      <pairwise-constraints-list>
+        <pairwise-constraint time-comparison-operator="bigger-equal">
+          <pairwise-constraint-component-i alias="Visit"/>
+          <pairwise-constraint-component-j alias="Dabigatran_Etexilate"/>
+        </pairwise-constraint>
+      </pairwise-constraints-list>
+    </pairwise-constraints>
+  </pattern-definition>
+  <pattern-output>
+    <start-local-pattern component-id="61" alias="Visit" boundary-point="start">
+      <time-shift value="0" granularity="second"/>
+    </start-local-pattern>
+    <end-local-pattern component-id="61" alias="Visit" boundary-point="end">
+      <time-shift value="0" granularity="second"/>
+    </end-local-pattern>
+  </pattern-output>
+</pattern>

@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="2018" name="aPTT_Level_State" concept-type="state">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+	<clippers />
+	<derived-from>
+		<derived-from-id>18</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts />
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="Very_Short">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>0</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>23</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="1" value="Normal">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>23</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>35</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="2" value="Moderately_Prolonged">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>35</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>50</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="3" value="Very_Prolonged">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>50</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="18" />
+									</left>
+									<right data-type="double">
+										<double>150</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows />
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="year" />
+				<good-after value="0" granularity="year" />
+			</local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Very_Short" />
+			<ordinal-allowed-value order="1" value="Normal" />
+			<ordinal-allowed-value order="2" value="Moderately_Prolonged" />
+			<ordinal-allowed-value order="3" value="Very_Prolonged" />
+		</values>
+	</ordinal-allowed-values>
+</state>

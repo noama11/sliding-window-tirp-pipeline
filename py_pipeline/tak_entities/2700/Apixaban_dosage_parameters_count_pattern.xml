@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="878" name="Apixaban_dosage_parameters_count_pattern" concept-type="pattern">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>491</derived-from-id>
+		<derived-from-id>492</derived-from-id>
+		<derived-from-id>493</derived-from-id>
+		<derived-from-id>860</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="100" units="" scale="ratio">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table>
+					<rows/>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second"/>
+				<good-after value="0" granularity="second"/>
+			</local-persistence>
+		</persistence>
+	</numeric-allowed-values>
+	<pattern-definition relation="any">
+		<components>
+			<component id="491" alias="AgeBigEq80_1p_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="492" alias="WeightLessEq60_1p_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+			<component id="493" alias="SerumCreatinineBigEq1.5_1p_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="bigger-equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		<component id="860" alias="Visit_ct_0_p_CHASD_state">
+				<local-constraints>
+					<value-constraints>
+						<value-constraint value="0" operator="equal"/>
+					</value-constraints>
+				</local-constraints>
+				<priorities/>
+			</component>
+		</components>
+		<pairwise-constraints>
+			<pairwise-constraints-list/>
+		</pairwise-constraints>
+		<periodic-constraints cardinality-min="1">
+			<calendar-frequency frequency-granularity="minute" frequency-value="3" relative-component-id="860"/>
+		</periodic-constraints>
+	</pattern-definition>
+	<pattern-output>
+		<value-group-blobs>
+			<statistical-function statistical-operator="sum"/>
+		</value-group-blobs>
+	</pattern-output>
+</pattern>

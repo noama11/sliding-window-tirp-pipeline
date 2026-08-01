@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="1302" name="Age_70_79_3p_CCI_state" concept-type="state">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+	<clippers/>
+	<derived-from>
+		<derived-from-id>116</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts/>
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="3">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand>
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="116"/>
+									</left>
+									<right data-type="double"><double>70</double></right>
+								</comparison-function>
+							</operand>
+							<operand>
+								<comparison-function comparison-operator="smaller-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="116"/>
+									</left>
+									<right data-type="double"><double>79</double></right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<numeric-allowed-values output-type="numeric" min-value="0" max-value="10" units="" scale="ratio">
+		<persistence>
+			<global-persistence granularity="second">
+				<interpolation-table><rows/></interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second"/>
+				<good-after value="0" granularity="second"/>
+			</local-persistence>
+		</persistence>
+	</numeric-allowed-values>
+</state>

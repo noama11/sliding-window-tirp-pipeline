@@ -98,9 +98,26 @@ empty and resending fixed it.
 To resume after a break: `.\feed_paste.ps1 -Start 14`. To resend one file:
 `.\feed_paste.ps1 -Only 'pattern.py'`.
 
-**No clipboard sharing?** Fall back to `PASTE_ORDER.txt`, which lists every file
-with its destination path, line count and size, and paste each through Notepad
-by hand. Slower, same result.
+### Doing it by hand instead
+
+Paste **`SETUP_ROOM.ps1`** into PowerShell in the room first. It creates the
+folder tree, creates all 36 files empty and UTF-8, and writes `next.ps1`. That
+one paste is the only thing standing between you and a self-guiding session:
+
+```powershell
+cd C:\tirp
+.\next.ps1          # opens the next still-empty file in Notepad
+                    # Ctrl+V, Ctrl+S, close. Repeat.
+.\next.ps1 -List    # what is left
+```
+
+The point of creating the files first is that **Notepad's Ctrl+S keeps an
+existing file's path and encoding**, so the Save As dialog never opens. That
+removes all three things that actually go wrong by hand: saving to the wrong
+folder, choosing the wrong encoding, and Notepad silently appending `.txt`.
+
+`PASTE_ORDER.txt` lists the same files with line counts and sizes if you would
+rather work from a printed checklist.
 
 Either way, finish with:
 

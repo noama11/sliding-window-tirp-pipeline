@@ -191,6 +191,85 @@ def main():
         for sha_, lines_, rel in manifest:
             fh.write(f"{sha_}  {lines_}  {rel}\n")
 
+    # ---- SETUP_ROOM.ps1: the first thing pasted, for the manual route --------
+    # Creating every file empty and UTF-8 up front means each one is afterwards
+    # filled with open -> Ctrl+V -> Ctrl+S. Notepad's Save keeps an existing
+    # file's path and encoding, so the Save As dialog never appears -- and with
+    # it go the three things that actually go wrong by hand: saving to the wrong
+    # folder, picking the wrong encoding, and Notepad appending .txt.
+    # The two manifests come first: they are not manifest entries themselves, but
+    # verify.py and receive.py are useless without them, so they must exist in
+    # the room too -- and pasting them first makes `.\next.ps1 -List` a progress
+    # report for everything that follows.
+    targets = ["MANIFEST.txt", "MANIFEST_PARTS.txt"]
+    targets += [rel for _s, _l, rel in manifest if rel != TAK]
+    targets += [f"tak_parts/{name}" for name, _n in parts]
+    dirs = sorted({os.path.dirname(t) for t in targets if os.path.dirname(t)})
+    with open(os.path.join(out, "SETUP_ROOM.ps1"), "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("# Paste this into PowerShell in the research room FIRST.\n")
+        fh.write("# Creates the folder tree and every file, empty and UTF-8, then\n")
+        fh.write("# writes next.ps1 -- which opens the next unfilled file for you.\n")
+        fh.write("#\n# Then, for each file:   .\\next.ps1   ->  Ctrl+V  ->  Ctrl+S  ->  close\n\n")
+        fh.write("$root = 'C:\\tirp'\n\n")
+        fh.write("$dirs = @(\n")
+        for d in dirs:
+            fh.write(f"  '{d.replace('/', chr(92))}'\n")
+        fh.write(")\n\n$files = @(\n")
+        for t in targets:
+            fh.write(f"  '{t.replace('/', chr(92))}'\n")
+        fh.write(")\n\n")
+        fh.write("New-Item -ItemType Directory -Path $root -Force | Out-Null\n")
+        fh.write("foreach ($d in $dirs) {\n")
+        fh.write("  New-Item -ItemType Directory -Path (Join-Path $root $d) -Force | Out-Null\n}\n\n")
+        fh.write("# UTF8Encoding($false) = no BOM. json.load and csv both reject a BOM.\n")
+        fh.write("$enc = New-Object System.Text.UTF8Encoding $false\n")
+        fh.write("foreach ($f in $files) {\n")
+        fh.write("  $p = Join-Path $root $f\n")
+        fh.write("  if (-not (Test-Path $p)) { [System.IO.File]::WriteAllText($p, '', $enc) }\n}\n\n")
+        # next.ps1 is written from here rather than pasted, so the manual route
+        # needs exactly one paste before it is self-sufficient.
+        fh.write("$order = $files -join \"`n\"\n")
+        fh.write("[System.IO.File]::WriteAllText((Join-Path $root 'paste_order.txt'), $order, $enc)\n\n")
+        fh.write("""$next = @'
+# Opens the next file that is still empty, in paste order.
+#   .\\next.ps1          open the next empty file
+#   .\\next.ps1 -List    show what is left
+param([switch]$List)
+$root  = $PSScriptRoot
+$order = Get-Content (Join-Path $root 'paste_order.txt')
+$empty = @($order | Where-Object {
+  $p = Join-Path $root $_
+  (-not (Test-Path $p)) -or ((Get-Item $p).Length -eq 0)
+})
+if ($empty.Count -eq 0) {
+  Write-Host 'All files have content. Now run:  python verify.py --assemble' -ForegroundColor Green
+  return
+}
+if ($List) {
+  Write-Host "$($empty.Count) of $($order.Count) still empty:" -ForegroundColor Yellow
+  $empty | ForEach-Object { Write-Host "  $_" }
+  return
+}
+$f = $empty[0]
+$done = $order.Count - $empty.Count
+Write-Host ("[{0}/{1}] {2}" -f ($done + 1), $order.Count, $f) -ForegroundColor Green
+Write-Host '        paste with Ctrl+V, save with Ctrl+S, then close Notepad'
+notepad (Join-Path $root $f)
+'@
+[System.IO.File]::WriteAllText((Join-Path $root 'next.ps1'), $next, $enc)
+
+Write-Host ''
+Write-Host ("created {0} folders and {1} empty files under {2}" -f $dirs.Count, $files.Count, $root) -ForegroundColor Green
+Write-Host ''
+Write-Host 'Now, for each file:' -ForegroundColor Cyan
+Write-Host '    cd C:\\tirp'
+Write-Host '    .\\next.ps1        # opens the next empty file in Notepad'
+Write-Host '    Ctrl+V, Ctrl+S, close'
+Write-Host ''
+Write-Host 'Progress at any time:  .\\next.ps1 -List'
+Write-Host ''
+""")
+
     # ---- the human-facing checklist -----------------------------------------
     with open(os.path.join(out, "PASTE_ORDER.txt"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write("PASTE ORDER -- research room\n")

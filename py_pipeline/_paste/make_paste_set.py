@@ -67,7 +67,7 @@ OPTIONAL = ["README.md", "HANDBOOK.md"]
 # Room tools that live here rather than in the bundle: they exist to get the
 # bundle INTO the room and to measure it once there, so they are not part of the
 # pipeline and make_bundle.py rightly does not ship them.
-LOCAL = ["RUNBOOK.md", "measure_run.ps1"]
+LOCAL = ["RUNBOOK.md", "measure_run.ps1", "receive.py", "verify.py"]
 
 TAK = "tak_2700.json"
 
@@ -172,8 +172,19 @@ def main():
     # is scaffolding and gets deleted in the room once verify.py --assemble runs.
     manifest.append((hashlib.sha256(blob).hexdigest(), total_lines, TAK))
 
-    # ---- verify.py + MANIFEST.txt -------------------------------------------
-    shutil.copyfile(os.path.join(HERE, "verify.py"), os.path.join(out, "verify.py"))
+    # Chunk hashes go in their own manifest: receive.py checks each chunk as it
+    # lands, but verify.py must not expect them -- tak_parts/ is deleted once
+    # assembled. Without this a short chunk would only surface at final assembly.
+    with open(os.path.join(out, "MANIFEST_PARTS.txt"), "w",
+              encoding="utf-8", newline="\n") as fh:
+        fh.write(f"# tak_2700.json chunks -- checked on arrival by receive.py,\n")
+        fh.write("# then deleted after `python verify.py --assemble`.\n")
+        for name, _n in parts:
+            p = os.path.join(out, "tak_parts", name)
+            sha_, lines_ = digest(p)
+            fh.write(f"{sha_}  {lines_}  tak_parts/{name}\n")
+
+    # ---- MANIFEST.txt --------------------------------------------------------
     with open(os.path.join(out, "MANIFEST.txt"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write(f"# TIRP pipeline paste manifest -- {len(manifest)} files\n")
         fh.write("# sha256 of content with CRLF/CR normalised to LF, then line count, then path\n")

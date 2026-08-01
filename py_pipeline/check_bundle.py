@@ -38,12 +38,18 @@ FORBIDDEN = {
 # Text-only file extensions allowed in the bundle.
 TEXT_EXT = {".py", ".json", ".md", ".txt", ".csv", ".xml"}
 
-# Development-only scripts: fidelity gates and profilers. They compare against
-# golden files that live OUTSIDE the bundle and shell out to the comparator, so
-# they are allowed subprocess. Nothing the pipeline runs imports them, and the
-# research room never needs them -- deleting them leaves a working bundle.
+# Scripts that are not the pipeline: fidelity gates and profilers, which compare
+# against golden files outside the bundle and shell out to the comparator, and
+# the transfer tools, which exist to get the bundle into the room in the first
+# place. All are allowed subprocess. Nothing the pipeline runs imports any of
+# them, and deleting the lot leaves a working bundle.
+#
+# receive.py is the one to understand: it reads the Windows clipboard by calling
+# `powershell Get-Clipboard`, because there is no stdlib clipboard API and the
+# bundle may not import ctypes. It runs BEFORE the pipeline exists, so holding
+# it to the pipeline's offline guarantee would be checking the wrong thing.
 DEV_ONLY = {"run_gate.py", "run_pilot.py", "run_full.py", "profile_engine.py",
-            "check_bundle.py", "make_bundle.py"}
+            "check_bundle.py", "make_bundle.py", "receive.py"}
 
 # Python 3.10 is the oldest that still gets security fixes and the oldest we
 # claim to support; stdlib_module_names exists from 3.10 on.

@@ -59,19 +59,50 @@ Get-Content $csv -TotalCount 3    # PatientID,ConceptName,StartTime,EndTime,Valu
 
 ---
 
-## Step 2 — Paste and prove it landed (1–3 h)
+## Step 2 — Transfer and prove it landed (30–45 min)
 
-Work through `PASTE_ORDER.txt`. It lists every file with its destination path,
-line count and size, in an order chosen so `python verify.py` doubles as a
-progress report.
+If the remote desktop shares the clipboard from your machine into the room, use
+the feeder — it removes the Save As dialog, which is where the time actually
+goes.
 
-- Notepad → Save As → Encoding **UTF-8** (not "UTF-8 with BOM"), filename in
-  `"quotes"` so Notepad does not append `.txt`.
-- `MANIFEST.txt` and `verify.py` go first; run `python verify.py` whenever you
-  want to see what is still outstanding.
-- The knowledge-base chunks go into `tak_parts/`.
+**First, by hand** (Notepad → Save As → Encoding **UTF-8**, filename in
+`"quotes"` so Notepad does not append `.txt`) — three small files into the room
+folder:
 
-Then:
+```
+MANIFEST.txt        MANIFEST_PARTS.txt        receive.py
+```
+
+**Then everything else rides the clipboard.** In the room:
+
+```powershell
+python receive.py --loop
+```
+
+On your own machine:
+
+```powershell
+cd py_pipeline\_paste
+.\feed_paste.ps1
+```
+
+Now alternate: **Enter here → Enter there → Enter here**. Each press puts the
+next file on the clipboard; `receive.py` writes it to the right path with the
+right encoding and checks it against the manifest immediately, so a short
+clipboard is caught on the spot rather than at the end.
+
+If one fails, press `r` in the feeder to resend it. Occasional transient
+clipboard failures are normal — in a 33-file rehearsal exactly one came through
+empty and resending fixed it.
+
+To resume after a break: `.\feed_paste.ps1 -Start 14`. To resend one file:
+`.\feed_paste.ps1 -Only 'pattern.py'`.
+
+**No clipboard sharing?** Fall back to `PASTE_ORDER.txt`, which lists every file
+with its destination path, line count and size, and paste each through Notepad
+by hand. Slower, same result.
+
+Either way, finish with:
 
 ```powershell
 python verify.py --assemble    # rebuilds tak_2700.json, then checks everything

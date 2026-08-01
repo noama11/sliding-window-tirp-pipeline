@@ -5,3 +5,6 @@ results_*/
 
 __pycache__/
 *.pyc
+
+# Generated shipping artifacts: a disposable copy of tracked files.
+_paste/out/

@@ -15,7 +15,8 @@ development tree's.
 
 ## What you are carrying
 
-`C:\Users\noama1\Desktop\karma\_shipping\paste_set\`
+`py_pipeline\_paste\out\paste_set\` — regenerate any time with
+`cd py_pipeline\_paste && python make_paste_set.py --rebuild`
 
 | | |
 |---|---|

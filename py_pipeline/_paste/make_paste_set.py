@@ -8,8 +8,11 @@ to arrive through the clipboard, one file at a time. This script prepares that:
   * writes MANIFEST.txt -- a line-ending-normalised SHA-256 per file
   * copies in verify.py, which recomputes the manifest inside the room
 
-    python make_paste_set.py                       # defaults below
-    python make_paste_set.py --bundle D:\b --out D:\p --chunk-lines 3000
+    python make_paste_set.py             # cuts the bundle if needed, then the paste set
+    python make_paste_set.py --rebuild   # re-cut the bundle first (after code changes)
+
+Both land in _paste/out/ -- out/bundle/ is the shippable pipeline, out/paste_set/
+is what you actually paste from. Both are gitignored.
 
 Why the knowledge base ships as tak_2700.json and not tak_entities/2700/:
 947 KB in ONE file beats 878 KB spread over 376 files when every file costs a
@@ -23,11 +26,15 @@ import argparse
 import hashlib
 import os
 import shutil
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_BUNDLE = r"C:\Users\noama1\Desktop\karma\_shipping\bundle"
-DEFAULT_OUT = r"C:\Users\noama1\Desktop\karma\_shipping\paste_set"
+# Generated output lives under _paste/out/ -- next to the tools that make it, so
+# there is one place to look, and gitignored because it is a disposable copy of
+# files that are already tracked.
+DEFAULT_BUNDLE = os.path.join(HERE, "out", "bundle")
+DEFAULT_OUT = os.path.join(HERE, "out", "paste_set")
 
 # Paste order. Smallest and most structural first, so `python verify.py` becomes
 # a running progress report; the knowledge base -- by far the bulkiest item --
@@ -111,11 +118,23 @@ def main():
     ap.add_argument("--out", default=DEFAULT_OUT, help="where to write the paste set")
     ap.add_argument("--chunk-lines", type=int, default=4500,
                     help="lines per tak_2700.json chunk (default 4500, ~120 KB)")
+    ap.add_argument("--rebuild", action="store_true",
+                    help="re-cut the bundle even if one is already there")
     args = ap.parse_args()
 
     bundle, out = os.path.abspath(args.bundle), os.path.abspath(args.out)
-    if not os.path.isdir(bundle):
-        sys.exit(f"no bundle at {bundle} -- run make_bundle.py first.")
+
+    # Cut the bundle ourselves when it is missing or stale. Two commands that
+    # must be run in the right order is one more thing to get wrong, and
+    # make_bundle.py already self-verifies the copy it produces.
+    if args.rebuild or not os.path.isdir(bundle):
+        print(f"cutting a fresh bundle -> {bundle}\n")
+        proc = subprocess.run(
+            [sys.executable, "make_bundle.py", bundle, "--no-sample-data", "--force"],
+            cwd=os.path.dirname(HERE))
+        if proc.returncode != 0:
+            sys.exit("make_bundle.py failed -- see above.")
+        print()
     if os.path.exists(out):
         shutil.rmtree(out)
     os.makedirs(out)

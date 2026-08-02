@@ -47,6 +47,8 @@ def main():
     ap.add_argument("--zip", action="store_true", help="also write <out>.zip")
     ap.add_argument("--no-sample-data", action="store_true",
                     help="omit data/raw_events.csv; keep the dictionary CSVs")
+    ap.add_argument("--no-tak-entities", action="store_true",
+                    help="omit tak_entities/; the pre-parsed tak_<kb>.json is enough")
     ap.add_argument("--force", action="store_true",
                     help="overwrite the output folder if it exists")
     args = ap.parse_args()
@@ -68,7 +70,15 @@ def main():
             print(f"ERROR: missing {f} — cannot build a runnable bundle.")
             return 2
         shutil.copy2(src, os.path.join(out, f))
-    for d in RUNTIME_DIRS:
+    # The 376 concept XMLs are the only reason a bundle path can get long enough
+    # to hit Windows' 260-character limit: their names run to 67 characters and
+    # they sit four directories deep. run_pipeline.py falls back to the
+    # pre-parsed tak_<kb>.json when the folder is absent, and the two were
+    # verified to produce byte-identical abstractions, so a bundle that ships
+    # only the JSON is the same pipeline with shorter paths and 878 KB less.
+    dirs = [d for d in RUNTIME_DIRS
+            if not (args.no_tak_entities and d == "tak_entities")]
+    for d in dirs:
         src = os.path.join(HERE, d)
         if not os.path.isdir(src):
             print(f"ERROR: missing {d}/ — cannot build a runnable bundle.")

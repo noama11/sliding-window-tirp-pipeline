@@ -130,7 +130,8 @@ def main():
     if args.rebuild or not os.path.isdir(bundle):
         print(f"cutting a fresh bundle -> {bundle}\n")
         proc = subprocess.run(
-            [sys.executable, "make_bundle.py", bundle, "--no-sample-data", "--force"],
+            [sys.executable, "make_bundle.py", bundle,
+             "--no-sample-data", "--no-tak-entities", "--force"],
             cwd=os.path.dirname(HERE))
         if proc.returncode != 0:
             sys.exit("make_bundle.py failed -- see above.")

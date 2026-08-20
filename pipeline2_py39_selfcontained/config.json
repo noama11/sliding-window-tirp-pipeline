@@ -1,0 +1,64 @@
+{
+  "_comment": "Self-contained pure-Python TIRP pipeline (Mediator + KarmaLego). Same K/Y sliding-window design as pipeline_stroke.py / pipeline_mortality.py, but with no database, no .NET and no binaries. Edit THIS file to change how a run behaves; run with `python run_pipeline.py`.",
+
+  "label": "stroke",
+  "_label_note": "Which entry of `labels` below defines the outcome being predicted. Override for a single run with --label mortality. This is the ONLY thing that differs between the original pipeline_stroke.py and pipeline_mortality.py.",
+
+  "labels": {
+    "stroke": {
+      "EVENT_CONCEPT": "Stroke_Ischemic",
+      "RESULTS_PREFIX": "",
+      "KL_CONCEPTS": "ALP_Level_State,ALT_Level_State,AST_Level_State,Blood_Glucose_Level_State,Blood_Pressure_Diastole_State,Blood_Pressure_Systole_State,Creatinine_Level_State,GammaGT_Level_State,HCT_Level_State,HGB_Level_State,HbA1C_Level_State,INR_Level_State,PLT_Level_State,PT_Level_State,RBC_Level_State,TSH_Level_State,WBC_Level_State,aPTT_Level_State,eGFR_State,HGB_TREND,PLT_TREND,AST_TREND,ALT_TREND,Gamma_GT_TREND,PT_TREND,Blood_Glucose_TREND,ALP_TREND,Blood_Pressure_Systole_TREND,Blood_Pressure_Diastole_TREND,Heart_Rate_TREND,eGFR_TREND,Apixaban_state,Dabigatran_state,Rivaroxaban_state,Edoxaban_state,Atenolol_State,Bisoprolol_State,Carvedilol_State,Metoprolol_State,Propranolol_State,Dabigatran_Etexilate_TREND,Rivaroxaban_TREND,Apixaban_TREND,Edoxaban_TREND,Atenolol_TREND,Bisoprolol_TREND,Carvedilol_TREND,Metoprolol_TREND,Propranolol_TREND,Before_Visit_Apixaban_pattern,Before_Visit_Dabigatran_pattern,Before_Visit_Rivaroxaban_pattern,Before_Visit_Edoxaban_pattern,Before_Visit_Atenolol_pattern,Before_Visit_Bisoprolol_pattern,Before_Visit_Carvedilol_pattern,Before_Visit_Metoprolol_pattern,Before_Visit_Propranolol_pattern,CHADS_Vasc_score_pattern,CCI_score_pattern,HAS_BLED_score_pattern,NOAC_state,Using_Noac_AbsCI_QA_pattern,Not_Using_NoacAbsCI_QA_pattern,Absolute_Contra_Indication_count_pattern,Relative_Contra_Indication_count_pattern,MechHV_MitSten_AntiPhos_count_pattern,Hypertrophic_Cardiomyopathy_count_pattern",
+      "_note": "The 68 concepts of config_stroke.json, listed BY NAME. They were originally 68 numeric ids in the TAK id space; resolved against the old knowledge_table.csv only 30 of them matched anything, and 10 matched the WRONG concept (that table numbered the *_Level_State family differently). Names are stable across both id schemes, so the list is written as names now. Results land in <k_start>-<k_end>_YES_patterns / _NO_patterns."
+    },
+    "mortality": {
+      "EVENT_CONCEPT": "Date_Ptira",
+      "RESULTS_PREFIX": "MORTALITY_",
+      "KL_CONCEPTS": "HGB_Level_State,PLT_Level_State,AST_Level_State,ALT_Level_State,PT_Level_State,aPTT_Level_State,INR_Level_State,TSH_Level_State,HbA1C_Level_State,Blood_Glucose_Level_State,ALP_Level_State,HGB_TREND,PLT_TREND,AST_TREND,ALT_TREND,Gamma_GT_TREND,PT_TREND,aPTT_TREND,INR_TREND,TSH_TREND,HbA1C_TREND,Blood_Glucose_TREND,ALP_TREND,Blood_Pressure_Systole_TREND,Blood_Pressure_Diastole_TREND,Heart_Rate_TREND,eGFR_TREND",
+      "_note": "config_mortality.json listed 43 numeric ids, but in the OLD knowledge_table id space (not the TAK one the stroke list used). Resolved through that table they name 43 concepts, of which 27 exist in KB 2700 and are listed here. The other 16 are not in this knowledge base at all and cannot be mined: Gamma_GT_Level_State, Blood_Pressure_Systole/Diastole_Level_State, Heart_Rate_Level_State, eGFR_Level_State, and the 11 *_HighDose_ctxt / *_LowDose_ctxt / Beta_Blocker_UsualDose_ctxt dose contexts. They come from an earlier KB revision; if the mortality analysis needs them, the KB has to supply them first. Results land in <k_start>-<k_end>_MORTALITY_YES_patterns / _MORTALITY_NO_patterns."
+    }
+  },
+
+  "window": {
+    "K": 2,
+    "Y": 1,
+    "STEP": 1,
+    "START_YEAR": 2010,
+    "END_DATE": "2024-10-08",
+    "_note": "K = observation window in YEARS (the Mediator abstracts over it). Y = outcome window immediately after K (y_start = k_end, y_end = y_start + Y) used to label YES/NO. The window slides by STEP years until y_end passes END_DATE. Use --list-windows to print the plan without running anything."
+  },
+
+  "cohort": {
+    "MODE": "yes-no",
+    "NEGATIVE_RATIO": 3,
+    "SEED": 42,
+    "_note": "YES = patients whose EVENT_CONCEPT falls inside the Y-window. NO = NEGATIVE_RATIO x |YES| patients who NEVER had EVENT_CONCEPT, drawn with SEED. The original SQL pipeline sampled NO with ORDER BY NEWID(), which is not reproducible run to run; SEED makes it reproducible. YES is deterministic either way.",
+    "_mode_note": "MODE \"yes-no\" is the two-cohort run above. MODE \"all\" (or --cohort all) drops the split: one cohort per window holding every patient with a record in the K-window, mined into <k_start>-<k_end>_<PREFIX>ALL_patterns. NEGATIVE_RATIO, SEED and EVENT_CONCEPT are unused there. The window plan does not change between the modes, so an ALL matrix indexes exactly the K-windows the yes-no run labelled. Note MVS is a FRACTION of the cohort: 0.2 of every patient is a much higher absolute support bar than 0.2 of one YES cohort, so expect far fewer patterns unless you lower it with --mvs."
+  },
+
+  "karmalego": {
+    "MVS": 0.2,
+    "MAX_LEGO_LEVEL": 7,
+    "domain_name": "AF_KL_Stroke",
+    "maxGap": 0,
+    "timeUnit": "Days",
+    "statistics_type_name": "HorizontalSupport",
+    "_note": "MVS = minimum vertical support (fraction of the cohort a pattern must appear in). MAX_LEGO_LEVEL = max components per TIRP. maxGap / timeUnit / statistics_type_name must stay as they are: the port implements exactly this configuration and refuses to run against a different one rather than silently computing something else. Per-label concept lists live under `labels`; set a KL_CONCEPTS to \"*\" to mine every concept. Entries may be concept NAMES (preferred) or numeric ConceptIDs; anything that does not resolve against data/knowledge_table.csv is reported as a warning and skipped rather than silently ignored."
+  },
+
+  "project": {
+    "PROJECT_ID": 40144,
+    "KB_ID": "2700",
+    "_note": "data/projects.csv maps PROJECT_ID -> Kb_ID (40144 -> 2700). Concept definitions are read from tak_entities/<Kb_ID>/*.xml, or from the pre-parsed tak_<Kb_ID>.json if that folder is absent. KB_ID states the same answer directly: it is the fallback when neither projects.csv nor a tak_entities/<kb>/ folder is present, which is the case for a research-room paste that ships only tak_2700.json. projects.csv still wins when it is there, so this changes nothing about an ordinary run."
+  },
+
+  "data": {
+    "data_dir": "data",
+    "_note": "Folder holding raw_events.csv (your InputPatientsData export: PatientID,ConceptName,StartTime,EndTime,Value) plus knowledge_table.csv and projects.csv. Relative paths resolve against this bundle. Ships pointing at the bundled 20-patient sample; point it at your full export to do real work. Override for a single run with --data-dir."
+  },
+
+  "runtime": {
+    "SHOW_PROGRESS": true,
+    "_note": "SHOW_PROGRESS prints per-level KarmaLego mining progress."
+  }
+}

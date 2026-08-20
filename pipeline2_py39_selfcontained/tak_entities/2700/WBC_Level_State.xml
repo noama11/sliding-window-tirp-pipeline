@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<state xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="2017" name="WBC_Level_State" concept-type="state" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd">
+	<categories />
+	<standard-terms />
+	<synonyms />
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true" />
+	<clippers />
+	<derived-from>
+		<derived-from-id>1</derived-from-id>
+	</derived-from>
+	<abstraction-at-contexts />
+	<mapping-function rank-selection-criteria="min">
+		<mapping-functions-to-values>
+			<mapping-function-2-value order="0" value="Low">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>0.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>4.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="1" value="Normal">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>4.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>11.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+			<mapping-function-2-value order="2" value="High">
+				<evaluation-tree data-type="logical-function">
+					<logical-function logical-operator="and">
+						<operands>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="bigger-equal">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>11.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+							<operand data-type="comparison-function">
+								<comparison-function comparison-operator="smaller">
+									<left data-type="concept-id-allowed-values">
+										<concept-id-allowed-values id="1" />
+									</left>
+									<right data-type="double">
+										<double>500.0</double>
+									</right>
+								</comparison-function>
+							</operand>
+						</operands>
+					</logical-function>
+				</evaluation-tree>
+			</mapping-function-2-value>
+		</mapping-functions-to-values>
+	</mapping-function>
+	<ordinal-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence behavior="pos-pos" granularity="minute">
+				<interpolation-table>
+					<rows>
+						<row>
+							<columns>
+								<column>1</column>
+							</columns>
+						</row>
+					</rows>
+				</interpolation-table>
+			</global-persistence>
+			<local-persistence>
+				<good-before value="0" granularity="second" />
+				<good-after value="0" granularity="second" />
+			</local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Very_Low" />
+			<ordinal-allowed-value order="1" value="Low" />
+			<ordinal-allowed-value order="2" value="Normal" />
+			<ordinal-allowed-value order="3" value="High" />
+			<ordinal-allowed-value order="4" value="Very_High" />
+		</values>
+	</ordinal-allowed-values>
+</state>

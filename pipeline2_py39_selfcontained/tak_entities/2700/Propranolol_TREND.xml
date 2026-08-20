@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trend id="4024" name="Propranolol_TREND" concept-type="trend" significant-variation="10">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+	<clippers/>
+	<derived-from><derived-from-id>11008</derived-from-id></derived-from>
+	<abstraction-at-contexts/>
+	<gradient-trend-allowed-values output-type="ordinal">
+		<persistence>
+			<global-persistence granularity="day"><interpolation-table><rows/></interpolation-table></global-persistence>
+			<local-persistence><good-before value="0" granularity="day"/><good-after value="0" granularity="day"/></local-persistence>
+		</persistence>
+		<values>
+			<ordinal-allowed-value order="0" value="Decreasing"/>
+			<ordinal-allowed-value order="1" value="Stable"/>
+			<ordinal-allowed-value order="2" value="Increasing"/>
+		</values>
+	</gradient-trend-allowed-values>
+	<time-steady value="22" granularity="day"/>
+</trend>

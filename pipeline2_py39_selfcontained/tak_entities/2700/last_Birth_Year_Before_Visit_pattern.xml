@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="590" name="last_Birth_Year_Before_Visit_pattern" concept-type="pattern" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic forward="true" backward="true" solid="true" concatenable="false" gestalt="true" downward-hereditary="true"/>
+  <clippers/>
+  <derived-from>
+    <derived-from-id>29</derived-from-id>
+    <derived-from-id>61</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts/>
+  <numeric-allowed-values min_value="0" max_value="1000" units="units" scale="ratio" output-type="numeric">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="" granularity="second"/>
+        <good-after value="" granularity="second"/>
+      </local-persistence>
+    </persistence>
+  </numeric-allowed-values>
+  <pattern-definition relation="all">
+    <components>
+      <component id="61" alias="Visit">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="1" operator="equal"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+      <component id="29" alias="Birth_Year">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="0" operator="bigger"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+    </components>
+    <pairwise-constraints>
+      <pairwise-constraints-list/>
+    </pairwise-constraints>
+  </pattern-definition>
+  <pattern-output>
+    <value-local-pattern>
+     <mathematical-function mathematical-operator="abs">
+<left data-type="double">
+<concept-id-allowed-values id="2"/>
+</left>
+<right data-type="double">
+<concept-id-allowed-values id="2"/>
+</right>
+</mathematical-function>
+    </value-local-pattern>
+<start-local-pattern alias="Visit" component-id="61" boundary-point="start">
+<time-shift value="0" granularity="second"/>
+</start-local-pattern>
+<end-local-pattern alias="Visit" component-id="61" boundary-point="end">
+<time-shift value="0" granularity="second"/>
+</end-local-pattern>
+  </pattern-output>
+</pattern>

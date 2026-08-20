@@ -1,0 +1,97 @@
+We're starting Phase 2 (Mediator NON-PATTERN abstractions) of the pure-Python port of the
+stroke TIRP pipeline. Phase 1 (KarmaLego) is DONE and validated RESULT: IDENTICAL.
+
+First, read the approved plan in full:
+  py_pipeline\PLAN.md
+  (also mirrored at C:\Users\noama1\.claude\plans\ultrathink-please-read-this-reactive-blanket.md)
+Context is also in your memory ("Python port plan" — note the Phase 1 DONE section — and
+"CSV-mode work"). Skim the finished Phase-1 engine for house style and the I/O contract:
+  py_pipeline\pyengine\karmalego.py   (pure stdlib; do NOT modify it)
+
+IMPORTANT — everything for this pipeline goes in the SAME self-contained folder at the repo
+root: py_pipeline\  (100% pure Python, stdlib only, pasteable as text; no compiled engines,
+no .NET, no pip deps). Do NOT modify the existing csv_pipeline\ (it stays as the .NET
+validation oracle) and do NOT touch the working karmalego.py. Target additions this phase:
+  py_pipeline\
+    pyengine\
+      tak_parse.py        # one-time TAK XML -> tak_2700.json flattener (PREREQUISITE)
+      mediator\
+        __init__.py
+        datainstance.py   # raw data-instance model
+        persistence.py    # local smoosh + global gap-bridge / concatenate
+        functions.py      # mapping / logical / comparison / mathematical function trees
+        state.py          # sweep-line partitions + first-match mapping + abstraction-at-contexts
+        trend.py, gradient.py, rate.py
+        context.py        # inducer / clipper interval induction
+        event.py
+        engine.py         # topological orderConcepts + memoized GetConceptData + context partitioning
+    tak_2700.json         # pre-flattened rule bundle (produced by tak_parse.py)
+
+Scope for THIS phase — Mediator NON-PATTERN abstractions ONLY:
+Implement every non-pattern abstraction operator (State, Trend, Gradient, Rate, Context, Event,
+plus persistence/functions/engine plumbing). Do NOT implement the Pattern engine — the 35
+*_pattern concepts (CHADS_Vasc_score_pattern, CCI, HAS_BLED, ...) are Phase 3, HIGH-risk, gated.
+
+Prerequisite (Phase-0 rule extraction, not done yet — do it first):
+  Write tak_parse.py to flatten the 376 TAK XML files (~0.86 MB) at
+    csv_pipeline\tak_entities\2700\
+  into one compact, pasteable tak_2700.json (concepts, operator TYPE, derived-from edges,
+  allowed values, function trees, persistence, contexts). knowledge_table.csv is ONLY a
+  name<->id index (its allowed-values are hand-maintained) — the actual RULES live in the XML.
+  Isolate all schema-drift parsing here (.xml/.XML, capitalized event tags, mixed quotes,
+  dangling refs). Then COMPUTE THE STROKE-CONFIG CLOSURE: the transitive dependency closure of
+  the concepts needed to reproduce the fixture's non-pattern rows (walk derived-from + context
+  inducers/clippers). The concept dependency graph is a pure DAG (zero cycles) -> clean
+  topological evaluation, no fixpoint iteration. Classify each concept's operator type from the
+  XML (authoritative), NOT by name suffix.
+
+Port faithfully from the C# source (read-only, DO NOT modify) at C:\MediatorCore\Mediator_CSV,
+in this porting order:
+  BusinessEntities\Data\DataInstance.cs
+  AllowedValues\*  +  Misc\{LocalPersistence,GlobalPersistence,Duration,TemporalSemantic}.cs
+  AbstractConcepts\State.cs  +  Functions\{MappingFunction,LogicalFunction,ComparisonFunction,MathematicalFunction}.cs
+  AbstractConcepts\{Trend,Gradient,Rate}.cs
+  Context.cs
+  Event.cs
+  ComputationalServices\Controller.cs   (GetConceptData @2183, orderConcepts @4048, Smoosh @3937,
+                                          GetPartitions / GetPartitionData, filterDataByContext)
+  Patterns\*  -> LEAVE FOR PHASE 3 (the hard part)
+
+Config / semantics to match: PROJECT_ID=40144 -> Kb_ID 2700 (projects.csv). Single-threaded &
+deterministic (safe: the .NET engine's non-determinism is row-ORDER only, never values, and the
+comparator is order-insensitive, so a deterministic single-thread port validates to exact-value
+identity).
+
+I/O contract (byte-compatible CSVs, timestamps yyyy-MM-dd HH:mm:ss):
+  Input  = mediator_raw_events.csv (the DEDUPED cohort raw table — Mediator's input; NOT
+           raw_events.csv, which keeps duplicates for KarmaLego) + knowledge_table.csv +
+           projects.csv. Columns PatientID,ConceptName,StartTime,EndTime,Value.
+  Output = abstractions.csv, same 5 columns, one row per abstracted interval.
+The fixture abstractions.csv is the golden Mediator output straight from the SQL DB
+(dbo.OutputPatientsData) for the 20-patient cohort over their FULL history (no K/Y windowing —
+windowing is a run.py orchestration concern, not part of this validation). Confirm this against
+the csv_mode prep scripts before you start.
+
+Validation gate (the go/no-go for this phase):
+  fixtures:   C:\Users\noama1\Desktop\karma\csv_mode\fixtures\
+              (mediator_raw_events.csv, abstractions.csv, knowledge_table.csv, projects.csv,
+               cohort_ids.txt = the 20 patients)
+  comparator: C:\Users\noama1\Desktop\karma\csv_mode\_prep\compare_abstractions.py  (order-insensitive multiset)
+Feed mediator_raw_events.csv (20-patient cohort) through the port and compare to abstractions.csv
+RESTRICTED TO THE 106 NON-PATTERN CONCEPTS (3,005 of the 5,048 rows; the 35 *_pattern concepts /
+2,043 rows are Phase 3). Success = compare_abstractions.py prints "RESULT: IDENTICAL" on that
+non-pattern subset. (compare_abstractions.py has no built-in filter — pre-filter the reference to
+the non-pattern concept set, or have the port emit only non-pattern concepts, then compare.)
+
+Strategy: land tak_parse.py + closure first, then validate operator-by-operator against the
+fixture subset — get all *_State rows matching, then *_TREND, then gradients/rate, then contexts
+(inducer/clipper), then events — narrowing divergences per concept type. Expect the subtle
+killers to be persistence (local smoosh + global gap-bridge), context-switched State thresholds
+("abstraction-at-contexts"), and interval induction at context boundaries; reconcile each against
+the exact C# rather than guessing. Watch for value canonicalization / case handling like the
+knowledge_table quirks found in Phase 1.
+
+Start by exploring the C# source, tak_parse the XML, and confirm the exact operator semantics +
+how the fixture was generated, THEN propose your approach before writing the full implementation.
+
+(Run this session from the repo root: C:\Users\noama1\Desktop\karma\config files\pipeline)

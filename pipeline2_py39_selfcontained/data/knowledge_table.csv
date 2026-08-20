@@ -1,0 +1,391 @@
+ConceptName,ConceptID,AllowedValues
+WBC,1,NumericAllowedValues
+RBC,2,NumericAllowedValues
+HGB,3,NumericAllowedValues
+HCT,4,NumericAllowedValues
+MCV,5,NumericAllowedValues
+MCH_MCHC,6,NumericAllowedValues
+RDW,7,NumericAllowedValues
+PLT,8,NumericAllowedValues
+MPV,9,NumericAllowedValues
+Creatinine,10,NumericAllowedValues
+Urea,11,NumericAllowedValues
+Sodium,12,NumericAllowedValues
+Potassium,13,NumericAllowedValues
+AST,14,NumericAllowedValues
+ALT,15,NumericAllowedValues
+Gamma_GT,16,NumericAllowedValues
+PT,17,NumericAllowedValues
+aPTT,18,NumericAllowedValues
+INR,19,NumericAllowedValues
+TSH,20,NumericAllowedValues
+HbA1C,21,NumericAllowedValues
+Blood_Glucose,22,NumericAllowedValues
+ALP,23,NumericAllowedValues
+Blood_Pressure_Systole,24,NumericAllowedValues
+Heart_Rate,25,NumericAllowedValues
+eGFR,26,NumericAllowedValues
+Weight,27,NumericAllowedValues
+Sex,28,"1, 2"
+Birth_Year,29,NumericAllowedValues
+Start_AF_Diagnosis,30,"True, False"
+Date_Ptira,31,"True, False"
+Height,32,NumericAllowedValues
+Demented_Patient,33,"True, False"
+Bedbound,34,"True, False"
+Ischemic_Stroke,35,"True, False"
+Cancer_diagnosis_not_close,36,"True, False"
+Hemodyalisis,37,"True, False"
+Cirrhosis,38,"True, False"
+Peptic_Ulcer,39,"True, False"
+Hypertrophic_Cardiomyopathy,40,"True, False"
+Congestive_Heart_Failure,41,"True, False"
+Hypertension,42,"True, False"
+Diabetes_Mellitus,43,"True, False"
+TIA,44,"True, False"
+Vascular_Disease,45,"True, False"
+Ischemic_Heart_Disease,46,"True, False"
+Alcohol_Use,47,"True, False"
+Hemophilia,48,"True, False"
+Smoking,50,"True, False"
+Von_Willebrand's_Disease,51,"True, False"
+Mechanical_Heart_Valve,52,"True, False"
+Severe_Mitral_Stenosis,53,"True, False"
+Anti_Phospholipid_Syndrome,54,"True, False"
+Left_Ventricular_Dysfunction,55,"True, False"
+MI,56,"True, False"
+PVD,57,"True, False"
+Stroke,58,"True, False"
+Bleeding,59,"True, False"
+Blood_Pressure_Diastole,60,NumericAllowedValues
+Visit,61,"1, 10, 107, 11, 12, 125, 13, 14, 15, 21, 22, 23, 26, 27, 28, 29, 3, 31, 32, 33, 35, 41, 50, 51, 52, 53, 54, 55, 56, 57, 58, 61, 62, 63, 65, 70, 83"
+Bilirubin_Total,62,NumericAllowedValues
+Nontraumatic_Intracerebral_Hemorrhage,63,"True, False"
+Nontraumatic_Subarachnoid_Hemorrhage,64,"True, False"
+Other_Nontraumatic_Hemorrhage,65,"True, False"
+Year_of_Family_DR_Visit,66,NumericAllowedValues
+HGB_Very_Low_state,100,True
+PT_or_aPTT_NotNormal_state,103,True
+last_HGB_prev_6_m_less_7_state,105,True
+Bilirubin_High_state,110,True
+Age_between_65_75_1p_CHASD_state,114,NumericAllowedValues
+Age_Big75_2_points_CHASD_state,115,NumericAllowedValues
+Age_in_Visit_pattern,116,NumericAllowedValues
+Prothrombin_Time_pattern,119,"True, False"
+last_PLT_prev_3_m_less_50_state,120,True
+last_HGB_prev_3_m_less_10_state,122,True
+Ischemic_stroke_Last_pattern,123,"True, False"
+Creatinine_Clearence_Low_pattern,124,"True, False"
+Diabetes_or_BG_or_HbA1C_state,125,True
+Diabetes_Hyper_HbA1C_before_visit_pattern,126,"True, False"
+Ischemic_Stroke_or_TIA_state,127,True
+CHF_or_LVD_state,128,True
+NSAIDs _or_antiPLT_state,129,True
+last_serum_Creatinine_prev_6_m_big_2_state,130,True
+last_Sys_bp_prev_6_m_big_160_state,131,True
+last_bilirublin_prev_6_m_big_2.4_state,132,True
+last_PLT_prev_6_m_less_100_state,134,True
+last_HGB_prev_6_m_less_11_state,135,True
+Von_Willebrand_Before_visit_pattern,136,"True, False"
+Hemophilia_Before_visit_pattern,137,"True, False"
+Active_cancer_Before_visit_pattern,138,"True, False"
+Hemodialysis_Before_visit_pattern,139,"True, False"
+Cirrhosis_Before_visit_pattern,140,"True, False"
+Severe_Dementia_Before_visit_pattern,141,"True, False"
+Bedridden_Before_visit_pattern,142,"True, False"
+Vascular_Before_visit_pattern,143,"True, False"
+Hypertension_Before_visit_pattern,144,"True, False"
+CHF_or_LVD_Before_visit_pattern,145,"True, False"
+Stroke_Before_visit_pattern,146,"True, False"
+Hospitalization_Bleeding_Before_visit_pattern,147,"True, False"
+Alcohol_etilism_Before_visit_pattern,148,"True, False"
+NSAIDs _or_antiPLT_Before_visit_pattern,149,"True, False"
+Intracranial_Bleeding_Last_pattern,150,"True, False"
+Age_bigEq_80_state,155,True
+last_weight_lessEq_60_state,157,True
+last_Creatinine_bigEq_1.5_state,158,True
+Apixaban_LowerDos_BigEq2_state,164,True
+Absolute_Contra_Indication_state,175,True
+No_Absolute_Contra_Indication_state,176,True
+CHADS_Vasc_score_pattern,179,NumericAllowedValues
+Intracranial_bleeding_diagnosis_state,180,True
+last_HGB_prev_6_m_less_9_state,181,True
+prev_last_less_9_pattern,182,NumericAllowedValues
+prev_last_less_9_bigEq_11_state,183,True
+Hyper_prev_6_m_pattern,187,"True, False"
+HBA1C_High_prev_6_m_pattern,188,"True, False"
+Age_Big65_state,190,True
+CHForLVD_1_p_CHASD_state,400,NumericAllowedValues
+Hypertension_1_p_CHASD_state,401,NumericAllowedValues
+Diabetes_Hyper_HbA1C_1_p_CHASD_state,402,NumericAllowedValues
+IStroke_or_TIA_2p_CHASD_state,403,NumericAllowedValues
+Vascular_1_p_CHASD_state,404,NumericAllowedValues
+lastSerumCreatinine_1p_BLED_state,405,NumericAllowedValues
+lastSysbp_1p_BLED_state,406,NumericAllowedValues
+lastBilirublin_1p_BLED_state,407,NumericAllowedValues
+last_AST_or_ALT_or_ALP_1p_BLED_state,408,NumericAllowedValues
+Stroke_1p_BLED_state,409,NumericAllowedValues
+Hospitalization_Bleeding_1p_BLED_state,410,NumericAllowedValues
+last_PLT_less_100_1p_BLED_state,411,NumericAllowedValues
+last_HGB_less_11_1p_BLED_state,412,NumericAllowedValues
+Age_Big65_1p_BLED_state,413,NumericAllowedValues
+Alcohol_etilism_1p_BLED_state,414,NumericAllowedValues
+NSAIDs _or_antiPLT_1p_BLED_state,415,NumericAllowedValues
+last_HGB_less_7_1p_CI_state,416,NumericAllowedValues
+prev_last_less9_bigEq11_1p_CI_state,417,NumericAllowedValues
+Intracranial_Bleeding_Last_1p_CI_state,418,NumericAllowedValues
+last_PLT_3m_less50_1p_CI_state,419,NumericAllowedValues
+Von_Willebrand_1p_CI_state,420,NumericAllowedValues
+Hemophilia_1p_CI_state,421,NumericAllowedValues
+last_HGB_less10_1p_CI_state,422,NumericAllowedValues
+Hospitalization_Bleeding_1p_CI_state,423,NumericAllowedValues
+Ischemic_stroke_Last_1p_CI_state,424,NumericAllowedValues
+Active_cancer_1p_CI_state,425,NumericAllowedValues
+Hemodialysis_1p_CI_state,426,NumericAllowedValues
+Creatinine_Clearence_1p_CI_state,427,NumericAllowedValues
+Cirrhosis_1p_CI_state,428,NumericAllowedValues
+Severe_Dementia_1p_CI_state,429,NumericAllowedValues
+Bedridden_1p_CI_state,430,NumericAllowedValues
+Absolute_Contra_Indication_count_pattern,440,NumericAllowedValues
+Relative_Contra_Indication_count_pattern,441,NumericAllowedValues
+MechHV_or_MitSten_or_AntiPhos_state,442,True
+MechHV_or_MitSten_or_AntiPhos_1p_state,443,NumericAllowedValues
+Hypertrophic_Cardiomyopathy_1p_state,444,NumericAllowedValues
+CHASD_VASC_BigEq_2_state,445,True
+CHASD_VASC_Eq_1_state,446,True
+HAS_BLED_Less_3_state,447,True
+MechHV_MitSten_AntiPhos_count_pattern,449,NumericAllowedValues
+No_MechHV_MitSten_AntiPhos_state,450,True
+Hypertrophic_Cardiomyopathy_count_pattern,451,NumericAllowedValues
+No_Hypertrophic_Cardiomyopathy_state,452,True
+Condition_StartNoac_state,456,True
+MechHV_or_MitSten_or_AntiPhos_Before_visit_pattern,459,"True, False"
+Hypertrophic_Cardiomyopathy_Before_visit_pattern,460,"True, False"
+CHADS_VASC_Eq_0_state,466,True
+HAS_BLED_BigEq_3_state,467,True
+Condition_NotNoac_state,470,True
+PT_aPTT_1p_CI_state,471,NumericAllowedValues
+NoCI_And_NoMech_state,472,True
+NoCI_And_NoMech_And_HyperCard_state,473,True
+NoCI_And_NoMech_And_NoHyperCard_And_ChasdBigEq2_state,474,True
+NoCI_And_NoMech_And_NoHyperCard_And_ChasdEq1_And_HasLess3_state,475,True
+NoCI_And_NoMech_AND_NoHyperCard_And_ChasdEq0_state,476,True
+Condition_StartNoac_NoAbsCI_state,482,True
+Condition_Abs_NotNoac_state,483,True
+Using_Noac_AbsCI_QA_pattern,484,NumericAllowedValues
+Not_Using_NoacAbsCI_QA_pattern,485,NumericAllowedValues
+NoCI_And_NoMech_And_NoHyperCard_And_ChasdEq1_And_HasBigEq3_state,490,True
+AgeBigEq80_1p_state,491,NumericAllowedValues
+WeightLessEq60_1p_state,492,NumericAllowedValues
+SerumCreatinineBigEq1.5_1p_state,493,NumericAllowedValues
+last_AST_prev_1_y_bigEq_120_state,500,True
+last_ALT_prev_1_y_bigEq_117_state,501,True
+last_ALP_prev_1_y_bigEq_348_state,502,True
+last_AST_or_ALT_or_ALP_ranges_state,503,True
+NOAC_state,504,True
+Hyper_pattern,505,"True, False"
+last_HGB_prev_6_m_pattern,506,NumericAllowedValues
+last_HGB_prev_3_m_pattern,507,NumericAllowedValues
+last_PLT_prev_6_m_pattern,508,NumericAllowedValues
+last_PLT_prev_3_m_pattern,509,NumericAllowedValues
+last_serum_creatinine_prev_6_m_pattern,511,NumericAllowedValues
+last_sys_bp_prev_6_m_pattern,512,NumericAllowedValues
+last_bilirublin_prev_6_m_pattern,513,NumericAllowedValues
+last_AST_prev_1_y_pattern,514,NumericAllowedValues
+last_ALT_prev_1_y_pattern,515,NumericAllowedValues
+last_ALP_prev_1_y_pattern,516,NumericAllowedValues
+last_weight_before_visit_pattern,517,NumericAllowedValues
+Ischemic_Stroke_or_TIA_pattern,550,"True, False"
+last_Birth_Year_Before_Visit_pattern,590,NumericAllowedValues
+Visit_Year_After_BirthYear_pattern,595,NumericAllowedValues
+Dabigatran_Etexilate,600,"True, False"
+Dabigatran_Etexilate_makat_parit,601,NumericAllowedValues
+Dabigatran_Etexilate_teur_atc5,602,Dabigatran Etexilate
+Dabigatran_Etexilate_chozek_hachomer,603,"110mg, 75mg, 150mg"
+Dabigatran_Etexilate_factor_daily_dos,604,NumericAllowedValues
+Dabigatran_Etexilate_daily_dos,605,NumericAllowedValues
+Dabigatran_Etexilate_kamot,606,NumericAllowedValues
+Rivaroxaban,609,"True, False"
+Rivaroxaban_makat_parit,610,NumericAllowedValues
+Rivaroxaban_teur_atc5,611,Rivaroxaban
+Rivaroxaban_chozek_hachomer,612,"15mg, 20mg, 2.500mg, 10mg"
+Rivaroxaban_factor_daily_dos,613,NumericAllowedValues
+Rivaroxaban_daily_dos,614,NumericAllowedValues
+Rivaroxaban_kamot,615,NumericAllowedValues
+Apixaban,617,"True, False"
+Apixaban_makat_parit,618,NumericAllowedValues
+Apixaban_teur_atc5,619,Apixaban
+Apixaban_chozek_hachomer,620,"5mg, 2.500mg"
+Apixaban_factor_daily_dos,621,NumericAllowedValues
+Apixaban_daily_dos,622,NumericAllowedValues
+Apixaban_kamot,623,NumericAllowedValues
+Edoxaban,625,"True, False"
+Edoxaban_makat_parit,626,NumericAllowedValues
+Edoxaban_teur_atc5,627,Edoxaban
+Edoxaban_chozek_hachomer,628,"30mg, 60mg"
+Edoxaban_factor_daily_dos,629,NumericAllowedValues
+Edoxaban_daily_dos,630,NumericAllowedValues
+Edoxaban_kamot,631,NumericAllowedValues
+Nsaid,633,"True, False"
+Nsaid_makat_parit,634,NumericAllowedValues
+Nsaid_teur_atc5,635,"Naproxen, Ketoprofen, Celecoxib, Ibuprofen, Piroxicam, Indometacin, Etoricoxib, Etodolac, Nabumetone, Flurbiprofen"
+Nsaid_chozek_hachomer,636,"600mg, 120mg, 100mg/5mL, 275mg, 30mg, 90mg, 500mg, 300mg, CF, 512mg, 256mg, 125mg, 25mg, 400mg, 100mg, 10.000%, 250mg, 8.750mg, 200mg, 20mg, 60mg, 200mg/5mL, 4.000%"
+Nsaid_factor_daily_dos,637,NumericAllowedValues
+Nsaid_daily_dos,638,NumericAllowedValues
+Nsaid_kamot,639,NumericAllowedValues
+Anti_Platelets_Drugs,641,"True, False"
+Anti_Platelets_Drugs_makat_parit,642,NumericAllowedValues
+Anti_Platelets_Drugs_teur_atc5,643,"Clopidogrel, Aspirin"
+Anti_Platelets_Drugs_chozek_hachomer,644,"325mg, 100mg, 75mg"
+Anti_Platelets_Drugs_factor_daily_dos,645,NumericAllowedValues
+Anti_Platelets_Drugs_daily_dos,646,NumericAllowedValues
+Anti_Platelets_Drugs_kamot,647,NumericAllowedValues
+Live_ctxt,700,"True, False"
+HAS_BLED_score_pattern,830,NumericAllowedValues
+Visit_ctxt,850,"True, False"
+StartNoac_ctxt,851,"True, False"
+NotNoac_ctxt,852,"True, False"
+StartNoac_AbsCI_ctxt,853,"True, False"
+NotNoac_AbsCI_ctxt,854,"True, False"
+Visit_ct_0_p_CHASD_state,860,NumericAllowedValues
+Visit_pattern,870,"True, False"
+Anti_Platelets_Drugs_pattern,871,"True, False"
+Nsaid_pattern,872,"True, False"
+Dabigatran_Etexilate_pattern,873,"True, False"
+Rivaroxaban_pattern,874,"True, False"
+Apixaban_pattern,875,"True, False"
+Edoxaban_pattern,876,"True, False"
+Apixaban_dosage_parameters_count_pattern,878,NumericAllowedValues
+Male_Context,1200,"True, False"
+Context_Age_U18,1205,True
+Age_50_59_1p_CCI_state,1300,NumericAllowedValues
+Age_60_69_2p_CCI_state,1301,NumericAllowedValues
+Age_70_79_3p_CCI_state,1302,NumericAllowedValues
+Age_Big80_4p_CCI_state,1303,NumericAllowedValues
+Dementia_1p_CCI_state,1304,NumericAllowedValues
+Stroke_1p_CCI_state,1305,NumericAllowedValues
+Cancer_2p_CCI_state,1307,NumericAllowedValues
+Renal_2p_CCI_state,1308,NumericAllowedValues
+Liver_3p_CCI_state,1309,NumericAllowedValues
+Peptic_Ulcer_1p_CCI_state,1310,NumericAllowedValues
+CHF_1p_CCI_state,1311,NumericAllowedValues
+Diabetes_1p_CCI_state,1312,NumericAllowedValues
+TIA_1p_CCI_state,1313,NumericAllowedValues
+Vascular_1p_CCI_state,1314,NumericAllowedValues
+MI_1p_CCI_state,1315,NumericAllowedValues
+Ischemic_Heart_Disease_1p_CCI_state,1317,NumericAllowedValues
+CCI_score_pattern,1399,NumericAllowedValues
+ALP_Level_State,2000,"Low, Normal, Mild_High, Moderate_High, Very_High"
+ALT_Level_State,2001,"Low, Normal, Mild_High, Moderate_High, Very_High"
+AST_Level_State,2002,"Low, Normal, Mild_High, Moderate_High, Very_High"
+Blood_Glucose_Level_State,2003,"Very_Low, Low, Normal, Pre_Diabetes, Diabetes, Very_High"
+Blood_Pressure_Diastole_State,2004,"Low, Normal, Moderate, High"
+Blood_Pressure_Systole_State,2005,"Low, Normal, Moderate, High"
+Creatinine_Level_State,2006,"Very_Low, Low, Normal, High, Very_High"
+GammaGT_Level_State,2007,"Low, Normal, High, Very_High"
+HCT_Level_State,2008,"Low, Normal, High"
+HGB_Level_State,2009,"Very_Low, Low, Normal, High, Very_High"
+HbA1C_Level_State,2010,"Very_Low, Normal, Pre_Diabetes, Diabetes, Unbalanced"
+Heart_Rate_State,2011,"Very_Low, Low, Normal, High, Very_High"
+INR_Level_State,2012,"Too_Low, Normal, Therapeutic_Range, Too_High, Dangerous"
+PLT_Level_State,2013,"Very_Low, Low, Normal, High"
+PT_Level_State,2014,"Low, Normal, High"
+RBC_Level_State,2015,"Low, Normal, High"
+TSH_Level_State,2016,"Low, Normal, High"
+WBC_Level_State,2017,"Very_Low, Low, Normal, High, Very_High"
+aPTT_Level_State,2018,"Very_Short, Normal, Moderately_Prolonged, Very_Prolonged"
+eGFR_State,2019,"Normal, Stage_2, Stage_3, Stage_4, Stage_5"
+HGB_TREND,4000,"Dec, Same, Inc"
+PLT_TREND,4001,"Dec, Same, Inc"
+AST_TREND,4002,"Dec, Same, Inc"
+ALT_TREND,4003,"Dec, Same, Inc"
+Gamma_GT_TREND,4004,"Dec, Same, Inc"
+PT_TREND,4005,"Dec, Same, Inc"
+aPTT_TREND,4006,"Dec, Same, Inc"
+INR_TREND,4007,"Dec, Same, Inc"
+TSH_TREND,4008,"Dec, Same, Inc"
+HbA1C_TREND,4009,"Dec, Same, Inc"
+Blood_Glucose_TREND,4010,"Dec, Same, Inc"
+ALP_TREND,4011,"Dec, Same, Inc"
+Blood_Pressure_Systole_TREND,4012,"Dec, Same, Inc"
+Blood_Pressure_Diastole_TREND,4013,"Dec, Same, Inc"
+Heart_Rate_TREND,4014,"Dec, Same, Inc"
+eGFR_TREND,4015,"Dec, Same, Inc"
+Dabigatran_Etexilate_TREND,4016,"Dec, Same, Inc"
+Rivaroxaban_TREND,4017,"Dec, Same, Inc"
+Apixaban_TREND,4018,"Dec, Same, Inc"
+Edoxaban_TREND,4019,"Dec, Same, Inc"
+Atenolol_TREND,4020,"Dec, Same, Inc"
+Bisoprolol_TREND,4021,"Dec, Same, Inc"
+Carvedilol_TREND,4022,"Dec, Same, Inc"
+Metoprolol_TREND,4023,"Dec, Same, Inc"
+Propranolol_TREND,4024,"Dec, Same, Inc"
+Atenolol,9000,"True, False"
+Bisoprolol,9001,"True, False"
+Carvedilol,9002,"True, False"
+Metoprolol,9003,"True, False"
+Propranolol,9004,"True, False"
+Atenolol_chozek_hachomer,9200,"100mg, 50mg, 25mg"
+Bisoprolol_chozek_hachomer,9201,"10mg, 5mg, 2.500mg, 1.250mg"
+Carvedilol_chozek_hachomer,9202,"12.500mg, 6.250mg"
+Metoprolol_chozek_hachomer,9203,"200mg, 190mg, 100mg, 10mg/1mL"
+Propranolol_chozek_hachomer,9204,"160mg, 80mg, 40mg, 10mg"
+Age_at_Test_Pattern,10010,NumericAllowedValues
+Apixaban_state,11000,"Standard, Reduced"
+Dabigatran_state,11001,"Standard, Reduced"
+Rivaroxaban_state,11002,"Standard, Reduced"
+Edoxaban_state,11003,"Standard, Reduced"
+Atenolol_State,11004,"High, Normal, Low"
+Bisoprolol_State,11005,"High, Normal, Low"
+Carvedilol_State,11006,"High, Normal, Low"
+Metoprolol_State,11007,"High, Normal, Low"
+Propranolol_State,11008,"High, Normal, Low"
+NOAC_QA_Helper_State,11009,True
+Before_Visit_Apixaban_pattern,11020,"True, False"
+Before_Visit_Dabigatran_pattern,11021,"True, False"
+Before_Visit_Rivaroxaban_pattern,11022,"True, False"
+Before_Visit_Edoxaban_pattern,11023,"True, False"
+Before_Visit_Atenolol_pattern,11024,"True, False"
+Before_Visit_Bisoprolol_pattern,11025,"True, False"
+Before_Visit_Carvedilol_pattern,11026,"True, False"
+Before_Visit_Metoprolol_pattern,11027,"True, False"
+Before_Visit_Propranolol_pattern,11028,"True, False"
+Apixaban_Dosage_ctxt,11030,"True, False"
+State_Female,50011,True
+State_Male,50012,True
+State_Age_18_64,50021,True
+State_Age_65Plus,50022,True
+State_Age_40_64,50023,True
+State_Female_18_64,50101,True
+State_Male_18_64,50102,True
+State_Female_65Plus,50103,True
+State_Male_65Plus,50104,True
+Context_Age_18_65,50124,True
+Context_Age_65Plus,50127,True
+State_Age_18_49,50129,True
+Context_Age_18_49,50130,"True, False"
+Context_Age_50_69,50131,True
+Context_Age_70Plus,50132,True
+State_Age_50_69,50133,True
+State_Age_70Plus,50134,True
+Female_18_65_ctxt,50192,"True, False"
+Female_65Plus_ctxt,50193,"True, False"
+Female_Context,50194,"True, False"
+Female_U18_ctxt,50195,"True, False"
+Ctxt_Female_18_64,50201,"True, False"
+Ctxt_Male_18_64,50202,"True, False"
+Ctxt_Female_65Plus,50203,"True, False"
+Ctxt_Male_65Plus,50204,"True, False"
+Ctxt_Female,50211,"True, False"
+Ctxt_Male,50212,"True, False"
+Ctxt_Age_18_64,50221,"True, False"
+Ctxt_Age_65Plus,50222,"True, False"
+Ctxt_Age_40_64,50223,"True, False"
+Male_18_65_ctxt,50287,"True, False"
+Male_65Plus_ctxt,50288,"True, False"
+State_Male_U18,50407,True
+State_Age_70Plus_Female,1000000,True
+Female_70Plus_ctxt,1000002,"True, False"
+UREA_State,4030114,Placeholder
+Blood_Glucose_State,4030118,"Hypoglycemia, Normal, Pre-Diabetes, Diabetes"
+HbA1C_State,4030119,"Normal, Pre-Diabetes, Diabetes"

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd" id="11030" name="Apixaban_Dosage_ctxt" concept-type="context">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="true" gestalt="true"/>
+  <inducer-entities>
+    <inducer-entity id="11000">
+      <value-constraints>
+        <value-constraint value="Standard" operator="equal"/>
+        <value-constraint value="Reduced" operator="equal"/>
+      </value-constraints>
+      <from boundary-point="start">
+        <time-gap value="0" granularity="minute"/>
+      </from>
+      <until boundary-point="end">
+        <time-gap value="6" granularity="month"/>
+      </until>
+    </inducer-entity>
+  </inducer-entities>
+
+  <clippers>
+    <clipper-entity id="61">
+      <clipper-value-constraints>
+        <clipper-value-constraint value="1" operator="equal"/>
+      </clipper-value-constraints>
+      <entity-value-constraints/>
+      <from boundary-point="start">
+        <time-gap value="0" granularity="second"/>
+      </from>
+    </clipper-entity>
+  </clippers>
+</context>

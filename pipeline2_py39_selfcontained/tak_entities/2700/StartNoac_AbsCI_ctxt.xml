@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950\16.10-2.xsd" id="853" name="StartNoac_AbsCI_ctxt" concept-type="context">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+  <inducer-entities>
+    <inducer-entity id="482">
+      <value-constraints>
+        <value-constraint value="True" operator="equal"/>
+      </value-constraints>
+      <from boundary-point="start">
+        <time-gap value="0" granularity="minute"/>
+      </from>
+<until boundary-point="end">
+<time-gap value="1" granularity="year"/>
+</until>
+    </inducer-entity>
+  </inducer-entities>
+  <clippers>
+<clipper-entity id="483">
+<clipper-value-constraints>
+<clipper-value-constraint value="True" operator="equal"/>
+</clipper-value-constraints>
+<entity-value-constraints/>
+<from boundary-point="end">
+<time-gap value="0" granularity="second"/>
+</from>
+</clipper-entity>
+<clipper-entity id="31">
+<clipper-value-constraints>
+<clipper-value-constraint value="True" operator="equal"/>
+</clipper-value-constraints>
+<entity-value-constraints/>
+<from boundary-point="start">
+<time-gap value="0" granularity="second"/>
+</from>
+</clipper-entity>
+</clippers>
+</context>

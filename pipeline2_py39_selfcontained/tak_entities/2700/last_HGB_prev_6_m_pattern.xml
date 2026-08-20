@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Ben-Gurion University (Ben-Gurion University) -->
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="506" name="last_HGB_prev_6_m_pattern" concept-type="pattern" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" solid="true" concatenable="false" gestalt="true"/>
+  <clippers/>
+  <derived-from>
+    <derived-from-id>3</derived-from-id>
+    <derived-from-id>61</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts/>
+  <numeric-allowed-values output-type="numeric" min-value="0" max-value="1000" units="units" scale="ratio">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="" granularity="second"/>
+        <good-after value="" granularity="second"/>
+      </local-persistence>
+    </persistence>
+  </numeric-allowed-values>
+  <pattern-definition relation="all">
+    <components>
+      <component id="61" alias="Visit">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="1" operator="equal"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+      <component id="3" alias="HGB">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="0" operator="bigger"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+    </components>
+    <pairwise-constraints>
+      <pairwise-constraints-list>
+        <pairwise-constraint time-comparison-operator="bigger">
+          <pairwise-constraint-component-i alias="Visit"/>
+          <pairwise-constraint-component-j alias="HGB"/>
+          <max-duration value="6" granularity="month"/>
+        </pairwise-constraint>
+      </pairwise-constraints-list>
+    </pairwise-constraints>
+  </pattern-definition>
+  <pattern-output>
+    <value-local-pattern>
+      <mathematical-function mathematical-operator="abs">
+        <left data-type="double">
+          <concept-id-allowed-values id="2"/>
+        </left>
+        <right data-type="double">
+          <concept-id-allowed-values id="2"/>
+        </right>
+      </mathematical-function>
+    </value-local-pattern>
+    <start-local-pattern component-id="61" alias="Visit" boundary-point="start">
+      <time-shift value="0" granularity="second"/>
+    </start-local-pattern>
+    <end-local-pattern component-id="61" alias="Visit" boundary-point="end">
+      <time-shift value="0" granularity="second"/>
+    </end-local-pattern>
+  </pattern-output>
+</pattern>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:noNamespaceSchemaLocation="C:\MedLab\TakEntities\1600\16.10.xsd" 
+       id="9004" name="Propranolol" concept-type="event">
+	<categories/>
+	<standard-terms/>
+	<synonyms/>
+	<temporal-semantic downward-hereditary="false" forward="false" backward="false" 
+	                   solid="true" concatenable="false" gestalt="true"/>
+	<Attributes>
+		<Attribute-id>9204</Attribute-id>
+	</Attributes>
+	<Event-Extend-Id/>
+	<Event-Types> medication, Propranolol, beta_blocker </Event-Types>
+</event>

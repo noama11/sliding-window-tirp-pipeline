@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<nominal-raw-concept id="9202" name="Carvedilol_chozek_hachomer" concept-type="raw-nominal" 
+    description="String" semi-formal="String" source="String" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="C:\MedLab\TakEntities\1600\16.10.xsd">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic downward-hereditary="true" forward="true" backward="true" 
+                     solid="true" concatenable="true" gestalt="true"/>
+  <clippers/>
+  <nominal-allowed-values output-type="nominal">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows/>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="0" granularity="hour"/>
+        <good-after value="120" granularity="year"/>
+      </local-persistence>
+    </persistence>
+    <values>
+      <nominal-allowed-value value="12.500mg"/>
+      <nominal-allowed-value value="6.250mg"/>
+    </values>
+  </nominal-allowed-values>
+</nominal-raw-concept>

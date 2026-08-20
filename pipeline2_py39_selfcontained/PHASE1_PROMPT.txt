@@ -1,0 +1,46 @@
+We're starting Phase 1 (KarmaLego) of the pure-Python port of the stroke TIRP pipeline.
+
+First, read the approved plan in full:
+  py_pipeline\PLAN.md
+  (also mirrored at C:\Users\noama1\.claude\plans\ultrathink-please-read-this-reactive-blanket.md)
+Context is also in your memory ("Python port plan" and "CSV-mode work" entries).
+
+IMPORTANT — everything for this new pipeline goes in the NEW self-contained folder at the repo
+root: py_pipeline\  (keep it 100% pure Python, stdlib only, pasteable as text; no compiled
+engines, no .NET, no pip deps). Do NOT modify the existing csv_pipeline\ — it stays as the
+.NET validation oracle. Target layout:
+  py_pipeline\
+    run.py                # orchestrator (later; for now just the KarmaLego entry is needed)
+    config.json           # copy from csv_pipeline\config.json
+    pyengine\karmalego.py # THIS session's deliverable
+    tak_2700.json, data\, README.md   # (later phases)
+
+Scope for THIS session — Phase 1 ONLY (do not touch Mediator):
+
+Reimplement the KarmaLego TIRP miner in pure Python as
+  py_pipeline\pyengine\karmalego.py
+
+Port faithfully from the C# source (read-only, DO NOT modify):
+  C:\Users\noama1\Desktop\karma\KarmaLego_CSV\KarmaLegoCore\BO\KarmaLego\KL.BO.KarmaLegoDFSBO.cs
+  ...\BO\KarmaLegoBaseBO.cs
+  ...\BO\RelationsLogicBO.cs                       (Allen relations)
+  ...\KarmaLegoConsoleApp\Controller.cs            (CsvSerializer.SerializeToCsv - output format)
+
+Match these config semantics exactly: RelationsSet=Three, SACtype=CSAC, MaxLegoLevel=7,
+mvs=0.2, maxGap=0, timeUnit=Days, statistics=HorizontalSupport.
+
+Input = raw U abstractions filtered by patient set + concept list. Output results.csv =
+header "id,<pattern>,..."; one row/patient; cell = HorizontalSupport integer (missing -> 0);
+pattern name form "@@Pair:<Concept:Value>@<Relation>@<Concept:Value>".
+
+Validation gate (KarmaLego is done first BECAUSE it validates decoupled from Mediator):
+feed the FIXTURE abstractions in and reproduce the frozen 30,722-pattern reference:
+  fixtures:   C:\Users\noama1\Desktop\karma\csv_mode\fixtures\   (abstractions.csv, knowledge_table.csv, projects.csv, cohort_ids.txt = the 20 patients)
+  reference:  C:\Users\noama1\Desktop\karma\csv_mode\reference\sql_run\AF_KL_Ref\genreic\results.csv
+  comparator: C:\Users\noama1\Desktop\karma\csv_mode\_prep\compare_results.py   (order-insensitive)
+Success = compare_results.py prints "RESULT: IDENTICAL" (20 patients x 30,722 patterns).
+
+Start by exploring the C# source, the reference, and the fixtures to confirm the exact
+algorithm and output format, then propose your approach before writing the full implementation.
+
+(Run this session from the repo root: C:\Users\noama1\Desktop\karma\config files\pipeline)

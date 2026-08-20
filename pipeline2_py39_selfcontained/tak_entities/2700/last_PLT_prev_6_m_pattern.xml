@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pattern xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="508" name="last_PLT_prev_6_m_pattern" concept-type="pattern" xsi:noNamespaceSchemaLocation="C:\Guy\workspace\KB\950_v4\16.10-2.xsd">
+  <categories/>
+  <standard-terms/>
+  <synonyms/>
+  <temporal-semantic forward="true" backward="true" solid="true" concatenable="false" gestalt="true" downward-hereditary="true"/>
+  <clippers/>
+  <derived-from>
+    <derived-from-id>8</derived-from-id>
+    <derived-from-id>61</derived-from-id>
+  </derived-from>
+  <abstraction-at-contexts/>
+  <numeric-allowed-values min_value="0" max_value="1000" units="units" scale="ratio" output-type="numeric">
+    <persistence>
+      <global-persistence granularity="second">
+        <interpolation-table>
+          <rows>
+            <row><columns><column>1</column></columns></row>
+            <row><columns><column>1</column></columns></row>
+          </rows>
+        </interpolation-table>
+      </global-persistence>
+      <local-persistence>
+        <good-before value="" granularity="second"/>
+        <good-after value="" granularity="second"/>
+      </local-persistence>
+    </persistence>
+  </numeric-allowed-values>
+  <pattern-definition relation="all">
+    <components>
+      <component id="61" alias="Visit">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="1" operator="equal"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+      <component id="8" alias="PLT">
+        <local-constraints>
+          <value-constraints>
+            <value-constraint value="0" operator="bigger"/>
+          </value-constraints>
+        </local-constraints>
+        <priorities/>
+      </component>
+    </components>
+    <pairwise-constraints>
+      <pairwise-constraints-list>
+        <pairwise-constraint time-comparison-operator="bigger-equal">
+          <pairwise-constraint-component-i alias="Visit"/>
+          <pairwise-constraint-component-j alias="PLT"/>
+          <max-duration value="6" granularity="month"/>
+        </pairwise-constraint>
+      </pairwise-constraints-list>
+    </pairwise-constraints>
+  </pattern-definition>
+  <pattern-output>
+    <value-local-pattern>
+      <concept-id-allowed-values id="8"/>
+    </value-local-pattern>
+    <start-local-pattern alias="Visit" component-id="61" boundary-point="start">
+      <time-shift value="0" granularity="second"/>
+    </start-local-pattern>
+    <end-local-pattern alias="Visit" component-id="61" boundary-point="end">
+      <time-shift value="0" granularity="second"/>
+    </end-local-pattern>
+  </pattern-output>
+</pattern>
